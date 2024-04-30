@@ -23,7 +23,7 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
         <tr>
             <th><b>ID </b></th>
             <th><b>Service Level </b></th>
-            <th><b>User Type</b></th>
+            <th><b>User Type </b></th>
             <th><b>Location</b></th>
             <th><b>Event Start</b></th>
             <th><b>Event End</b></th>
