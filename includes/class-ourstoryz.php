@@ -168,6 +168,7 @@ class ourstoryz
 		 $this->loader->add_filter( 'manage_ourstoryz_posts_columns',$plugin_admin, 'custom_ourstoryz_columns' );
 		 $this->loader->add_action( 'manage_ourstoryz_posts_custom_column',$plugin_admin, 'custom_ourstoryz_custom_column', 10, 2 );
 		 $this->loader->add_action( 'admin_menu',$plugin_admin, 'custom_ourstoryz_submenu_events' );
+		 $this->loader->add_action('admin_menu',$plugin_admin,'custom_ourstoryz_setting_page');
 
 
 	}

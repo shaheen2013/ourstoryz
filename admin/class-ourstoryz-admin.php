@@ -201,6 +201,33 @@ function custom_ourstoryz_events_page() {
 		echo "File not found";
 	}
 }
+
+
+
+function custom_ourstoryz_setting_page() {
+    add_submenu_page(
+        'edit.php?post_type=ourstoryz',
+        'Our Storyz Setting',
+        'Our Storyz Setting',
+        'manage_options',
+        'ourstoryz_setting',
+        array($this,'custom_ourstoryz_setting'),
+    );
+}
+
+
+// Custom page callback for 'Our Storyz Events' submenu
+function custom_ourstoryz_setting() {
+    // Display the content for the 'Our Storyz Events' submenu page here
+    $temp_path= plugin_dir_path(__FILE__). 'partials/ourstoryz-storyz-setting-template.php';
+	if(file_exists($temp_path)){
+		include($temp_path);
+
+	}
+	else{
+		echo "File not found";
+	}
+}
 // Hook to customize submenu names
 
 // Add custom columns to the 'Our Storyz' post type list table
