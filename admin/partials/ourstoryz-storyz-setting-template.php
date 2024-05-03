@@ -12,16 +12,32 @@
  * @subpackage ourstoryz/admin/partials
  */
 
- 
+
 
 ?>
-<form method="post" action="">
-    <label for="source_url">Source URL:</label>
-    <input type="text" name="source_url" id="source_url" required><br>
-    <label for="target_url">Target URL:</label>
-    <input type="text" name="target_url" id="target_url" required><br>
-    <input type="submit" name="submit" value="Update URLs">
-</form>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5 w-25 m-auto">
+    <h3 class="text-center my-5">Url Find and replace</h3>
+    <form method="post" action="">
+        <div class="mb-3">
+            <label for="source_url" class="form-label">Source URL:</label>
+            <input type="text" class="form-control" name="source_url" id="source_url" required>
+        </div>
+        <div class="mb-3">
+            <label for="target_url" class="form-label">Target URL:</label>
+            <input type="text" class="form-control" name="target_url" id="target_url" required>
+        </div>
+        <button type="submit" name="submit" class="btn btn-primary  m-auto">Update URLs</button>
+    </form>
+</div>
+
+</body>
+
+
+
+
+
 <?php
 if (isset($_POST['submit'])) {
     $source_url = esc_url($_POST['source_url']);
@@ -58,5 +74,3 @@ if (isset($_POST['submit'])) {
 
 
 ?>
-
- 
