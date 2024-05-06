@@ -1,0 +1,23 @@
+name: Deployment Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PUBLIC_KEY }}
+          script: |
+            cd /home/u1486-oajatsdm7zjj/www/ourstoryz.com/public_html/wpdev/wp-content/plugins/ourstoryz
+            git reset --hard
+            git pull origin master
