@@ -97,7 +97,7 @@ class ourstoryz_Admin
          * between the defined hooks and the functions defined in this
          * class.
          */
-        $ajax_url = admin_url('admin-ajax.php');
+
         wp_enqueue_script('html2canvas', 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js', array(), null, true);
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ourstoryz-admin.js', array('jquery', 'html2canvas'), $this->version, false);
         wp_localize_script($this->plugin_name, 'ajax_object', array(
@@ -242,7 +242,7 @@ class ourstoryz_Admin
     {
         $columns['ourstoryz_category'] = 'Category'; // Add Category column
         $columns['ourstoryz_tag'] = 'Tags'; // Add Tags column
-        $columns['ourstoryz_featured_image'] = 'Thumbnail'; // Add Featured Image column
+        // $columns['ourstoryz_featured_image'] = 'Thumbnail'; // Add Featured Image column
 
         return $columns;
     }
@@ -277,27 +277,48 @@ class ourstoryz_Admin
                 }
                 break;
 
-            case 'ourstoryz_featured_image':
-                if (has_post_thumbnail($post_id)) {
-                    echo get_the_post_thumbnail($post_id, 'thumbnail');
-                } else {
-                    echo 'No featured image';
-                }
-                break;
-
             default:
                 break;
         }
     }
 
 
+    // Define your custom function to modify the columns displayed in the post list table.
+    function custom_post_table_column_header($columns)
+    {
+        global $post_type;
 
-    // Generate Button added
+        // Check if the current post type is 'ourstoryz'
+        if ($post_type === 'ourstoryz') {
+            // Add your custom column to the columns array
+            $columns['custom_preview'] = 'Screenshot';
+        }
 
-    // Add custom column header
+        return $columns;
+    }
+
+    // Hook your custom function to the 'manage_posts_columns' filter
+
+
+
+
+
+    function custom_post_table_column_content($column_name, $post_id)
+    {
+        global $post_type;
+        if ($post_type === 'ourstoryz') {
+            if ($column_name === 'custom_preview') {
+                echo '<button class="capture-screenshot-button button button-primary" data-post-id="' . $post_id . '">Generate Thumbnail</button>';
+            }
+        }
+
+    }
+
+
 
     function save_post_screenshot()
     {
+
         if (!isset($_POST['post_id']) || !isset($_POST['screenshot_data'])) {
             wp_send_json_error();
         }
@@ -305,81 +326,62 @@ class ourstoryz_Admin
         $post_id = $_POST['post_id'];
         $screenshot_data = $_POST['screenshot_data'];
 
-        // Save screenshot data to a file (optional, depending on your needs)
+        // Save screenshot data to a file
         $upload_dir = wp_upload_dir();
         $screenshot_path = $upload_dir['path'] . '/screenshot-' . $post_id . '.png';
         file_put_contents($screenshot_path, base64_decode(str_replace('data:image/png;base64,', '', $screenshot_data)));
 
-        // Return the URL to the saved screenshot (you may customize this based on your storage needs)
+        // Set the saved screenshot as the post thumbnail
+        $attachment = array(
+            'post_mime_type' => 'image/png',
+            'post_title' => 'Screenshot ' . $post_id,
+            'post_content' => '',
+            'post_status' => 'inherit'
+        );
+
+        // Insert the attachment
+        $attach_id = wp_insert_attachment($attachment, $screenshot_path, $post_id);
+
+        // Set post thumbnail
+        if (!is_wp_error($attach_id)) {
+            update_post_meta($post_id, '_thumbnail_id', $attach_id);
+        }
+
+        // Return the URL to the saved screenshot
         $screenshot_url = $upload_dir['url'] . '/screenshot-' . $post_id . '.png';
-
-
 
         wp_send_json_success($screenshot_url);
     }
-    function custom_post_table_column_header($columns)
-    {
-        $columns['custom_preview'] = 'Screenshot'; // 'custom_screenshot' is the column key
+
+
+    function custom_add_thumbnail_column($columns)
+    {  
+        global $post_type;
+
+        // Check if the current post type is 'ourstoryz'
+        if ($post_type === 'ourstoryz') {
+        $columns['post_thumbnail'] = 'Thumbnail';
+        }
         return $columns;
     }
 
- 
-
-function custom_post_table_column_content($column_name, $post_id)
-{
-    if ($column_name === 'custom_preview') {
-        echo '<button class="capture-screenshot-button button button-primary" data-post-id="' . $post_id . '">Capture Screenshot</button>';
-    }
-}
 
 
-
-
-
-
-
-    // End Generate 
-
-// AJAX handler to get post title based on post ID
- 
-function get_post_title_callback() {
-    if (isset($_POST['post_id'])) {
-        $post_id = intval($_POST['post_id']);
-        $post = get_post($post_id);
-        if ($post) {
-            echo $post->post_title;
+    function custom_display_thumbnail_column($column_name, $post_id)
+    {
+        if ($column_name === 'post_thumbnail') {
+            // Get the post thumbnail (featured image)
+            $thumbnail_id = get_post_thumbnail_id($post_id); // Get the ID of the featured image
+            if ($thumbnail_id) {
+                $thumbnail_url = wp_get_attachment_image_src($thumbnail_id, 'thumbnail'); // Get the URL of the thumbnail
+                if ($thumbnail_url) {
+                    echo '<img src="' . esc_url($thumbnail_url[0]) . '" alt="Featured Image" width="190" height="190" />';
+                } else {
+                    echo 'No thumbnail';
+                }
+            } else {
+                echo 'No thumbnail please click Generate Thumbnail';
+            }
         }
     }
-    wp_die(); // Always die in the end to avoid extra output
-}
-
-// AJAX handler to save screenshot data
- 
-function save_screenshot_callback() {
-    if (isset($_POST['post_id'], $_POST['screenshot_data'])) {
-        $post_id = intval($_POST['post_id']);
-        $screenshot_data = $_POST['screenshot_data'];
-
-        // Save screenshot data to post meta or custom table
-        // Example: save base64 image data to post meta
-        update_post_meta($post_id, '_screenshot_data', $screenshot_data);
-
-        // Generate and return screenshot URL
-        $screenshot_url = ''; // Your logic to get the screenshot URL
-        $response = array(
-            'success' => true,
-            'screenshot_url' => $screenshot_url
-        );
-        wp_send_json($response);
-    } else {
-        $response = array(
-            'success' => false,
-            'message' => 'Invalid parameters'
-        );
-        wp_send_json($response);
-    }
-    wp_die(); // Always die in the end to avoid extra output
-}
-
-
 }

@@ -157,27 +157,26 @@ class ourstoryz
 		$plugin_admin = new ourstoryz_Admin($this->get_plugin_name(), $this->get_version());
 
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-		
+
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 
-		//  $this->loader->add_action( 'admin_menu',$plugin_admin, 'custom_ourstoryz_menu' );
-
-		 $this->loader-> add_action( 'init',$plugin_admin, 'custom_ourstoryz_post_type' );
-		 $this->loader->add_action( 'admin_menu', $plugin_admin,'custom_ourstoryz_submenu_names' );
-		 $this->loader->add_action( 'init', $plugin_admin,'custom_ourstoryz_taxonomies' );
-		 $this->loader->add_filter( 'manage_ourstoryz_posts_columns',$plugin_admin, 'custom_ourstoryz_columns' );
-		 $this->loader->add_action( 'manage_ourstoryz_posts_custom_column',$plugin_admin, 'custom_ourstoryz_custom_column', 10, 2 );
-		 $this->loader->add_action( 'admin_menu',$plugin_admin, 'custom_ourstoryz_submenu_events' );
-		 $this->loader->add_action('admin_menu',$plugin_admin,'custom_ourstoryz_setting_page');
-		 $this->loader->add_filter('manage_posts_columns', $plugin_admin,'custom_post_table_column_header');
-		
+		$this->loader->add_action('init', $plugin_admin, 'custom_ourstoryz_post_type');
+		$this->loader->add_action('admin_menu', $plugin_admin, 'custom_ourstoryz_submenu_names');
+		$this->loader->add_action('init', $plugin_admin, 'custom_ourstoryz_taxonomies');
+		$this->loader->add_filter('manage_ourstoryz_posts_columns', $plugin_admin, 'custom_ourstoryz_columns');
+		$this->loader->add_action('manage_ourstoryz_posts_custom_column', $plugin_admin, 'custom_ourstoryz_custom_column', 10, 2);
+		$this->loader->add_action('admin_menu', $plugin_admin, 'custom_ourstoryz_submenu_events');
+		$this->loader->add_action('admin_menu', $plugin_admin, 'custom_ourstoryz_setting_page');
+		$this->loader->add_filter('manage_posts_columns', $plugin_admin, 'custom_post_table_column_header');
 		 $this->loader->add_action('wp_ajax_save_screenshot',$plugin_admin,'save_post_screenshot');
 		 $this->loader->add_action('manage_posts_custom_column',$plugin_admin, 'custom_post_table_column_content', 10, 2);
-		 $this->loader->add_action('wp_ajax_save_screenshot', $plugin_admin,'save_screenshot_callback');
-		 $this->loader->add_action('wp_ajax_get_post_title',$plugin_admin, 'get_post_title_callback');
-		 
+		$this->loader->add_filter('manage_posts_columns', $plugin_admin,'custom_add_thumbnail_column');
+		$this->loader->add_action('manage_posts_custom_column', $plugin_admin,'custom_display_thumbnail_column', 10, 2);
 
-		 
+
+
+
+
 	}
 
 	/**
