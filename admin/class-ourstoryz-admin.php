@@ -311,6 +311,7 @@ class ourstoryz_Admin
                 echo '<button class="capture-screenshot-button button button-primary" data-post-id="' . $post_id . '">Generate Thumbnail</button>';
             }
         }
+
     }
 
 
@@ -354,12 +355,12 @@ class ourstoryz_Admin
 
 
     function custom_add_thumbnail_column($columns)
-    {
+    {  
         global $post_type;
 
         // Check if the current post type is 'ourstoryz'
         if ($post_type === 'ourstoryz') {
-            $columns['post_thumbnail'] = 'Thumbnail';
+        $columns['post_thumbnail'] = 'Thumbnail';
         }
         return $columns;
     }
@@ -383,83 +384,5 @@ class ourstoryz_Admin
             }
         }
     }
-
-
-    // Define your secret key here. Make sure to keep it secure and not in public repositories.
-    // define('MY_SECRET_KEY', '12345');  // Change 'your_secret_key_here' to a strong, unique value.
-
-    public function cms_api_init()
-    {
-
-        register_rest_route('cms/v1', '/posts/', array(
-            'methods'             => 'GET',
-            'callback'            => array($this, 'cms_api_get_posts'),
-            'permission_callback' => array($this, 'cms_api_check_secret_key'),
-            'args'                => array(
-                'page' => array(
-                    'validate_callback' => function ($param, $request, $key) {
-                        return is_numeric($param);
-                    },
-                    'default'           => 1,
-                    'description'       => 'Current page of the collection.',
-                ),
-                'per_page' => array(
-                    'validate_callback' => function ($param, $request, $key) {
-                        return is_numeric($param);
-                    },
-                    'default'           => 10,
-                    'description'       => 'Maximum number of items to be returned in result set.',
-                ),
-            ),
-        ));
-    }
-
-    /**
-     * Handle GET requests for posts
-     * @return WP_REST_Response
-     */
-    function cms_api_get_posts($request)
-    {
-        // Retrieve the page parameter from the request; default is 1 if not specified
-        $page = $request->get_param('page') ? intval($request->get_param('page')) : 1;
-
-        // Retrieve the number of posts per page from the request; default is 10 if not specified
-        $per_page = $request->get_param('per_page') ? intval($request->get_param('per_page')) : 10;
-
-        // Fetch posts from the database with pagination
-        $posts = get_posts(array(
-            'posts_per_page' => $per_page,
-            'paged'          => $page,
-            'post_status'    => 'publish', // Only the posts that are published
-            'post_type' => 'product'
-        ));
-
-        $data = array();
-        foreach ($posts as $post) {
-            $data[] = array(
-                'id'      => $post->ID,
-                'title'   => $post->post_title,
-                'content' => $post->post_content,
-            );
-        }
-
-        return new WP_REST_Response($data, 200);
-    }
-
-
-    /**
-     * Check if the correct secret key is provided
-     * @return WP_Error|bool
-     */
-    function cms_api_check_secret_key($request)
-    {
-        $headers = $request->get_headers();
-        $provided_key = isset($headers['x_secret_key']) ? $headers['x_secret_key'][0] : '';
-
-        if ($provided_key === 12345) {
-            return true;
-        } else {
-            return new WP_Error('rest_forbidden', esc_html__('Forbidden, invalid secret key', 'my-text-domain'), array('status' => 401));
-        }
-    }
+    
 }
