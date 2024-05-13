@@ -38,7 +38,7 @@ jQuery(document).ready(function($) {
         var post_id = $(this).data('post-id');
         
         // Construct URL with the post ID (instead of title)
-        var previewUrl = '/wpdev/?p=' + post_id; // Example URL format
+        var previewUrl = '/?p=' + post_id; // Example URL format
         
         // Open a new tab with the post preview page
         var newWindow = window.open(previewUrl, '_blank');
@@ -52,8 +52,8 @@ jQuery(document).ready(function($) {
 
     function captureFullPageScreenshot(newWindow, post_id) {
         // Capture screenshot using html2canvas in the new tab
-		var postSection = newWindow.document.getElementById('post-' + post_id); // Example: Assuming the post content has an element with ID 'post-{post_id}'
-        html2canvas(postSection, {
+		// var postSection = newWindow.document.getElementById('post-' + post_id); // Example: Assuming the post content has an element with ID 'post-{post_id}'
+        html2canvas(newWindow.document.body, {
             scrollX: 0,
             scrollY: 0,
             useCORS: false,
@@ -93,4 +93,7 @@ jQuery(document).ready(function($) {
 			}
 		});
 	}
+
+
+    
 });

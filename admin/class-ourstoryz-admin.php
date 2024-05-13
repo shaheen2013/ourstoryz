@@ -314,6 +314,16 @@ class ourstoryz_Admin
 
     }
 
+    function custom_add_thumbnail_column($columns)
+    {  
+        global $post_type;
+
+        // Check if the current post type is 'ourstoryz'
+        if ($post_type === 'ourstoryz') {
+        $columns['post_thumbnail'] = 'Thumbnail';
+        }
+        return $columns;
+    }
 
 
     function save_post_screenshot()
@@ -354,17 +364,7 @@ class ourstoryz_Admin
     }
 
 
-    function custom_add_thumbnail_column($columns)
-    {  
-        global $post_type;
-
-        // Check if the current post type is 'ourstoryz'
-        if ($post_type === 'ourstoryz') {
-        $columns['post_thumbnail'] = 'Thumbnail';
-        }
-        return $columns;
-    }
-
+  
 
 
     function custom_display_thumbnail_column($column_name, $post_id)
@@ -375,10 +375,11 @@ class ourstoryz_Admin
             if ($thumbnail_id) {
                 $thumbnail_url = wp_get_attachment_image_src($thumbnail_id, 'thumbnail'); // Get the URL of the thumbnail
                 if ($thumbnail_url) {
-                    echo '<img src="' . esc_url($thumbnail_url[0]) . '" alt="Featured Image" width="190" height="190" />';
+                    echo '<a href="' . esc_url($thumbnail_url[0]) . '" target="_blank">Image (Full)  </a>';
                 } else {
                     echo 'No thumbnail';
                 }
+                
             } else {
                 echo 'No thumbnail please click Generate Thumbnail';
             }
