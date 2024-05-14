@@ -31,20 +31,20 @@
 
 // })( jQuery );
 
+jQuery(document).ready(function ($) {
 
-jQuery(document).ready(function($) {
-    $('.capture-screenshot-button').on('click', function(e) {
+    $('.capture-screenshot-button').on('click', function (e) {
         e.preventDefault();
         var post_id = $(this).data('post-id');
-        
+
         // Construct URL with the post ID (instead of title)
-        var previewUrl = '/?p=' + post_id; // Example URL format
-        
+        var previewUrl = '/gulf/?p=' + post_id; // Example URL format
+
         // Open a new tab with the post preview page
         var newWindow = window.open(previewUrl, '_blank');
 
         // Wait for the new tab to load completely
-        newWindow.addEventListener('load', function() {
+        newWindow.addEventListener('load', function () {
             // After the new tab is fully loaded, capture screenshot
             captureFullPageScreenshot(newWindow, post_id);
         });
@@ -52,7 +52,7 @@ jQuery(document).ready(function($) {
 
     function captureFullPageScreenshot(newWindow, post_id) {
         // Capture screenshot using html2canvas in the new tab
-		// var postSection = newWindow.document.getElementById('post-' + post_id); // Example: Assuming the post content has an element with ID 'post-{post_id}'
+        // var postSection = newWindow.document.getElementById('post-' + post_id); // Example: Assuming the post content has an element with ID 'post-{post_id}'
         html2canvas(newWindow.document.body, {
             scrollX: 0,
             scrollY: 0,
@@ -60,40 +60,81 @@ jQuery(document).ready(function($) {
             allowTaint: false,
             windowWidth: newWindow.innerWidth,
             windowHeight: newWindow.document.documentElement.scrollHeight
-        }).then(function(canvas) {
+        }).then(function (canvas) {
             var screenshotData = canvas.toDataURL();
+
+            var resizedCanvas = document.createElement('canvas');
+            resizedCanvas.width = 300;
+            resizedCanvas.height = 300;
+            var ctx = resizedCanvas.getContext('2d');
+
+            // Draw the original screenshot resized into the new canvas
+            ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 300, 300);
+            var resizedData = resizedCanvas.toDataURL();
+
             saveScreenshot(post_id, screenshotData);
-            
+
+            cropScreenshot(post_id, resizedData);
+
             // Close the new tab after capturing screenshot
             newWindow.close();
         });
     }
 
     function saveScreenshot(post_id, screenshotData) {
-		// AJAX call to save the screenshot
-		$.ajax({
-			type: 'POST',
-			url: ajaxurl,
-			data: {
-				action: 'save_screenshot',
-				post_id: post_id,
-				screenshot_data: screenshotData
-			},
-			success: function(response) {
-				console.log(response);
-				if (response.success) {
-					// Reload the current page
-					window.location.reload();
-				} else {
-					// Handle error if needed
-					console.error('Error occurred while saving screenshot.');
-				}
-				 
-	
-			}
-		});
-	}
+        // AJAX call to save the screenshot
+        $.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: {
+                action: 'save_screenshot',
+                post_id: post_id,
+                screenshot_data: screenshotData
+            },
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+
+                    // Reload the current page
+                    window.location.reload();
+                } else {
+                    // Handle error if needed
+                    console.error('Error occurred while saving screenshot.');
+                }
 
 
-    
+            }
+        });
+    }
+
+    function cropScreenshot(post_id, resizedData) {
+        // AJAX call to save the screenshot
+        $.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: {
+                action: 'cropped_screenshot',
+                post_id: post_id,
+                screenshot_data: resizedData
+            },
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+
+                    // Reload the current page
+                    window.location.reload();
+                } else {
+                    // Handle error if needed
+                    console.error('Error occurred while saving screenshot.');
+                }
+
+
+            }
+        });
+    }
+
+
 });
+
+
+

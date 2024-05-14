@@ -283,7 +283,6 @@ class ourstoryz_Admin
     }
 
 
-    // Define your custom function to modify the columns displayed in the post list table.
     function custom_post_table_column_header($columns)
     {
         global $post_type;
@@ -291,44 +290,34 @@ class ourstoryz_Admin
         // Check if the current post type is 'ourstoryz'
         if ($post_type === 'ourstoryz') {
             // Add your custom column to the columns array
-            $columns['custom_preview'] = 'Screenshot';
+            $columns['generate_screenshot'] = 'Action';
+            $columns['show_screenshot'] = 'Screenshot';
         }
 
         return $columns;
     }
-
-    // Hook your custom function to the 'manage_posts_columns' filter
-
-
-
 
 
     function custom_post_table_column_content($column_name, $post_id)
     {
         global $post_type;
         if ($post_type === 'ourstoryz') {
-            if ($column_name === 'custom_preview') {
+            if ($column_name === 'generate_screenshot') {
                 echo '<button class="capture-screenshot-button button button-primary" data-post-id="' . $post_id . '">Generate Thumbnail</button>';
+            } elseif($column_name === 'show_screenshot') {
+                if (has_post_thumbnail($post_id)) {
+                    echo '<img src="' . esc_url( get_the_post_thumbnail_url( $post_id, array( 100, 100 ) ) ) . '" alt="Post Thumbnail" width="100" height="100">';
+
+                } else {
+                    echo 'No Image';
+                }
             }
         }
 
     }
 
-    function custom_add_thumbnail_column($columns)
-    {  
-        global $post_type;
-
-        // Check if the current post type is 'ourstoryz'
-        if ($post_type === 'ourstoryz') {
-        $columns['post_thumbnail'] = 'Thumbnail';
-        }
-        return $columns;
-    }
-
-
     function save_post_screenshot()
     {
-
         if (!isset($_POST['post_id']) || !isset($_POST['screenshot_data'])) {
             wp_send_json_error();
         }
@@ -362,28 +351,22 @@ class ourstoryz_Admin
 
         wp_send_json_success($screenshot_url);
     }
-
-
-  
-
-
-    function custom_display_thumbnail_column($column_name, $post_id)
+ 
+    function cropped_screenshot()
     {
-        if ($column_name === 'post_thumbnail') {
-            // Get the post thumbnail (featured image)
-            $thumbnail_id = get_post_thumbnail_id($post_id); // Get the ID of the featured image
-            if ($thumbnail_id) {
-                $thumbnail_url = wp_get_attachment_image_src($thumbnail_id, 'thumbnail'); // Get the URL of the thumbnail
-                if ($thumbnail_url) {
-                    echo '<a href="' . esc_url($thumbnail_url[0]) . '" target="_blank">Image (Full)  </a>';
-                } else {
-                    echo 'No thumbnail';
-                }
-                
-            } else {
-                echo 'No thumbnail please click Generate Thumbnail';
-            }
+        if (!isset($_POST['post_id']) || !isset($_POST['screenshot_data'])) {
+            wp_send_json_error();
         }
+
+        $post_id = $_POST['post_id'];
+        $screenshot_data = $_POST['screenshot_data'];
+
+        // Save screenshot data to a file
+        $upload_dir = wp_upload_dir();
+        $screenshot_path = $upload_dir['path'] . '/screenshot-crop' . $post_id . '.png';
+        file_put_contents($screenshot_path, base64_decode(str_replace('data:image/png;base64,', '', $screenshot_data)));
+
+        wp_send_json_success($screenshot_path);
     }
     
 }

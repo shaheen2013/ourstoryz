@@ -124,7 +124,7 @@ class ourstoryz
 		 */
 		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-ourstoryz-public.php';
 
-		$this->loader = new  ourstoryz_Loader();
+		$this->loader = new ourstoryz_Loader();
 	}
 
 	/**
@@ -167,12 +167,10 @@ class ourstoryz
 		$this->loader->add_action('manage_ourstoryz_posts_custom_column', $plugin_admin, 'custom_ourstoryz_custom_column', 10, 2);
 		$this->loader->add_action('admin_menu', $plugin_admin, 'custom_ourstoryz_submenu_events');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'custom_ourstoryz_setting_page');
+		$this->loader->add_action('wp_ajax_save_screenshot', $plugin_admin, 'save_post_screenshot');
+		$this->loader->add_action('wp_ajax_cropped_screenshot', $plugin_admin, 'cropped_screenshot');
+		$this->loader->add_action('manage_posts_custom_column', $plugin_admin, 'custom_post_table_column_content', 10, 2);
 		$this->loader->add_filter('manage_posts_columns', $plugin_admin, 'custom_post_table_column_header');
-		 $this->loader->add_action('wp_ajax_save_screenshot',$plugin_admin,'save_post_screenshot');
-		 $this->loader->add_action('manage_posts_custom_column',$plugin_admin, 'custom_post_table_column_content', 10, 2);
-		$this->loader->add_filter('manage_posts_columns', $plugin_admin,'custom_add_thumbnail_column');
-		$this->loader->add_action('manage_posts_custom_column', $plugin_admin,'custom_display_thumbnail_column', 10, 2);
-
 
 
 
