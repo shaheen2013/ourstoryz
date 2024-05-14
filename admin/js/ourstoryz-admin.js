@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
         var post_id = $(this).data('post-id');
 
         // Construct URL with the post ID (instead of title)
-        var previewUrl = '/gulf/?p=' + post_id; // Example URL format
+        var previewUrl = '/wpdev/?p=' + post_id; // Example URL format
 
         // Open a new tab with the post preview page
         var newWindow = window.open(previewUrl, '_blank');
