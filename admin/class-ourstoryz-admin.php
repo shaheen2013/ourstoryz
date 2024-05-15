@@ -399,10 +399,10 @@ function sortable_custom_post_columns($columns) {
                     'tag' => array(
                         'sanitize_callback' => 'sanitize_text_field',
                     ),
-                    'id' => array(
+                    'templateId' => array(
                         'sanitize_callback' => 'absint',
                     ),
-                    'name' => array(
+                    'templateName' => array(
                         'sanitize_callback' => 'sanitize_text_field',
                     ),
                     'page' => array(
@@ -423,8 +423,8 @@ function sortable_custom_post_columns($columns) {
         // Retrieve query parameters
         $category = $request->get_param('category');
         $tag = $request->get_param('tag');
-        $id = $request->get_param('id');
-        $name = $request->get_param('name');
+        $id = $request->get_param('templateId');
+        $name = $request->get_param('templateName');
         $page = $request->get_param('page') ? intval($request->get_param('page')) : 1;
         $per_page = $request->get_param('per_page') ? intval($request->get_param('per_page')) : 10;
 
@@ -489,11 +489,12 @@ function sortable_custom_post_columns($columns) {
 
                 // Build post item array
                 $post_item = array(
-                    'id' => $post_id,
-                    'name' => get_the_title(),
-                    'FullImage' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
-                    'thumbURL' => $thumb_url,
+                    'templateId' => $post_id,
+                    'templateName' => get_the_title(),
+                    'fullImage' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
+                    'thumbnail' => $thumb_url,
                     'tags' => $post_tags,
+                    'designer' => get_the_author_meta('display_name', $query->post_author),
                     'categories' => $category_names,
                 );
 
