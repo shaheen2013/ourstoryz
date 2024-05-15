@@ -102,38 +102,39 @@ class ourstoryz_Admin
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ourstoryz-admin.js', array('jquery', 'html2canvas'), $this->version, false);
         wp_localize_script($this->plugin_name, 'ajax_object', array(
             'ajax_url' => admin_url('admin-ajax.php'),
-        ));
+        )
+        );
     }
 
     // Register custom post type 'ourstoryz'
     function custom_ourstoryz_post_type()
     {
         $labels = array(
-            'name'               => 'Our Storyz',
-            'singular_name'      => 'Our Storyz',
-            'menu_name'          => 'Our Storyz',
-            'add_new'            => 'Add New',
-            'add_new_item'       => 'Add New Our Storyz',
-            'edit_item'          => 'Edit Our Storyz',
-            'new_item'           => 'New Our Storyz',
-            'view_item'          => 'View Our Storyz',
-            'search_items'       => 'Search Our Storyz',
-            'not_found'          => 'No Our Storyz found',
+            'name' => 'Our Storyz',
+            'singular_name' => 'Our Storyz',
+            'menu_name' => 'Our Storyz',
+            'add_new' => 'Add New',
+            'add_new_item' => 'Add New Our Storyz',
+            'edit_item' => 'Edit Our Storyz',
+            'new_item' => 'New Our Storyz',
+            'view_item' => 'View Our Storyz',
+            'search_items' => 'Search Our Storyz',
+            'not_found' => 'No Our Storyz found',
             'not_found_in_trash' => 'No Our Storyz found in Trash',
         );
 
         $args = array(
-            'labels'              => $labels,
-            'public'              => true,
-            'show_in_menu'        => true,
-            'menu_position'       => 20,
-            'menu_icon'           => 'dashicons-admin-post', // Customize the menu icon
-            'supports'            => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'),
-            'taxonomies'          => array('ourstoryz_category', 'ourstoryz_tag'), // Add custom taxonomies
-            'rewrite'             => array('slug' => 'our-storyz'), // Customize the permalink slug
-            'has_archive'         => true,
-            'publicly_queryable'  => true,
-            'capability_type'     => 'post',
+            'labels' => $labels,
+            'public' => true,
+            'show_in_menu' => true,
+            'menu_position' => 20,
+            'menu_icon' => 'dashicons-admin-post', // Customize the menu icon
+            'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'),
+            'taxonomies' => array('ourstoryz_category', 'ourstoryz_tag'), // Add custom taxonomies
+            'rewrite' => array('slug' => 'our-storyz'), // Customize the permalink slug
+            'has_archive' => true,
+            'publicly_queryable' => true,
+            'capability_type' => 'post',
         );
 
         register_post_type('ourstoryz', $args);
@@ -203,7 +204,7 @@ class ourstoryz_Admin
         // Display the content for the 'Our Storyz Events' submenu page here
         $temp_path = plugin_dir_path(__FILE__) . 'partials/ourstoryz-events-template.php';
         if (file_exists($temp_path)) {
-            include($temp_path);
+            include ($temp_path);
         } else {
             echo "File not found";
         }
@@ -230,57 +231,12 @@ class ourstoryz_Admin
         // Display the content for the 'Our Storyz Events' submenu page here
         $temp_path = plugin_dir_path(__FILE__) . 'partials/ourstoryz-storyz-setting-template.php';
         if (file_exists($temp_path)) {
-            include($temp_path);
+            include ($temp_path);
         } else {
             echo "File not found";
         }
     }
     // Hook to customize submenu names
-
-    // Add custom columns to the 'Our Storyz' post type list table
-    function custom_ourstoryz_columns($columns)
-    {
-        $columns['ourstoryz_category'] = 'Category'; // Add Category column
-        $columns['ourstoryz_tag'] = 'Tags'; // Add Tags column
-        // $columns['ourstoryz_featured_image'] = 'Thumbnail'; // Add Featured Image column
-
-        return $columns;
-    }
-
-    // Populate custom columns with data for the 'Our Storyz' post type list table
-    function custom_ourstoryz_custom_column($column, $post_id)
-    {
-        switch ($column) {
-            case 'ourstoryz_category':
-                $categories = get_the_terms($post_id, 'ourstoryz_category');
-                if ($categories && !is_wp_error($categories)) {
-                    $category_names = array();
-                    foreach ($categories as $category) {
-                        $category_names[] = $category->name;
-                    }
-                    echo implode(', ', $category_names);
-                } else {
-                    echo 'No category';
-                }
-                break;
-
-            case 'ourstoryz_tag':
-                $tags = get_the_terms($post_id, 'ourstoryz_tag');
-                if ($tags && !is_wp_error($tags)) {
-                    $tag_names = array();
-                    foreach ($tags as $tag) {
-                        $tag_names[] = $tag->name;
-                    }
-                    echo implode(', ', $tag_names);
-                } else {
-                    echo 'No tags';
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
 
 
     function custom_post_table_column_header($columns)
@@ -289,6 +245,8 @@ class ourstoryz_Admin
 
         // Check if the current post type is 'ourstoryz'
         if ($post_type === 'ourstoryz') {
+            $columns['ourstoryz_category'] = 'Category'; // Add Category column
+            $columns['ourstoryz_tag'] = 'Tags';
             // Add your custom column to the columns array
             $columns['generate_screenshot'] = 'Action';
             $columns['show_screenshot'] = 'Screenshot';
@@ -304,12 +262,34 @@ class ourstoryz_Admin
         if ($post_type === 'ourstoryz') {
             if ($column_name === 'generate_screenshot') {
                 echo '<button class="capture-screenshot-button button button-primary" data-post-id="' . $post_id . '">Generate Thumbnail</button>';
-            } elseif($column_name === 'show_screenshot') {
+            } elseif ($column_name === 'show_screenshot') {
                 if (has_post_thumbnail($post_id)) {
-                    echo '<img src="' . esc_url( get_the_post_thumbnail_url( $post_id, array( 100, 100 ) ) ) . '" alt="Post Thumbnail" width="100" height="100">';
+                    echo '<img src="' . esc_url(get_the_post_thumbnail_url($post_id, array(100, 100))) . '" alt="Post Thumbnail" width="100" height="100">';
 
                 } else {
                     echo 'No Image';
+                }
+            } elseif ($column_name === 'ourstoryz_category') {
+                $categories = get_the_terms($post_id, 'ourstoryz_category');
+                if ($categories && !is_wp_error($categories)) {
+                    $category_names = array();
+                    foreach ($categories as $category) {
+                        $category_names[] = $category->name;
+                    }
+                    echo implode(', ', $category_names);
+                } else {
+                    echo 'No category';
+                }
+            } elseif ($column_name === 'ourstoryz_tag') {
+                $tags = get_the_terms($post_id, 'ourstoryz_tag');
+                if ($tags && !is_wp_error($tags)) {
+                    $tag_names = array();
+                    foreach ($tags as $tag) {
+                        $tag_names[] = $tag->name;
+                    }
+                    echo implode(', ', $tag_names);
+                } else {
+                    echo 'No tags';
                 }
             }
         }
@@ -321,23 +301,23 @@ class ourstoryz_Admin
         if (!isset($_POST['post_id']) || !isset($_POST['screenshot_data'])) {
             wp_send_json_error();
         }
-    
+
         $post_id = $_POST['post_id'];
         $screenshot_data = $_POST['screenshot_data'];
-    
+
         // Get upload directory
         $upload_dir = wp_upload_dir();
-    
+
         // Delete previous thumbnail attachment if it exists
         $previous_thumbnail_id = get_post_thumbnail_id($post_id);
         if ($previous_thumbnail_id) {
             wp_delete_attachment($previous_thumbnail_id, true); // Delete the attachment permanently
         }
-    
+
         // Save new screenshot data to a file
         $screenshot_path = $upload_dir['path'] . '/screenshot-' . $post_id . '.png';
         file_put_contents($screenshot_path, base64_decode(str_replace('data:image/png;base64,', '', $screenshot_data)));
-    
+
         // Create attachment for the new screenshot
         $attachment = array(
             'post_mime_type' => 'image/png',
@@ -345,100 +325,152 @@ class ourstoryz_Admin
             'post_content' => '',
             'post_status' => 'inherit'
         );
-    
+
         // Insert the attachment into the media library
         $attach_id = wp_insert_attachment($attachment, $screenshot_path, $post_id);
-    
+
         // Set post thumbnail
         if (!is_wp_error($attach_id)) {
             set_post_thumbnail($post_id, $attach_id);
         }
-    
+
         // Return the URL to the saved screenshot
         $screenshot_url = $upload_dir['url'] . '/screenshot-' . $post_id . '.png';
         wp_send_json_success($screenshot_url);
     }
-    
-function cropped_screenshot()
-{
-    if (!isset($_POST['post_id']) || !isset($_POST['screenshot_data'])) {
-        wp_send_json_error();
+
+    function cropped_screenshot()
+    {
+        if (!isset($_POST['post_id']) || !isset($_POST['screenshot_data'])) {
+            wp_send_json_error();
+        }
+
+        $post_id = $_POST['post_id'];
+        $screenshot_data = $_POST['screenshot_data'];
+
+        // Get upload directory
+        $upload_dir = wp_upload_dir();
+
+        // Delete previous cropped screenshot if it exists
+        $previous_screenshot_path = $upload_dir['path'] . '/screenshot-crop' . $post_id . '.png';
+        if (file_exists($previous_screenshot_path)) {
+            unlink($previous_screenshot_path); // Delete the file
+        }
+
+        // Save new cropped screenshot data to a file
+        $screenshot_path = $upload_dir['path'] . '/screenshot-crop' . $post_id . '.png';
+        file_put_contents($screenshot_path, base64_decode(str_replace('data:image/png;base64,', '', $screenshot_data)));
+
+        // Store the URL of the cropped screenshot in post meta
+        $screenshot_url = $upload_dir['url'] . '/screenshot-crop' . $post_id . '.png';
+        add_post_meta($post_id, '_thumbURL', $screenshot_url);
+
+        wp_send_json_success($screenshot_path);
     }
 
-    $post_id = $_POST['post_id'];
-    $screenshot_data = $_POST['screenshot_data'];
-
-    // Get upload directory
-    $upload_dir = wp_upload_dir();
-
-    // Delete previous cropped screenshot if it exists
-    $previous_screenshot_path = $upload_dir['path'] . '/screenshot-crop' . $post_id . '.png';
-    if (file_exists($previous_screenshot_path)) {
-        unlink($previous_screenshot_path); // Delete the file
-    }
-
-    // Save new cropped screenshot data to a file
-    $screenshot_path = $upload_dir['path'] . '/screenshot-crop' . $post_id . '.png';
-    file_put_contents($screenshot_path, base64_decode(str_replace('data:image/png;base64,', '', $screenshot_data)));
-    
-    // Store the URL of the cropped screenshot in post meta
-    $screenshot_url = $upload_dir['url'] . '/screenshot-crop' . $post_id . '.png';
-    add_post_meta($post_id, '_thumbURL', $screenshot_url);
-
-    wp_send_json_success($screenshot_path);
-}
 
 
-
-     function register_custom_endpoints() {
+    function register_custom_endpoints()
+    {
         register_rest_route('custom/v1', '/ourstoryz/', array(
             'methods' => 'GET',
             'callback' => array($this, 'custom_rest_api_get_ourstoryz_posts'),
-        ));
+            'args' => array(
+                'category' => array(
+                    'sanitize_callback' => 'sanitize_text_field',
+                ),
+                'tag' => array(
+                    'sanitize_callback' => 'sanitize_text_field',
+                ),
+                'page' => array(
+                    'sanitize_callback' => 'absint',
+                ),
+                'per_page' => array(
+                    'sanitize_callback' => 'absint',
+                ),
+            ),
+        )
+        );
     }
 
 
-    public function custom_rest_api_get_ourstoryz_posts() {
+    function custom_rest_api_get_ourstoryz_posts($request)
+    {
+        // Retrieve query parameters
+        $category = $request->get_param('category');
+        $tag = $request->get_param('tag');
+        $page = $request->get_param('page') ? intval($request->get_param('page')) : 1;
+        $per_page = $request->get_param('per_page') ? intval($request->get_param('per_page')) : 10;
+
+        // Prepare arguments for WP_Query based on parameters
         $args = array(
             'post_type' => 'ourstoryz',
             'post_status' => 'publish',
-            'posts_per_page' => -1,
+            'posts_per_page' => $per_page,
+            'paged' => $page,
         );
 
+        // Add taxonomy filters if provided
+        if ($category) {
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'ourstoryz_category',
+                    'field' => 'slug',
+                    'terms' => $category,
+                ),
+            );
+        }
+
+        if ($tag) {
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'ourstoryz_tag',
+                    'field' => 'slug',
+                    'terms' => $tag,
+                ),
+            );
+        }
+
+        // Perform WP_Query to retrieve posts
         $query = new WP_Query($args);
         $posts = array();
 
+        // Loop through query results and build response data
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
                 $post_id = get_the_ID();
 
-                // Include meta data
+                // Retrieve custom meta fields
                 $thumb_url = get_post_meta($post_id, '_thumbURL', true);
 
-                $post_tags = wp_get_post_terms($post_id, 'post_tag', array('fields' => 'names'));
-                $post_categories = wp_get_post_terms($post_id, 'ourstoryz_category'); // Ensure 'category' is the correct taxonomy
+                // Retrieve post tags and categories
+                $post_tags = wp_get_post_terms($post_id, 'ourstoryz_tag', array('fields' => 'names'));
+                $post_categories = wp_get_post_terms($post_id, 'ourstoryz_category');
                 $category_names = array();
                 foreach ($post_categories as $category) {
                     $category_names[] = $category->name;
                 }
 
+                // Build post item array
                 $post_item = array(
                     'id' => $post_id,
                     'name' => get_the_title(),
-                    'thumbnail' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
-                    'thumbURL' => $thumb_url, // Added custom meta field
+                    'FullImage' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
+                    'thumbURL' => $thumb_url,
                     'tags' => $post_tags,
                     'categories' => $category_names,
                 );
 
+                // Add post item to posts array
                 $posts[] = $post_item;
             }
             wp_reset_postdata();
         }
 
+        // Return WP_REST_Response with posts data
         return new WP_REST_Response($posts, 200);
     }
 
-    
+
 }
