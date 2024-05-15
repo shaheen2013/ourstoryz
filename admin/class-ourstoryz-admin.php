@@ -251,6 +251,8 @@ class ourstoryz_Admin
 
         // Check if the current post type is 'ourstoryz'
         if ($post_type === 'ourstoryz') {
+            unset($columns['ourstoryz_category']);
+            unset($columns['ourstoryz_tag']);
             $columns['ourstoryz_category'] = 'Category'; // Add Category column
             $columns['ourstoryz_tag'] = 'Tags';
             // Add your custom column to the columns array
@@ -262,55 +264,57 @@ class ourstoryz_Admin
     }
 
     // Customize Admin Column Content
-function custom_post_table_column_content($column_name, $post_id) {
-    switch ($column_name) {
-        case 'generate_screenshot':
-            echo '<button class="capture-screenshot-button button button-primary" data-post-id="' . $post_id . '">Generate Thumbnail</button>';
-            break;
-        case 'show_screenshot':
-            if (has_post_thumbnail($post_id)) {
-                echo '<img src="' . esc_url(get_the_post_thumbnail_url($post_id, array(100, 100))) . '" alt="Post Thumbnail" width="100" height="100">';
-            } else {
-                echo 'No Image';
-            }
-            break;
-        case 'ourstoryz_category':
-            $categories = get_the_terms($post_id, 'ourstoryz_category');
-            if ($categories && !is_wp_error($categories)) {
-                $category_links = array();
-                foreach ($categories as $category) {
-                    $category_links[] = '<a href="' . esc_url(admin_url('edit.php?post_type=ourstoryz&ourstoryz_category=' . $category->slug)) . '">' . $category->name . '</a>';
+    function custom_post_table_column_content($column_name, $post_id)
+    {
+        switch ($column_name) {
+            case 'generate_screenshot':
+                echo '<button class="capture-screenshot-button button button-primary" data-post-id="' . $post_id . '">Generate Thumbnail</button>';
+                break;
+            case 'show_screenshot':
+                if (has_post_thumbnail($post_id)) {
+                    echo '<img src="' . esc_url(get_the_post_thumbnail_url($post_id, array(100, 100))) . '" alt="Post Thumbnail" width="100" height="100">';
+                } else {
+                    echo 'No Image';
                 }
-                echo implode(', ', $category_links);
-            } else {
-                echo 'No category';
-            }
-            break;
-        case 'ourstoryz_tag':
-            $tags = get_the_terms($post_id, 'ourstoryz_tag');
-            if ($tags && !is_wp_error($tags)) {
-                $tag_links = array();
-                foreach ($tags as $tag) {
-                    $tag_links[] = '<a href="' . esc_url(admin_url('edit.php?post_type=ourstoryz&ourstoryz_tag=' . $tag->slug)) . '">' . $tag->name . '</a>';
+                break;
+            case 'ourstoryz_category':
+                $categories = get_the_terms($post_id, 'ourstoryz_category');
+                if ($categories && !is_wp_error($categories)) {
+                    $category_links = array();
+                    foreach ($categories as $category) {
+                        $category_links[] = '<a href="' . esc_url(admin_url('edit.php?post_type=ourstoryz&ourstoryz_category=' . $category->slug)) . '">' . $category->name . '</a>';
+                    }
+                    echo implode(', ', $category_links);
+                } else {
+                    echo 'No category';
                 }
-                echo implode(', ', $tag_links);
-            } else {
-                echo 'No tags';
-            }
-            break;
-        default:
-            // Handle other column names if needed
-            break;
+                break;
+            case 'ourstoryz_tag':
+                $tags = get_the_terms($post_id, 'ourstoryz_tag');
+                if ($tags && !is_wp_error($tags)) {
+                    $tag_links = array();
+                    foreach ($tags as $tag) {
+                        $tag_links[] = '<a href="' . esc_url(admin_url('edit.php?post_type=ourstoryz&ourstoryz_tag=' . $tag->slug)) . '">' . $tag->name . '</a>';
+                    }
+                    echo implode(', ', $tag_links);
+                } else {
+                    echo 'No tags';
+                }
+                break;
+            default:
+                // Handle other column names if needed
+                break;
+        }
     }
-}
- 
 
-// Make Admin Columns Sortable
-function sortable_custom_post_columns($columns) {
-    $columns['ourstoryz_category'] = 'ourstoryz_category';
-    $columns['ourstoryz_tag'] = 'ourstoryz_tag';
-    return $columns;
-}
+
+    // Make Admin Columns Sortable
+    function sortable_custom_post_columns($columns)
+    {
+        $columns['ourstoryz_category'] = 'ourstoryz_category';
+        $columns['ourstoryz_tag'] = 'ourstoryz_tag';
+        return $columns;
+    }
 
     function save_post_screenshot()
     {
