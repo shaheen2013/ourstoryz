@@ -321,57 +321,73 @@ class ourstoryz_Admin
         if (!isset($_POST['post_id']) || !isset($_POST['screenshot_data'])) {
             wp_send_json_error();
         }
-
+    
         $post_id = $_POST['post_id'];
         $screenshot_data = $_POST['screenshot_data'];
-
-        // Save screenshot data to a file
+    
+        // Get upload directory
         $upload_dir = wp_upload_dir();
+    
+        // Delete previous thumbnail attachment if it exists
+        $previous_thumbnail_id = get_post_thumbnail_id($post_id);
+        if ($previous_thumbnail_id) {
+            wp_delete_attachment($previous_thumbnail_id, true); // Delete the attachment permanently
+        }
+    
+        // Save new screenshot data to a file
         $screenshot_path = $upload_dir['path'] . '/screenshot-' . $post_id . '.png';
         file_put_contents($screenshot_path, base64_decode(str_replace('data:image/png;base64,', '', $screenshot_data)));
-
-        // Set the saved screenshot as the post thumbnail
+    
+        // Create attachment for the new screenshot
         $attachment = array(
             'post_mime_type' => 'image/png',
             'post_title' => 'Screenshot ' . $post_id,
             'post_content' => '',
             'post_status' => 'inherit'
         );
-
-        // Insert the attachment
+    
+        // Insert the attachment into the media library
         $attach_id = wp_insert_attachment($attachment, $screenshot_path, $post_id);
-
+    
         // Set post thumbnail
         if (!is_wp_error($attach_id)) {
-            update_post_meta($post_id, '_thumbnail_id', $attach_id);
+            set_post_thumbnail($post_id, $attach_id);
         }
-
+    
         // Return the URL to the saved screenshot
         $screenshot_url = $upload_dir['url'] . '/screenshot-' . $post_id . '.png';
-
         wp_send_json_success($screenshot_url);
     }
- 
-    function cropped_screenshot()
-    {
-        if (!isset($_POST['post_id']) || !isset($_POST['screenshot_data'])) {
-            wp_send_json_error();
-        }
-
-        $post_id = $_POST['post_id'];
-        $screenshot_data = $_POST['screenshot_data'];
-
-        // Save screenshot data to a file
-        $upload_dir = wp_upload_dir();
-        $screenshot_path = $upload_dir['path'] . '/screenshot-crop' . $post_id . '.png';
-        file_put_contents($screenshot_path, base64_decode(str_replace('data:image/png;base64,', '', $screenshot_data)));
-        
-        $screenshot_url = $upload_dir['url'] . '/screenshot-crop' . $post_id . '.png';
-        
-        add_post_meta($post_id, '_thumbURL', $screenshot_url);
-
-        wp_send_json_success($screenshot_path);
+    
+function cropped_screenshot()
+{
+    if (!isset($_POST['post_id']) || !isset($_POST['screenshot_data'])) {
+        wp_send_json_error();
     }
+
+    $post_id = $_POST['post_id'];
+    $screenshot_data = $_POST['screenshot_data'];
+
+    // Get upload directory
+    $upload_dir = wp_upload_dir();
+
+    // Delete previous cropped screenshot if it exists
+    $previous_screenshot_path = $upload_dir['path'] . '/screenshot-crop' . $post_id . '.png';
+    if (file_exists($previous_screenshot_path)) {
+        unlink($previous_screenshot_path); // Delete the file
+    }
+
+    // Save new cropped screenshot data to a file
+    $screenshot_path = $upload_dir['path'] . '/screenshot-crop' . $post_id . '.png';
+    file_put_contents($screenshot_path, base64_decode(str_replace('data:image/png;base64,', '', $screenshot_data)));
+    
+    // Store the URL of the cropped screenshot in post meta
+    $screenshot_url = $upload_dir['url'] . '/screenshot-crop' . $post_id . '.png';
+    add_post_meta($post_id, '_thumbURL', $screenshot_url);
+
+    wp_send_json_success($screenshot_path);
+}
+
 
 
      function register_custom_endpoints() {
