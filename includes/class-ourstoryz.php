@@ -170,6 +170,7 @@ class ourstoryz
 		$this->loader->add_action('manage_posts_custom_column', $plugin_admin, 'custom_post_table_column_content', 10, 2);
 		$this->loader->add_filter('manage_posts_columns', $plugin_admin, 'custom_post_table_column_header');
         $this->loader->add_action('rest_api_init', $plugin_admin,  'register_custom_endpoints');
+		$this->loader->add_filter('manage_edit-ourstoryz_sortable_columns', $plugin_admin, 'sortable_custom_post_columns');
 
 	}
 

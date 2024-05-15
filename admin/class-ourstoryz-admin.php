@@ -100,9 +100,12 @@ class ourstoryz_Admin
 
         wp_enqueue_script('html2canvas', 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js', array(), null, true);
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ourstoryz-admin.js', array('jquery', 'html2canvas'), $this->version, false);
-        wp_localize_script($this->plugin_name, 'ajax_object', array(
-            'ajax_url' => admin_url('admin-ajax.php'),
-        )
+        wp_localize_script(
+            $this->plugin_name,
+            'ajax_object',
+            array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+            )
         );
     }
 
@@ -153,6 +156,8 @@ class ourstoryz_Admin
             array(
                 'label' => 'Our Storyz Categories',
                 'hierarchical' => true,
+                'show_admin_column' => true,
+                'sortable' => true, // Enable sorting
                 'rewrite' => array('slug' => 'our-storyz-category'),
             )
         );
@@ -164,6 +169,8 @@ class ourstoryz_Admin
             array(
                 'label' => 'Our Storyz Tags',
                 'hierarchical' => false,
+                'show_admin_column' => true,
+                'sortable' => true, // Enable sorting
                 'rewrite' => array('slug' => 'our-storyz-tag'),
             )
         );
@@ -224,7 +231,6 @@ class ourstoryz_Admin
         );
     }
 
-
     // Custom page callback for 'Our Storyz Events' submenu
     function custom_ourstoryz_setting()
     {
@@ -255,46 +261,56 @@ class ourstoryz_Admin
         return $columns;
     }
 
-
-    function custom_post_table_column_content($column_name, $post_id)
-    {
-        global $post_type;
-        if ($post_type === 'ourstoryz') {
-            if ($column_name === 'generate_screenshot') {
-                echo '<button class="capture-screenshot-button button button-primary" data-post-id="' . $post_id . '">Generate Thumbnail</button>';
-            } elseif ($column_name === 'show_screenshot') {
-                if (has_post_thumbnail($post_id)) {
-                    echo '<img src="' . esc_url(get_the_post_thumbnail_url($post_id, array(100, 100))) . '" alt="Post Thumbnail" width="100" height="100">';
-
-                } else {
-                    echo 'No Image';
-                }
-            } elseif ($column_name === 'ourstoryz_category') {
-                $categories = get_the_terms($post_id, 'ourstoryz_category');
-                if ($categories && !is_wp_error($categories)) {
-                    $category_names = array();
-                    foreach ($categories as $category) {
-                        $category_names[] = $category->name;
-                    }
-                    echo implode(', ', $category_names);
-                } else {
-                    echo 'No category';
-                }
-            } elseif ($column_name === 'ourstoryz_tag') {
-                $tags = get_the_terms($post_id, 'ourstoryz_tag');
-                if ($tags && !is_wp_error($tags)) {
-                    $tag_names = array();
-                    foreach ($tags as $tag) {
-                        $tag_names[] = $tag->name;
-                    }
-                    echo implode(', ', $tag_names);
-                } else {
-                    echo 'No tags';
-                }
+    // Customize Admin Column Content
+function custom_post_table_column_content($column_name, $post_id) {
+    switch ($column_name) {
+        case 'generate_screenshot':
+            echo '<button class="capture-screenshot-button button button-primary" data-post-id="' . $post_id . '">Generate Thumbnail</button>';
+            break;
+        case 'show_screenshot':
+            if (has_post_thumbnail($post_id)) {
+                echo '<img src="' . esc_url(get_the_post_thumbnail_url($post_id, array(100, 100))) . '" alt="Post Thumbnail" width="100" height="100">';
+            } else {
+                echo 'No Image';
             }
-        }
-
+            break;
+        case 'ourstoryz_category':
+            $categories = get_the_terms($post_id, 'ourstoryz_category');
+            if ($categories && !is_wp_error($categories)) {
+                $category_links = array();
+                foreach ($categories as $category) {
+                    $category_links[] = '<a href="' . esc_url(admin_url('edit.php?post_type=ourstoryz&ourstoryz_category=' . $category->slug)) . '">' . $category->name . '</a>';
+                }
+                echo implode(', ', $category_links);
+            } else {
+                echo 'No category';
+            }
+            break;
+        case 'ourstoryz_tag':
+            $tags = get_the_terms($post_id, 'ourstoryz_tag');
+            if ($tags && !is_wp_error($tags)) {
+                $tag_links = array();
+                foreach ($tags as $tag) {
+                    $tag_links[] = '<a href="' . esc_url(admin_url('edit.php?post_type=ourstoryz&ourstoryz_tag=' . $tag->slug)) . '">' . $tag->name . '</a>';
+                }
+                echo implode(', ', $tag_links);
+            } else {
+                echo 'No tags';
+            }
+            break;
+        default:
+            // Handle other column names if needed
+            break;
     }
+}
+ 
+
+// Make Admin Columns Sortable
+function sortable_custom_post_columns($columns) {
+    $columns['ourstoryz_category'] = 'ourstoryz_category';
+    $columns['ourstoryz_tag'] = 'ourstoryz_tag';
+    return $columns;
+}
 
     function save_post_screenshot()
     {
@@ -368,37 +384,47 @@ class ourstoryz_Admin
         wp_send_json_success($screenshot_path);
     }
 
-
-
     function register_custom_endpoints()
     {
-        register_rest_route('custom/v1', '/ourstoryz/', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'custom_rest_api_get_ourstoryz_posts'),
-            'args' => array(
-                'category' => array(
-                    'sanitize_callback' => 'sanitize_text_field',
+        register_rest_route(
+            'custom/v1',
+            '/ourstoryz/',
+            array(
+                'methods' => 'GET',
+                'callback' => array($this, 'custom_rest_api_get_ourstoryz_posts'),
+                'args' => array(
+                    'category' => array(
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                    'tag' => array(
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                    'id' => array(
+                        'sanitize_callback' => 'absint',
+                    ),
+                    'name' => array(
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                    'page' => array(
+                        'sanitize_callback' => 'absint',
+                    ),
+                    'per_page' => array(
+                        'sanitize_callback' => 'absint',
+                    ),
                 ),
-                'tag' => array(
-                    'sanitize_callback' => 'sanitize_text_field',
-                ),
-                'page' => array(
-                    'sanitize_callback' => 'absint',
-                ),
-                'per_page' => array(
-                    'sanitize_callback' => 'absint',
-                ),
-            ),
-        )
+            )
         );
     }
 
 
+    // Callback function to handle custom REST API request
     function custom_rest_api_get_ourstoryz_posts($request)
     {
         // Retrieve query parameters
         $category = $request->get_param('category');
         $tag = $request->get_param('tag');
+        $id = $request->get_param('id');
+        $name = $request->get_param('name');
         $page = $request->get_param('page') ? intval($request->get_param('page')) : 1;
         $per_page = $request->get_param('per_page') ? intval($request->get_param('per_page')) : 10;
 
@@ -429,6 +455,15 @@ class ourstoryz_Admin
                     'terms' => $tag,
                 ),
             );
+        }
+
+        // Add post ID or name filter if provided
+        if ($id) {
+            $args['p'] = $id; // Filter by post ID
+        }
+
+        if ($name) {
+            $args['name'] = $name; // Filter by post name (slug)
         }
 
         // Perform WP_Query to retrieve posts
@@ -471,6 +506,7 @@ class ourstoryz_Admin
         // Return WP_REST_Response with posts data
         return new WP_REST_Response($posts, 200);
     }
+
 
 
 }
