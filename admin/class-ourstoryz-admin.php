@@ -421,95 +421,123 @@ class ourstoryz_Admin
 
 
     // Callback function to handle custom REST API request
-    function custom_rest_api_get_ourstoryz_posts($request)
-    {
-        // Retrieve query parameters
-        $category = $request->get_param('category');
-        $tag = $request->get_param('tag');
-        $id = $request->get_param('templateId');
-        $name = $request->get_param('templateName');
-        $page = $request->get_param('page') ? intval($request->get_param('page')) : 1;
-        $per_page = $request->get_param('per_page') ? intval($request->get_param('per_page')) : 10;
+   // Callback function to handle custom REST API request
+function custom_rest_api_get_ourstoryz_posts($request)
+{
+    // Retrieve query parameters
+    $category = $request->get_param('category');
+    $tag = $request->get_param('tag');
+    $id = $request->get_param('templateId');
+    $name = $request->get_param('templateName');
+    $page = $request->get_param('page') ? intval($request->get_param('page')) : 1;
+    $per_page = $request->get_param('per_page') ? intval($request->get_param('per_page')) : 10;
 
-        // Prepare arguments for WP_Query based on parameters
-        $args = array(
-            'post_type' => 'ourstoryz',
-            'post_status' => 'publish',
-            'posts_per_page' => $per_page,
-            'paged' => $page,
+    // Prepare arguments for WP_Query based on parameters
+    $args = array(
+        'post_type' => 'ourstoryz',
+        'post_status' => 'publish',
+        'posts_per_page' => $per_page,
+        'paged' => $page,
+    );
+
+    // Add taxonomy filters if provided
+    if ($category) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'ourstoryz_category',
+                'field' => 'slug',
+                'terms' => $category,
+            ),
         );
-
-        // Add taxonomy filters if provided
-        if ($category) {
-            $args['tax_query'] = array(
-                array(
-                    'taxonomy' => 'ourstoryz_category',
-                    'field' => 'slug',
-                    'terms' => $category,
-                ),
-            );
-        }
-
-        if ($tag) {
-            $args['tax_query'] = array(
-                array(
-                    'taxonomy' => 'ourstoryz_tag',
-                    'field' => 'slug',
-                    'terms' => $tag,
-                ),
-            );
-        }
-
-        // Add post ID or name filter if provided
-        if ($id) {
-            $args['p'] = $id; // Filter by post ID
-        }
-
-        if ($name) {
-            $args['name'] = $name; // Filter by post name (slug)
-        }
-
-        // Perform WP_Query to retrieve posts
-        $query = new WP_Query($args);
-        $posts = array();
-
-        // Loop through query results and build response data
-        if ($query->have_posts()) {
-            while ($query->have_posts()) {
-                $query->the_post();
-                $post_id = get_the_ID();
-
-                // Retrieve custom meta fields
-                $thumb_url = get_post_meta($post_id, '_thumbURL', true);
-
-                // Retrieve post tags and categories
-                $post_tags = wp_get_post_terms($post_id, 'ourstoryz_tag', array('fields' => 'names'));
-                $post_categories = wp_get_post_terms($post_id, 'ourstoryz_category');
-                $category_names = array();
-                foreach ($post_categories as $category) {
-                    $category_names[] = $category->name;
-                }
-
-                // Build post item array
-                $post_item = array(
-                    'templateId' => $post_id,
-                    'templateName' => get_the_title(),
-                    'fullImage' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
-                    'thumbnail' => $thumb_url,
-                    'tags' => $post_tags,
-                    'designer' => get_the_author_meta('display_name', $query->post_author),
-                    'categories' => $category_names,
-                );
-
-                // Add post item to posts array
-                $posts[] = $post_item;
-            }
-            wp_reset_postdata();
-        }
-
-        // Return WP_REST_Response with posts data
-        return new WP_REST_Response($posts, 200);
     }
+
+    if ($tag) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'ourstoryz_tag',
+                'field' => 'slug',
+                'terms' => $tag,
+            ),
+        );
+    }
+
+    // Add post ID or name filter if provided
+    if ($id) {
+        $args['p'] = $id; // Filter by post ID
+    }
+
+    if ($name) {
+        $args['name'] = $name; // Filter by post name (slug)
+    }
+
+    // Perform WP_Query to retrieve posts
+    $query = new WP_Query($args);
+    $posts = array();
+
+    // Loop through query results and build response data
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $post_id = get_the_ID();
+
+            // Retrieve custom meta fields
+            $thumb_url = get_post_meta($post_id, '_thumbURL', true);
+
+            // Retrieve post tags and categories
+            $post_tags = wp_get_post_terms($post_id, 'ourstoryz_tag', array('fields' => 'names'));
+            $post_categories = wp_get_post_terms($post_id, 'ourstoryz_category');
+            $category_names = array();
+            foreach ($post_categories as $category) {
+                $category_names[] = $category->name;
+            }
+
+            // Build post item array
+            $post_item = array(
+                'templateId' => $post_id,
+                'templateName' => get_the_title(),
+                'fullImage' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
+                'thumbnail' => $thumb_url,
+                'tags' => $post_tags,
+                'designer' => get_the_author_meta('display_name', $query->post_author),
+                'categories' => $category_names,
+            );
+
+            // Add post item to posts array
+            $posts[] = $post_item;
+        }
+        wp_reset_postdata();
+    }
+
+    // Get total posts count
+    $total_posts = $query->found_posts;
+
+    // Calculate pagination metadata
+    $total_pages = ceil($total_posts / $per_page);
+    $has_next_page = ($page < $total_pages);
+    $has_prev_page = ($page > 1);
+
+    // Build pagination metadata
+    $pagination = array(
+        'page' => $page,
+        'pageSize' => $per_page,
+        'totalPages' => $total_pages,
+        'hasNextPage' => $has_next_page,
+        'hasPrevPage' => $has_prev_page,
+    );
+
+    // Build complete response data
+    $response_data = array(
+        'posts' => $posts,
+        'metadata' => array(
+            'totalData' => $total_posts,
+            'pagination' => $pagination,
+        ),
+    );
+
+    // Return WP_REST_Response with posts data and metadata
+    return new WP_REST_Response($response_data, 200);
+}
+
 
 
 
