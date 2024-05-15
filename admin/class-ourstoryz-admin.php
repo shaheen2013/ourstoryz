@@ -368,5 +368,63 @@ class ourstoryz_Admin
 
         wp_send_json_success($screenshot_path);
     }
+
+
+     function register_custom_endpoints() {
+        register_rest_route('custom/v1', '/ourstoryz/', array(
+            'methods' => 'GET',
+            'callback' => array($this, 'custom_rest_api_get_ourstoryz_posts'),
+        ));
+    }
+
+
+    public function custom_rest_api_get_ourstoryz_posts() {
+        $args = array(
+            'post_type' => 'ourstoryz',
+            'post_status' => 'publish',
+            'posts_per_page' => -1, // Retrieve all posts
+        );
+
+        // Query "ourstoryz" posts based on arguments
+        $query = new WP_Query($args);
+
+        // Prepare response data
+        $posts = array();
+
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+
+                // Get post ID, name (title), thumbnail, tags, and categories
+                $post_id = get_the_ID();
+                $post_name = get_the_title();
+                $post_thumbnail = get_the_post_thumbnail_url($post_id, 'thumbnail');
+                $post_tags = wp_get_post_terms($post_id, 'post_tag', array('fields' => 'names'));
+
+                // Retrieve categories as objects to access additional properties like slug and name
+                $post_categories = wp_get_post_terms($post_id, 'category');
+                $category_names = array();
+                foreach ($post_categories as $category) {
+                    $category_names[] = $category->name;
+                }
+
+                // Construct post item array
+                $post_item = array(
+                    'id' => $post_id,
+                    'name' => $post_name,
+                    'thumbnail' => $post_thumbnail,
+                    'tags' => $post_tags,
+                    'categories' => $category_names, // Include category names in response
+                );
+
+                // Add post item to posts array
+                $posts[] = $post_item;
+            }
+            wp_reset_postdata();
+        }
+
+        // Return JSON response
+        return new WP_REST_Response($posts, 200);
+    }
     
 }
