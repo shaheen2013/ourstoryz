@@ -251,10 +251,9 @@ class ourstoryz_Admin
 
         // Check if the current post type is 'ourstoryz'
         if ($post_type === 'ourstoryz') {
-            unset($columns['ourstoryz_category']);
-            unset($columns['ourstoryz_tag']);
-            $columns['ourstoryz_category'] = 'Category'; // Add Category column
-            $columns['ourstoryz_tag'] = 'Tags';
+        
+            // $columns['ourstoryz_category'] = 'Category'; // Add Category column
+            // $columns['ourstoryz_tag'] = 'Tags';
             // Add your custom column to the columns array
             $columns['generate_screenshot'] = 'Action';
             $columns['show_screenshot'] = 'Screenshot';
