@@ -36,6 +36,7 @@ jQuery(document).ready(function ($) {
     $('.capture-screenshot-button').on('click', function (e) {
         e.preventDefault();
         var post_id = $(this).data('post-id');
+        console.log(post_id)
 
         // Construct URL with the post ID (instead of title)
         var previewUrl = '/wpdev/?p=' + post_id; // Example URL format
