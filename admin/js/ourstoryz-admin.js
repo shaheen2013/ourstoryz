@@ -36,7 +36,6 @@ jQuery(document).ready(function ($) {
     $('.capture-screenshot-button').on('click', function (e) {
         e.preventDefault();
         var post_id = $(this).data('post-id');
-        console.log(post_id)
 
         // Construct URL with the post ID (instead of title)
         var previewUrl = '/wpdev/?p=' + post_id; // Example URL format
@@ -53,8 +52,8 @@ jQuery(document).ready(function ($) {
 
     function captureFullPageScreenshot(newWindow, post_id) {
         // Capture screenshot using html2canvas in the new tab
-        // var postSection = newWindow.document.getElementById('post-' + post_id); // Example: Assuming the post content has an element with ID 'post-{post_id}'
-        html2canvas(newWindow.document.body, {
+        var postSection = newWindow.document.getElementById('page'); // Example: Assuming the post content has an element with ID 'post-{post_id}'
+        html2canvas(postSection, {
             scrollX: 0,
             scrollY: 0,
             useCORS: false,
@@ -65,12 +64,12 @@ jQuery(document).ready(function ($) {
             var screenshotData = canvas.toDataURL();
 
             var resizedCanvas = document.createElement('canvas');
-            resizedCanvas.width = 300;
-            resizedCanvas.height = 300;
+            resizedCanvas.width = 140;
+            resizedCanvas.height = 200;
             var ctx = resizedCanvas.getContext('2d');
 
             // Draw the original screenshot resized into the new canvas
-            ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 300, 300);
+            ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 140, 200);
             var resizedData = resizedCanvas.toDataURL();
 
             saveScreenshot(post_id, screenshotData);
