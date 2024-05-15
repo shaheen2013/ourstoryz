@@ -365,6 +365,10 @@ class ourstoryz_Admin
         $upload_dir = wp_upload_dir();
         $screenshot_path = $upload_dir['path'] . '/screenshot-crop' . $post_id . '.png';
         file_put_contents($screenshot_path, base64_decode(str_replace('data:image/png;base64,', '', $screenshot_data)));
+        
+        $screenshot_url = $upload_dir['url'] . '/screenshot-crop' . $post_id . '.png';
+        
+        add_post_meta($post_id, '_thumbURL', $screenshot_url);
 
         wp_send_json_success($screenshot_path);
     }
@@ -382,49 +386,43 @@ class ourstoryz_Admin
         $args = array(
             'post_type' => 'ourstoryz',
             'post_status' => 'publish',
-            'posts_per_page' => -1, // Retrieve all posts
+            'posts_per_page' => -1,
         );
 
-        // Query "ourstoryz" posts based on arguments
         $query = new WP_Query($args);
-
-        // Prepare response data
         $posts = array();
 
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
-
-                // Get post ID, name (title), thumbnail, tags, and categories
                 $post_id = get_the_ID();
-                $post_name = get_the_title();
-                $post_thumbnail = get_the_post_thumbnail_url($post_id, 'thumbnail');
-                $post_tags = wp_get_post_terms($post_id, 'post_tag', array('fields' => 'names'));
 
-                // Retrieve categories as objects to access additional properties like slug and name
-                $post_categories = wp_get_post_terms($post_id, 'category');
+                // Include meta data
+                $thumb_url = get_post_meta($post_id, '_thumbURL', true);
+
+                $post_tags = wp_get_post_terms($post_id, 'post_tag', array('fields' => 'names'));
+                $post_categories = wp_get_post_terms($post_id, 'ourstoryz_category'); // Ensure 'category' is the correct taxonomy
                 $category_names = array();
                 foreach ($post_categories as $category) {
                     $category_names[] = $category->name;
                 }
 
-                // Construct post item array
                 $post_item = array(
                     'id' => $post_id,
-                    'name' => $post_name,
-                    'thumbnail' => $post_thumbnail,
+                    'name' => get_the_title(),
+                    'thumbnail' => get_the_post_thumbnail_url($post_id, 'thumbnail'),
+                    'thumbURL' => $thumb_url, // Added custom meta field
                     'tags' => $post_tags,
-                    'categories' => $category_names, // Include category names in response
+                    'categories' => $category_names,
                 );
 
-                // Add post item to posts array
                 $posts[] = $post_item;
             }
             wp_reset_postdata();
         }
 
-        // Return JSON response
         return new WP_REST_Response($posts, 200);
     }
+
     
 }
