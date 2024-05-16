@@ -387,7 +387,10 @@ class ourstoryz_Admin
         wp_send_json_success($screenshot_path);
     }
 
-    public function register_custom_endpoints() {
+
+
+    public function register_custom_endpoints()
+    {
         register_rest_route('custom/v1', '/ourstoryz/', array(
             'methods' => 'GET',
             'callback' => array($this, 'custom_rest_api_get_ourstoryz_posts'),
@@ -412,10 +415,12 @@ class ourstoryz_Admin
                     'sanitize_callback' => 'absint',
                 ),
             ),
-        ));
+        )
+        );
     }
 
-    public function jwt_authenticate($request) {
+    public function jwt_authenticate($request)
+    {
         $user = wp_get_current_user();
         if ($user->exists()) {
             return true;
@@ -423,7 +428,8 @@ class ourstoryz_Admin
         return new WP_Error('rest_not_logged_in', 'You are not currently logged in.', array('status' => 401));
     }
 
-    public function custom_jwt_add_custom_claims($data, $user) {
+    public function custom_jwt_add_custom_claims($data, $user)
+    {
         $data['user'] = array(
             'id' => $user->ID,
             'email' => $user->user_email,
@@ -432,9 +438,10 @@ class ourstoryz_Admin
         return $data;
     }
 
-    public function custom_rest_api_get_ourstoryz_posts($request) {
+    public function custom_rest_api_get_ourstoryz_posts($request)
+    {
         $args = array(
-            'post_type' => 'post',
+            'post_type' => 'ourstoryz',
             'post_status' => 'publish',
             'posts_per_page' => $request->get_param('per_page') ?: 10,
             'paged' => $request->get_param('page') ?: 1,
@@ -477,14 +484,13 @@ class ourstoryz_Admin
 
         wp_reset_postdata();
 
-        return new WP_REST_Response(array(
-            'posts' => $posts,
-            'total' => $query->found_posts,
-            'pages' => $query->max_num_pages
-        ), 200);
+        return new WP_REST_Response(
+            array(
+                'posts' => $posts,
+                'total' => $query->found_posts,
+                'pages' => $query->max_num_pages
+            ), 200);
     }
-
-
-
-
 }
+
+
