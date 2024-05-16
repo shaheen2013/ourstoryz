@@ -391,31 +391,34 @@ class ourstoryz_Admin
 
     public function register_custom_endpoints()
     {
-        register_rest_route('custom/v1', '/ourstoryz/', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'custom_rest_api_get_ourstoryz_posts'),
-            'permission_callback' => array($this, 'jwt_authenticate'),
-            'args' => array(
-                'category' => array(
-                    'sanitize_callback' => 'sanitize_text_field',
+        register_rest_route(
+            'custom/v1',
+            '/ourstoryz/',
+            array(
+                'methods' => 'GET',
+                'callback' => array($this, 'custom_rest_api_get_ourstoryz_posts'),
+                'permission_callback' => array($this, 'jwt_authenticate'),
+                'args' => array(
+                    'category' => array(
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                    'tag' => array(
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                    'templateId' => array(
+                        'sanitize_callback' => 'absint',
+                    ),
+                    'templateName' => array(
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                    'page' => array(
+                        'sanitize_callback' => 'absint',
+                    ),
+                    'per_page' => array(
+                        'sanitize_callback' => 'absint',
+                    ),
                 ),
-                'tag' => array(
-                    'sanitize_callback' => 'sanitize_text_field',
-                ),
-                'templateId' => array(
-                    'sanitize_callback' => 'absint',
-                ),
-                'templateName' => array(
-                    'sanitize_callback' => 'sanitize_text_field',
-                ),
-                'page' => array(
-                    'sanitize_callback' => 'absint',
-                ),
-                'per_page' => array(
-                    'sanitize_callback' => 'absint',
-                ),
-            ),
-        )
+            )
         );
     }
 
@@ -489,7 +492,9 @@ class ourstoryz_Admin
                 'posts' => $posts,
                 'total' => $query->found_posts,
                 'pages' => $query->max_num_pages
-            ), 200);
+            ),
+            200
+        );
     }
 }
 
