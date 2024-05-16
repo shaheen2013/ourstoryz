@@ -497,6 +497,57 @@ class ourstoryz_Admin
             200
         );
     }
+
+
+
+    // token custom generate
+    function generate_jwt_token_ajax() {
+        $jwt_token = $this->generate_jwt_token();
+    
+        if ($jwt_token) {
+            wp_send_json($jwt_token);
+        } else {
+            wp_send_json_error('User not logged in');
+        }
+    
+        wp_die(); // Always use wp_die() at the end of AJAX functions
+    }
+    function generate_jwt_token() {
+        // Get the current logged-in user
+        $current_user = wp_get_current_user();
+    
+        if ($current_user->ID !== 0) {
+            // Define your secret key (keep this secure and do not expose in production)
+            $secret_key = JWT_AUTH_SECRET_KEY;
+    
+            // Define token payload (include user data)
+            $token_payload = array(
+                'user_id' => $current_user->ID,
+                'user_email' => $current_user->user_email,
+                'user_login' => $current_user->user_login,
+                // Add more user data as needed
+            );
+    
+            // Encode token header and payload as base64
+            $base64_header = base64_encode(json_encode(['typ' => 'JWT', 'alg' => 'HS256']));
+            $base64_payload = base64_encode(json_encode($token_payload));
+    
+            // Create signature using HMAC-SHA256 algorithm
+            $signature = hash_hmac('sha256', "$base64_header.$base64_payload", $secret_key, true);
+            $base64_signature = base64_encode($signature);
+    
+            // Combine base64-encoded header, payload, and signature to form JWT token
+            $jwt_token = "$base64_header.$base64_payload.$base64_signature";
+    
+            return $jwt_token;
+        }
+    
+        return false; // Return false if user is not logged in
+    }
+    
+    
+  
+    
 }
 
 

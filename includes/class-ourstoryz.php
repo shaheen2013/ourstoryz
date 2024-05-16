@@ -172,6 +172,8 @@ class ourstoryz
         $this->loader->add_action('rest_api_init', $plugin_admin,  'register_custom_endpoints');
 		$this->loader->add_filter('jwt_auth_token_before_dispatch', $plugin_admin , 'custom_jwt_add_custom_claims', 10, 2);
 		$this->loader->add_filter('manage_edit-ourstoryz_sortable_columns', $plugin_admin, 'sortable_custom_post_columns');
+        $this->loader->add_action('wp_ajax_generate_jwt_token',$plugin_admin ,'generate_jwt_token_ajax');
+		$this->loader->add_action('wp_ajax_nopriv_generate_jwt_token', $plugin_admin ,'generate_jwt_token_ajax'); // Allow for non-logged-in users as well
 
 	}
 

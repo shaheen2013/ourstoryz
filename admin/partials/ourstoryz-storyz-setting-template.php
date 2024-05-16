@@ -47,10 +47,15 @@
 </div>
     </div>
 
-    <div id="tab2" class="ourstoryz-tab-content" style="display:none;">
-        <!-- Content for Tab 2 -->
-        <p>Content for Tab 2 goes here...</p>
+   <div id="tab2" class="ourstoryz-tab-content" style="display:none;">
+    <!-- Content for Tab 2 -->
+    <p>Click the button below to generate JWT token for logged-in user:</p>
+    <button id="generate-token-button" class="button-primary">Generate Auth Token</button>
+    <div id="auth-token-display-container">
+        <input type="text" id="auth-token-display" readonly>
+        <button id="copy-token-button" class="button-secondary">Copy Token</button>
     </div>
+</div>
 </div>
 
 
