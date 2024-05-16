@@ -17,6 +17,20 @@
 ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
+
+
+
+<div class="wrap">
+    <h2>Our Storyz Setting</h2>
+    <h2 class="nav-tab-wrapper">
+        <a href="#tab1" class="nav-tab ourstoryz-tab-link active">Find & Replace</a>
+        <a href="#tab2" class="nav-tab ourstoryz-tab-link">Auth Token</a>
+    </h2>
+
+    <div id="tab1" class="ourstoryz-tab-content" style="display:block;">
+        <!-- Content for Tab 1 -->
+      
 <div class="container mt-5 w-25 m-auto">
     <h3 class="text-center my-5">Url Find and replace</h3>
     <form method="post" action="">
@@ -31,8 +45,15 @@
         <button type="submit" name="submit" class="btn btn-primary  m-auto">Update URLs</button>
     </form>
 </div>
+    </div>
 
-</body>
+    <div id="tab2" class="ourstoryz-tab-content" style="display:none;">
+        <!-- Content for Tab 2 -->
+        <p>Content for Tab 2 goes here...</p>
+    </div>
+</div>
+
+
 
 
 

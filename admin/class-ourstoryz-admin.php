@@ -100,6 +100,7 @@ class ourstoryz_Admin
 
         wp_enqueue_script('html2canvas', 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js', array(), null, true);
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ourstoryz-admin.js', array('jquery', 'html2canvas'), $this->version, false);
+        wp_enqueue_script('setting-tab', plugin_dir_url(__FILE__) . 'js/setting-tab.js', array('jquery'), $this->version, false);
         wp_localize_script(
             $this->plugin_name,
             'ajax_object',
@@ -234,7 +235,6 @@ class ourstoryz_Admin
     // Custom page callback for 'Our Storyz Events' submenu
     function custom_ourstoryz_setting()
     {
-        // Display the content for the 'Our Storyz Events' submenu page here
         $temp_path = plugin_dir_path(__FILE__) . 'partials/ourstoryz-storyz-setting-template.php';
         if (file_exists($temp_path)) {
             include ($temp_path);
@@ -242,6 +242,7 @@ class ourstoryz_Admin
             echo "File not found";
         }
     }
+
     // Hook to customize submenu names
 
 
