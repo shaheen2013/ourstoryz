@@ -48,7 +48,7 @@ class ourstoryz_Admin
      * @param      string    $plugin_name       The name of this plugin.
      * @param      string    $version    The version of this plugin.
      */
-     function __construct($plugin_name, $version)
+    public function __construct($plugin_name, $version)
     {
 
         $this->plugin_name = $plugin_name;
@@ -60,7 +60,7 @@ class ourstoryz_Admin
      *
      * @since    1.0.0
      */
-     function enqueue_styles()
+    public function enqueue_styles()
     {
 
         /**
@@ -83,7 +83,7 @@ class ourstoryz_Admin
      *
      * @since    1.0.0
      */
-     function enqueue_scripts()
+    public function enqueue_scripts()
     {
 
         /**
@@ -128,7 +128,7 @@ class ourstoryz_Admin
 
         $args = array(
             'labels' => $labels,
-            '' => true,
+            'public' => true,
             'show_in_menu' => true,
             'menu_position' => 20,
             'menu_icon' => 'dashicons-admin-post', // Customize the menu icon
@@ -136,7 +136,7 @@ class ourstoryz_Admin
             'taxonomies' => array('ourstoryz_category', 'ourstoryz_tag'), // Add custom taxonomies
             'rewrite' => array('slug' => 'our-storyz'), // Customize the permalink slug
             'has_archive' => true,
-            'ly_queryable' => true,
+            'publicly_queryable' => true,
             'capability_type' => 'post',
         );
 
@@ -387,7 +387,7 @@ class ourstoryz_Admin
         wp_send_json_success($screenshot_path);
     }
 
-     function register_custom_endpoints() {
+    public function register_custom_endpoints() {
         register_rest_route('custom/v1', '/ourstoryz/', array(
             'methods' => 'GET',
             'callback' => array($this, 'custom_rest_api_get_ourstoryz_posts'),
@@ -415,7 +415,7 @@ class ourstoryz_Admin
         ));
     }
 
-     function jwt_authenticate($request) {
+    public function jwt_authenticate($request) {
         $user = wp_get_current_user();
         if ($user->exists()) {
             return true;
@@ -423,7 +423,7 @@ class ourstoryz_Admin
         return new WP_Error('rest_not_logged_in', 'You are not currently logged in.', array('status' => 401));
     }
 
-     function custom_jwt_add_custom_claims($data, $user) {
+    public function custom_jwt_add_custom_claims($data, $user) {
         $data['user'] = array(
             'id' => $user->ID,
             'email' => $user->user_email,
@@ -432,7 +432,7 @@ class ourstoryz_Admin
         return $data;
     }
 
-     function custom_rest_api_get_ourstoryz_posts($request) {
+    public function custom_rest_api_get_ourstoryz_posts($request) {
         $args = array(
             'post_type' => 'post',
             'post_status' => 'publish',
