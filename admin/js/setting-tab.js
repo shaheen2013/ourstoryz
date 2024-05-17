@@ -1,10 +1,10 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
     // Set Tab 1 as active and display its content by default
     $('.ourstoryz-tab-link[href="#tab1"]').addClass('active');
     $('#tab1').show();
 
     // Handle tab click events
-    $('.ourstoryz-tab-link').on('click', function(e) {
+    $('.ourstoryz-tab-link').on('click', function (e) {
         e.preventDefault();
 
         // Remove 'active' class from all tab links and hide all tab content
@@ -18,33 +18,57 @@ jQuery(document).ready(function($) {
         // If clicking on the second tab button
         if ($(this).attr('href') === '#tab2') {
             // Handle click event for the "Generate Token" button
-            $('#generate-token-button').off('click').on('click', function(e) {
-                e.preventDefault();
+            $('#generateTokenButton').on('click', function () {
+                // Prompt the user to enter their password
+                $('#error-message').hide();
+                var password = prompt("Please enter your password:");
 
-                // Call the server to generate JWT token for logged-in user
-                $.ajax({
-                    url: ajaxurl, // WordPress AJAX endpoint
-                    type: 'POST',
-                    data: {
-                        action: 'generate_jwt_token'
-                    },
-                    success: function(response) {
-                        // Display the generated auth token
-                        $('#auth-token-display').val(response);
-                    },
-                    error: function() {
-                        console.error('Error generating JWT token');
-                    }
-                });
+                // Ensure the user entered a password
+                if (password) {
+                    $.ajax({
+                        url: ajaxurl, // assuming ajaxurl is defined by WordPress
+                        method: 'POST',
+                        data: {
+                            action: 'generate_jwt_token',
+                            password: password
+                        },
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.success) {
+                                // Token generation successful, do something with the token
+                                var token = response.token;
+                                console.log('Token:', token);
+                                $('#auth-token-display').val(token);
+                                // You can now use the token as needed
+                            } else {
+                                // Token generation failed, handle the error
+                                var errorMessage = response.data;
+                                $('#error-message').show(); // Show error message
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // AJAX request failed
+                            console.error('AJAX Error:', error);
+                        }
+                    });
+                } else {
+                    console.error('Password is required to generate the token.');
+                }
             });
         }
     });
+    $('#copy-icon').on('click', function () {
+        var tokenInput = document.getElementById('auth-token-display');
+        tokenInput.select();
+        tokenInput.setSelectionRange(0, 99999); // For mobile devices
 
-    // Handle click event for the "Copy Token" button
-    $('#copy-token-button').on('click', function() {
-        // Select and copy token value from input field
-        $('#auth-token-display').select();
-        document.execCommand('copy');
-        alert('Token copied to clipboard!');
+        try {
+            var successful = document.execCommand('copy');
+
+
+        } catch (err) {
+            console.error('Failed to copy token:', err);
+            alert('Failed to copy token');
+        }
     });
 });

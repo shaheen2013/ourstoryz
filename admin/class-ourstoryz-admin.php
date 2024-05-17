@@ -499,55 +499,64 @@ class ourstoryz_Admin
     }
 
 
+    // Function to generate JWT token
+    function generate_jwt_token_ajax()
+    {
+        // Get current user's username
+        $current_user = wp_get_current_user();
+        $username = $current_user->user_login;
 
-    // token custom generate
-    function generate_jwt_token_ajax() {
-        $jwt_token = $this->generate_jwt_token();
-    
-        if ($jwt_token) {
-            wp_send_json($jwt_token);
-        } else {
-            wp_send_json_error('User not logged in');
+        // Get the password from the AJAX request
+        if (!isset($_POST['password'])) {
+            wp_send_json_error('Password is required');
         }
-    
+        $password = sanitize_text_field($_POST['password']);
+
+        // Create request body
+        $body = array(
+            'username' => $username,
+            'password' => $password
+        );
+
+        // Log the request body for debugging
+        error_log('Request Body: ' . print_r($body, true));
+        $url = get_site_url() . '/wp-json/jwt-auth/v1/token/';
+        // Send POST request to generate JWT token
+        $response = wp_remote_post($url, array(
+            'body' => json_encode($body),
+            'headers' => array(
+                'Content-Type' => 'application/json'
+            )
+        )
+        );
+
+        // Log the response for debugging
+        error_log('Response: ' . print_r($response, true));
+
+        if (is_wp_error($response)) {
+            // Handle error
+            $error_message = $response->get_error_message();
+            wp_send_json_error($error_message);
+        } else {
+            $body = wp_remote_retrieve_body($response);
+            $data = json_decode($body, true);
+
+            // Log the decoded response body for debugging
+            error_log('Decoded Response Body: ' . print_r($data, true));
+
+            if (isset($data['token'])) {
+                // Token generated successfully, return it
+                wp_send_json(array('success' => true, 'token' => $data['token']));
+            } else {
+                // Token generation failed, check for specific error message
+                $error_message = isset($data['message']) ? $data['message'] : 'Token generation failed';
+                wp_send_json_error($error_message);
+            }
+        }
+
         wp_die(); // Always use wp_die() at the end of AJAX functions
     }
-    function generate_jwt_token() {
-        // Get the current logged-in user
-        $current_user = wp_get_current_user();
-    
-        if ($current_user->ID !== 0) {
-            // Define your secret key (keep this secure and do not expose in production)
-            $secret_key = JWT_AUTH_SECRET_KEY;
-    
-            // Define token payload (include user data)
-            $token_payload = array(
-                'user_id' => $current_user->ID,
-                'user_email' => $current_user->user_email,
-                'user_login' => $current_user->user_login,
-                // Add more user data as needed
-            );
-    
-            // Encode token header and payload as base64
-            $base64_header = base64_encode(json_encode(['typ' => 'JWT', 'alg' => 'HS256']));
-            $base64_payload = base64_encode(json_encode($token_payload));
-    
-            // Create signature using HMAC-SHA256 algorithm
-            $signature = hash_hmac('sha256', "$base64_header.$base64_payload", $secret_key, true);
-            $base64_signature = base64_encode($signature);
-    
-            // Combine base64-encoded header, payload, and signature to form JWT token
-            $jwt_token = "$base64_header.$base64_payload.$base64_signature";
-    
-            return $jwt_token;
-        }
-    
-        return false; // Return false if user is not logged in
-    }
-    
-    
-  
-    
+
 }
 
 

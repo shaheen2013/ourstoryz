@@ -30,36 +30,36 @@
 
     <div id="tab1" class="ourstoryz-tab-content" style="display:block;">
         <!-- Content for Tab 1 -->
-      
-<div class="container mt-5 w-25 m-auto">
-    <h3 class="text-center my-5">Url Find and replace</h3>
-    <form method="post" action="">
-        <div class="mb-3">
-            <label for="source_url" class="form-label">Source URL:</label>
-            <input type="text" class="form-control" name="source_url" id="source_url" required>
+
+        <div class="container mt-5 w-25 m-auto">
+            <h3 class="text-center my-5">Url Find and replace</h3>
+            <form method="post" action="">
+                <div class="mb-3">
+                    <label for="source_url" class="form-label">Source URL:</label>
+                    <input type="text" class="form-control" name="source_url" id="source_url" required>
+                </div>
+                <div class="mb-3">
+                    <label for="target_url" class="form-label">Target URL:</label>
+                    <input type="text" class="form-control" name="target_url" id="target_url" required>
+                </div>
+                <button type="submit" name="submit" class="btn btn-primary  m-auto">Update URLs</button>
+            </form>
         </div>
-        <div class="mb-3">
-            <label for="target_url" class="form-label">Target URL:</label>
-            <input type="text" class="form-control" name="target_url" id="target_url" required>
-        </div>
-        <button type="submit" name="submit" class="btn btn-primary  m-auto">Update URLs</button>
-    </form>
-</div>
     </div>
 
-   <div id="tab2" class="ourstoryz-tab-content" style="display:none;">
-    <!-- Content for Tab 2 -->
-    <p>Click the button below to generate JWT token for logged-in user:</p>
-    <button id="generate-token-button" class="button-primary">Generate Auth Token</button>
-    <div id="auth-token-display-container">
-        <input type="text" id="auth-token-display" readonly>
-        <button id="copy-token-button" class="button-secondary">Copy Token</button>
+    <div id="tab2" class="ourstoryz-tab-content" style="display:none;">
+        <!-- Content for Tab 2 -->
+        <p>Click the button below to generate JWT token for logged-in user:</p>
+        <button id="generateTokenButton" class="button-primary">Generate Auth Token</button>
+        <div id="auth-token-display-container" style="position: relative;">
+            <input type="text" id="auth-token-display" readonly style="padding-right: 30px;">
+            <span id="copy-icon" style="position: absolute; right: 5px; top: 5px; cursor: pointer;">
+                &#x1F4CB; <!-- Clipboard emoji, you can use any icon here -->
+            </span>
+            <div id="error-message" style="display: none; color: red;">Incorrect password</div>
+        </div>
     </div>
 </div>
-</div>
-
-
-
 
 
 
@@ -100,7 +100,3 @@ if (isset($_POST['submit'])) {
 
 
 ?>
-
-
- 
- 
