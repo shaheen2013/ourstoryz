@@ -50,8 +50,8 @@
     <div id="tab2" class="ourstoryz-tab-content" style="display:none;">
         <!-- Content for Tab 2 -->
         <p>Click the button below to generate JWT token for logged-in user:</p>
-        <button id="generateTokenButton" class="button-primary">Generate Auth Token</button>
-        <div id="auth-token-display-container" style="position: relative;">
+        <button id="generateTokenButton" class="button-primary d-block mt-3">Generate Auth Token</button>
+        <div id="auth-token-display-container" style="position: relative; display: inline-block;">
             <input type="text" id="auth-token-display" readonly style="padding-right: 30px;">
             <span id="copy-icon" style="position: absolute; right: 5px; top: 5px; cursor: pointer;">
                 &#x1F4CB; <!-- Clipboard emoji, you can use any icon here -->
