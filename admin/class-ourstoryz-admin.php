@@ -656,7 +656,7 @@ class ourstoryz_Admin
         // Return the status of 'ourstoryz_is_updated' flag
         return new WP_REST_Response(
             array(
-                'ourstoryz_is_updated' => $ourstoryz_is_updated,
+                'is_updated' => $ourstoryz_is_updated,
             ),
             200
         );
