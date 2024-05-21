@@ -611,6 +611,69 @@ class ourstoryz_Admin
 
 
     }
+
+
+
+    // Random value get rest api
+
+    function random_value_generate()
+    {
+        register_rest_route(
+            'random/v1',
+            '/random_token/',
+            array(
+                'methods' => 'GET',
+                'callback' => array($this, 'get_random_value'),
+                'args' => array(
+                    'min' => array(
+                        'required' => false,
+                        'default' => 10000000,  // 8-digit minimum
+                        'validate_callback' => function ($param, $request, $key) {
+                            return is_numeric($param) && $param >= 10000000;  // Ensure at least 8 digits
+                        },
+                        'sanitize_callback' => 'absint',
+                        'description' => 'Minimum value of the random number (at least 8 digits)',
+                    ),
+                    'max' => array(
+                        'required' => false,
+                        'default' => 99999999,  // 8-digit maximum
+                        'validate_callback' => function ($param, $request, $key) {
+                            return is_numeric($param) && $param <= 999999999;  // Allow up to 9 digits
+                        },
+                        'sanitize_callback' => 'absint',
+                        'description' => 'Maximum value of the random number (at most 9 digits)',
+                    ),
+                ),
+            )
+        );
+    }
+
+    function get_random_value($request)
+    {
+        // Retrieve and sanitize parameters
+        $min = $request->get_param('min') ? intval($request->get_param('min')) : 10000000;
+        $max = $request->get_param('max') ? intval($request->get_param('max')) : 99999999;
+
+        // Ensure $min is less than $max and both have at least 8 digits
+        if ($min > $max || $min < 10000000 || $max < 10000000) {
+            return new WP_Error('invalid_range', 'The minimum value cannot be greater than the maximum value and both must be at least 8 digits.', array('status' => 400));
+        }
+
+        // Generate the random value
+        $random_value = rand($min, $max);
+
+        // Return the response
+        return new WP_REST_Response(
+            array(
+                'random_value' => $random_value,
+                // 'min' => $min,
+                // 'max' => $max,
+            ),
+            200
+        );
+    }
+
+
 }
 
 
