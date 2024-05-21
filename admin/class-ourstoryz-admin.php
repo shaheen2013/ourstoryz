@@ -623,7 +623,7 @@ class ourstoryz_Admin
             '/random_token/',
             array(
                 'methods' => 'GET',
-                'callback' => array($this, 'get_random_value'),
+                'callback' => array($this,'get_unique_random_value'),
                 'args' => array(
                     'min' => array(
                         'required' => false,
@@ -648,7 +648,7 @@ class ourstoryz_Admin
         );
     }
 
-    function get_random_value($request)
+    function get_unique_random_value($request)
     {
         // Retrieve and sanitize parameters
         $min = $request->get_param('min') ? intval($request->get_param('min')) : 10000000;
@@ -659,19 +659,40 @@ class ourstoryz_Admin
             return new WP_Error('invalid_range', 'The minimum value cannot be greater than the maximum value and both must be at least 8 digits.', array('status' => 400));
         }
 
-        // Generate the random value
-        $random_value = rand($min, $max);
+        // Retrieve previously generated tokens
+        $generated_tokens = get_option('generated_random_tokens', array());
+
+        // Generate a unique random value
+        $unique_random_value = null;
+        $attempts = 0;
+
+        while ($attempts < 1000) {
+            $random_value = rand($min, $max);
+            if (!in_array($random_value, $generated_tokens)) {
+                $unique_random_value = $random_value;
+                $generated_tokens[] = $unique_random_value;
+                update_option('generated_random_tokens', $generated_tokens);
+                break;
+            }
+            $attempts++;
+        }
+
+        // If no unique value is found after a certain number of attempts, return an error
+        if (is_null($unique_random_value)) {
+            return new WP_Error('no_unique_value', 'Unable to generate a unique value after multiple attempts.', array('status' => 500));
+        }
 
         // Return the response
         return new WP_REST_Response(
             array(
-                'random_value' => $random_value,
-                // 'min' => $min,
-                // 'max' => $max,
+                'random_value' => $unique_random_value,
+                'min' => $min,
+                'max' => $max,
             ),
             200
         );
     }
+
 
 
 }
