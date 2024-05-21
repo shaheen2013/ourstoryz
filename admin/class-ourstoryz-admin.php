@@ -442,62 +442,7 @@ class ourstoryz_Admin
         return $data;
     }
 
-    public function custom_rest_api_get_ourstoryz_posts($request)
-    {
-        $args = array(
-            'post_type' => 'ourstoryz',
-            'post_status' => 'publish',
-            'posts_per_page' => $request->get_param('per_page') ?: 10,
-            'paged' => $request->get_param('page') ?: 1,
-        );
-
-        if ($category = $request->get_param('category')) {
-            $args['tax_query'][] = array(
-                'taxonomy' => 'ourstoryz_category',
-                'field' => 'slug',
-                'terms' => $category,
-            );
-        }
-
-        if ($tag = $request->get_param('tag')) {
-            $args['tax_query'][] = array(
-                'taxonomy' => 'ourstoryz_tag',
-                'field' => 'slug',
-                'terms' => $tag,
-            );
-        }
-
-        $query = new WP_Query($args);
-        $posts = array();
-
-        if ($query->have_posts()) {
-            while ($query->have_posts()) {
-                $query->the_post();
-                $post_id = get_the_ID();
-                $posts[] = array(
-                    'templateId' => $post_id,
-                    'templateName' => get_the_title(),
-                    'fullImage' => get_the_post_thumbnail_url($post_id, 'full'),
-                    'thumbnail' => get_post_meta($post_id, '_thumbURL', true),
-                    'tags' => wp_get_post_terms($post_id, 'ourstoryz_tag', ['fields' => 'names']),
-                    'designer' => get_the_author_meta('display_name'),
-                    'categories' => wp_get_post_terms($post_id, 'ourstoryz_category', ['fields' => 'names']),
-                );
-            }
-        }
-
-        wp_reset_postdata();
-
-        return new WP_REST_Response(
-            array(
-                'posts' => $posts,
-                'total' => $query->found_posts,
-                'pages' => $query->max_num_pages
-            ),
-            200
-        );
-    }
-
+ 
 
     // Function to generate JWT token
     function generate_jwt_token_ajax()
@@ -556,6 +501,64 @@ class ourstoryz_Admin
 
         wp_die(); // Always use wp_die() at the end of AJAX functions
     }
+
+
+    public function custom_rest_api_get_ourstoryz_posts($request)
+    {
+        $args = array(
+            'post_type' => 'ourstoryz',
+            'post_status' => 'publish',
+            'posts_per_page' => $request->get_param('per_page') ?: 10,
+            'paged' => $request->get_param('page') ?: 1,
+        );
+
+        if ($category = $request->get_param('category')) {
+            $args['tax_query'][] = array(
+                'taxonomy' => 'ourstoryz_category',
+                'field' => 'slug',
+                'terms' => $category,
+            );
+        }
+
+        if ($tag = $request->get_param('tag')) {
+            $args['tax_query'][] = array(
+                'taxonomy' => 'ourstoryz_tag',
+                'field' => 'slug',
+                'terms' => $tag,
+            );
+        }
+
+        $query = new WP_Query($args);
+        $posts = array();
+
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                $post_id = get_the_ID();
+                $posts[] = array(
+                    'templateId' => $post_id,
+                    'templateName' => get_the_title(),
+                    'fullImage' => get_the_post_thumbnail_url($post_id, 'full'),
+                    'thumbnail' => get_post_meta($post_id, '_thumbURL', true),
+                    'tags' => wp_get_post_terms($post_id, 'ourstoryz_tag', ['fields' => 'names']),
+                    'designer' => get_the_author_meta('display_name'),
+                    'categories' => wp_get_post_terms($post_id, 'ourstoryz_category', ['fields' => 'names']),
+                );
+            }
+        }
+
+        wp_reset_postdata();
+
+        return new WP_REST_Response(
+            array(
+                'posts' => $posts,
+                'total' => $query->found_posts,
+                'pages' => $query->max_num_pages
+            ),
+            200
+        );
+    }
+
 
 }
 
