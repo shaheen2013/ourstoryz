@@ -594,6 +594,8 @@ class ourstoryz_Admin
             $total_posts = $query->found_posts;
             $total_pages = $query->max_num_pages;
             $current_page = max(1, $page);
+            update_option('ourstoryz_is_updated', false);
+
 
             // Return the response
             return new WP_REST_Response(
@@ -603,6 +605,7 @@ class ourstoryz_Admin
                     'pages' => $total_pages,
                     'current_page' => $current_page,
                     'per_page' => $per_page,
+                    
                 ),
                 200
             );
@@ -616,78 +619,44 @@ class ourstoryz_Admin
 
     // Random value get rest api
 
-    function random_value_generate()
+    function update_is_updated_flag($post_id, $post, $update)
+    {
+        // Check if this is a post update
+        if (!$update) {
+            return;
+        }
+    
+        // Get the post object
+        $post_object = get_post($post_id);
+    
+        // Check if the updated post is of the 'ourstoryz' post type
+        if ($post_object->post_type === 'ourstoryz') {
+            // Update the is_updated flag in the options table
+            update_option('ourstoryz_is_updated', true);
+        }
+    }
+    
+    function is_updated_check()
     {
         register_rest_route(
-            'random/v1',
-            '/random_token/',
+            'ourstoryz/v1',
+            '/ourstoryz_is_updated/',
             array(
                 'methods' => 'GET',
-                'callback' => array($this,'get_unique_random_value'),
-                'args' => array(
-                    'min' => array(
-                        'required' => false,
-                        'default' => 10000000,  // 8-digit minimum
-                        'validate_callback' => function ($param, $request, $key) {
-                            return is_numeric($param) && $param >= 10000000;  // Ensure at least 8 digits
-                        },
-                        'sanitize_callback' => 'absint',
-                        'description' => 'Minimum value of the random number (at least 8 digits)',
-                    ),
-                    'max' => array(
-                        'required' => false,
-                        'default' => 99999999,  // 8-digit maximum
-                        'validate_callback' => function ($param, $request, $key) {
-                            return is_numeric($param) && $param <= 999999999;  // Allow up to 9 digits
-                        },
-                        'sanitize_callback' => 'absint',
-                        'description' => 'Maximum value of the random number (at most 9 digits)',
-                    ),
-                ),
+                'callback' => array($this, 'get_ourstoryz_is_updated'),
             )
         );
     }
 
-    function get_unique_random_value($request)
+    function get_ourstoryz_is_updated()
     {
-        // Retrieve and sanitize parameters
-        $min = $request->get_param('min') ? intval($request->get_param('min')) : 10000000;
-        $max = $request->get_param('max') ? intval($request->get_param('max')) : 99999999;
-
-        // Ensure $min is less than $max and both have at least 8 digits
-        if ($min > $max || $min < 10000000 || $max < 10000000) {
-            return new WP_Error('invalid_range', 'The minimum value cannot be greater than the maximum value and both must be at least 8 digits.', array('status' => 400));
-        }
-
-        // Retrieve previously generated tokens
-        $generated_tokens = get_option('generated_random_tokens', array());
-
-        // Generate a unique random value
-        $unique_random_value = null;
-        $attempts = 0;
-
-        while ($attempts < 1000) {
-            $random_value = rand($min, $max);
-            if (!in_array($random_value, $generated_tokens)) {
-                $unique_random_value = $random_value;
-                $generated_tokens[] = $unique_random_value;
-                update_option('generated_random_tokens', $generated_tokens);
-                break;
-            }
-            $attempts++;
-        }
-
-        // If no unique value is found after a certain number of attempts, return an error
-        if (is_null($unique_random_value)) {
-            return new WP_Error('no_unique_value', 'Unable to generate a unique value after multiple attempts.', array('status' => 500));
-        }
-
-        // Return the response
+        // Retrieve the status of the 'ourstoryz_is_updated' flag
+        $ourstoryz_is_updated = get_option('ourstoryz_is_updated', false);
+        $ourstoryz_is_updated = (bool) $ourstoryz_is_updated;
+        // Return the status of 'ourstoryz_is_updated' flag
         return new WP_REST_Response(
             array(
-                'random_value' => $unique_random_value,
-                'min' => $min,
-                'max' => $max,
+                'ourstoryz_is_updated' => $ourstoryz_is_updated,
             ),
             200
         );
