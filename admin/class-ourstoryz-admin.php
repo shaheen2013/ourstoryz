@@ -636,27 +636,30 @@ class ourstoryz_Admin
         }
     }
     
-    function is_updated_check()
-    {
+    function is_updated_check() {
         register_rest_route(
             'ourstoryz/v1',
-            '/ourstoryz_is_updated/',
+            '/is_updated/',
             array(
                 'methods' => 'GET',
-                'callback' => array($this, 'get_ourstoryz_is_updated'),
+                'callback' => array($this, 'get_is_updated'),
+                'permission_callback' => '__return_true', // Adjust permissions as needed
             )
         );
     }
 
-    function get_ourstoryz_is_updated()
-    {
+    function get_is_updated() {
         // Retrieve the status of the 'ourstoryz_is_updated' flag
-        $ourstoryz_is_updated = get_option('ourstoryz_is_updated', false);
-        $ourstoryz_is_updated = (bool) $ourstoryz_is_updated;
+        $is_updated = get_option('ourstoryz_is_updated', false);
+        $is_updated = filter_var($is_updated, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+
+        // Ensure the value is strictly a boolean
+        $is_updated = ($is_updated === null) ? false : $is_updated;
+
         // Return the status of 'ourstoryz_is_updated' flag
         return new WP_REST_Response(
             array(
-                'is_updated' => $ourstoryz_is_updated,
+                'is_updated' => $is_updated,
             ),
             200
         );
