@@ -37,6 +37,11 @@ if (!defined('WPINC')) {
  */
 define('OURSTORYZ_VERSION', '1.0.0');
 
+function ourstoryz_enqueue_styles() {
+    // Enqueue Bootstrap CSS from CDN
+    wp_enqueue_style( 'bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', array(), '4.5.2' );
+}
+add_action( 'wp_enqueue_scripts', 'ourstoryz_enqueue_styles' );
 
 /**
  * The code that runs during plugin activation.
@@ -60,6 +65,7 @@ function deactivate_ourstoryz()
 
 register_activation_hook(__FILE__, 'activate_ourstoryz');
 register_deactivation_hook(__FILE__, 'deactivate_ourstoryz');
+
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -89,34 +95,81 @@ add_shortcode('search_result', 'search_result_show');
 
 function search_result_show()
 {
-	// Get the value of 'event' from the URL query parameters
-	$search = filter_input(INPUT_GET, 'event', FILTER_SANITIZE_STRING);
+    // Get and sanitize the value of 'event' from the URL query parameters
+    $search = filter_input(INPUT_GET, 'event', FILTER_SANITIZE_STRING);
 
-	if ($search === false || $search === null) {
-		echo "Invalid input.";
-		return;
-	}
+    if ($search === false || $search === null) {
+        echo "Invalid input.";
+        return;
+    }
 
-	$search = urlencode($search); // Encode the search query
+    // Encode the search query
+    $search = urlencode($search);
 
-	// Construct the API endpoint URL with the search key
-	$url = "https://api.dev.ourstoryz.com/api/templates/event/list?searchKey=$search";
+    // Construct the API endpoint URL with the search key
+    $url = "https://api.dev.ourstoryz.com/api/templates/event/list?searchKey=$search";
 
-	// Fetch data from the API
-	$response = file_get_contents($url);
+    // Fetch data from the API
+    $response = file_get_contents($url);
 
-	// Check for errors
-	if ($response === false) {
-		// Get detailed error message
-		$error = error_get_last();
-		if ($error !== null) {
-			echo "Error fetching data from API: " . $error['message'];
-		} else {
-			echo "Failed to fetch data from API.";
-		}
-	} else {
-		// Display the response data
-		echo $response;
-	}
+    // Check for errors
+    if ($response === false) {
+        // Get detailed error message
+        $error = error_get_last();
+        if ($error !== null) {
+            echo "Error fetching data from API: " . $error['message'];
+        } else {
+            echo "Failed to fetch data from API.";
+        }
+        return;
+    }
+
+    // Decode the JSON response
+    $data = json_decode($response, true);
+
+    // Check if decoding was successful
+    if ($data === null) {
+        echo "Error decoding JSON response.";
+        return;
+    }
+
+    // Check if API response contains data
+    if (isset($data['data']) && is_array($data['data'])) {
+        // Loop through the data and display event names
+        foreach ($data['data'] as $event) {
+            // Add a <div> tag with a specific color for each event name
+			 
+		 
+            echo '<div class="container">
+                      <div class="row">
+                          <div class="col">
+                              <div class="card">
+                                  <div class="row no-gutters">
+                                      <div class="col-md-2">
+                                          <img src="your_image.jpg" class="card-img" alt="Image">
+                                      </div>
+                                      <div class="col-md-3">
+                                          <div class="card-body">
+                                              <h5 class="card-title">' . $event['event_name'] . '</h5>
+                                              <p class="card-text">Data for column 1 goes here.</p>
+                                              <p class="card-text"><small class="text-muted">Date goes here</small></p>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-3">
+                                          <p class="card-text">Data for column 1 goes here.</p>
+                                      </div>
+                                      <div class="col-md-3">
+                                          <p class="card-text">Data for column 1 goes here.</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>';
+        }
+    } else {
+        echo "No events found.";
+    }
 }
+
 
