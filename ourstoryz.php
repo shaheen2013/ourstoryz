@@ -27,7 +27,7 @@
 
 // If this file is called directly, abort.
 if (!defined('WPINC')) {
-	die;
+    die;
 }
 
 /**
@@ -37,11 +37,12 @@ if (!defined('WPINC')) {
  */
 define('OURSTORYZ_VERSION', '1.0.0');
 
-function ourstoryz_enqueue_styles() {
+function ourstoryz_enqueue_styles()
+{
     // Enqueue Bootstrap CSS from CDN
-    wp_enqueue_style( 'bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', array(), '4.5.2' );
+    wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', array(), '4.5.2');
 }
-add_action( 'wp_enqueue_scripts', 'ourstoryz_enqueue_styles' );
+add_action('wp_enqueue_scripts', 'ourstoryz_enqueue_styles');
 
 /**
  * The code that runs during plugin activation.
@@ -49,8 +50,8 @@ add_action( 'wp_enqueue_scripts', 'ourstoryz_enqueue_styles' );
  */
 function activate_ourstoryz()
 {
-	require_once plugin_dir_path(__FILE__) . 'includes/class-ourstoryz-activator.php';
-	ourstoryz_Activator::activate();
+    require_once plugin_dir_path(__FILE__) . 'includes/class-ourstoryz-activator.php';
+    ourstoryz_Activator::activate();
 }
 
 /**
@@ -59,8 +60,8 @@ function activate_ourstoryz()
  */
 function deactivate_ourstoryz()
 {
-	require_once plugin_dir_path(__FILE__) . 'includes/class-ourstoryz-deactivator.php';
-	ourstoryz_Deactivator::deactivate();
+    require_once plugin_dir_path(__FILE__) . 'includes/class-ourstoryz-deactivator.php';
+    ourstoryz_Deactivator::deactivate();
 }
 
 register_activation_hook(__FILE__, 'activate_ourstoryz');
@@ -85,8 +86,8 @@ require plugin_dir_path(__FILE__) . 'includes/class-ourstoryz.php';
 function run_ourstoryz()
 {
 
-	$plugin = new ourstoryz();
-	$plugin->run();
+    $plugin = new ourstoryz();
+    $plugin->run();
 }
 run_ourstoryz();
 
@@ -136,36 +137,37 @@ function search_result_show()
     // Check if API response contains data
     if (isset($data['data']) && is_array($data['data'])) {
         // Loop through the data and display event names
+
         foreach ($data['data'] as $event) {
+            $coverImage = !empty($event['cover_image']) ? $event['cover_image'] : 'default_image.jpg';
+            $eventDate = date('F j, Y, g:i a', strtotime($event['event_start_date']));
             // Add a <div> tag with a specific color for each event name
-			 
-		 
             echo '<div class="container">
-                      <div class="row">
-                          <div class="col">
-                              <div class="card">
-                                  <div class="row no-gutters">
-                                      <div class="col-md-2">
-                                          <img src="your_image.jpg" class="card-img" alt="Image">
+                  <div class="row">
+                      <div class="col">
+                          <div class="card">
+                              <div class="row no-gutters">
+                                  <div class="col-md-2">
+                                      <img src="' . $coverImage . '" class="card-img" alt="Image">
+                                  </div>
+                                  <div class="col-md-3">
+                                      <div class="card-body">
+                                          <h5 class="card-title">' . $event['event_name'] . '</h5>
+                                          <p class="card-text">' . $event['event_description'] . '</p>
+                                          <p class="card-text"><small class="text-muted">' . $eventDate . '</small></p>
                                       </div>
-                                      <div class="col-md-3">
-                                          <div class="card-body">
-                                              <h5 class="card-title">' . $event['event_name'] . '</h5>
-                                              <p class="card-text">Data for column 1 goes here.</p>
-                                              <p class="card-text"><small class="text-muted">Date goes here</small></p>
-                                          </div>
-                                      </div>
-                                      <div class="col-md-3">
-                                          <p class="card-text">Data for column 1 goes here.</p>
-                                      </div>
-                                      <div class="col-md-3">
-                                          <p class="card-text">Data for column 1 goes here.</p>
-                                      </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                      <p class="card-text">Event Type: ' . $event['event_type'] . '</p>
+                                  </div>
+                                  <div class="col-md-3">
+                                      <p class="card-text">Status: ' . ($event['status'] == 1 ? 'Active' : 'Inactive') . '</p>
                                   </div>
                               </div>
                           </div>
                       </div>
-                  </div>';
+                  </div>
+              </div>';
         }
     } else {
         echo "No events found.";

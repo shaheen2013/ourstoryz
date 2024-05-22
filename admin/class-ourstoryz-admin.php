@@ -586,7 +586,7 @@ class ourstoryz_Admin
                 );
 
                 // Add post item to posts array using post ID as key
-                $posts[$post_id] = $post_item;
+                $posts[] = $post_item;
             }
             wp_reset_postdata();
 
