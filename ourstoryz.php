@@ -127,7 +127,12 @@ function search_result_show()
 
     // Decode the JSON response
     $data = json_decode($response, true);
-
+    function getCityFromLocation($location) {
+        // Split the location string by commas
+        $parts = explode(',', $location);
+        // Return the second part (the city name) if it exists
+        return isset($parts[0]) ? trim($parts[0]) : 'Unknown City';
+    }
     // Check if decoding was successful
     if ($data === null) {
         echo "Error decoding JSON response.";
@@ -139,8 +144,18 @@ function search_result_show()
         // Loop through the data and display event names
 
         foreach ($data['data'] as $event) {
-            $coverImage = !empty($event['cover_image']) ? $event['cover_image'] : 'default_image.jpg';
-            $eventDate = date('F j, Y, g:i a', strtotime($event['event_start_date']));
+            $coverImage = !empty($event['cover_image']) ? $event['cover_image'] : 'https://img.freepik.com/free-photo/office-worker-using-videocall-conference-meet-with-business-people-webcam-talking-colleagues-remote-videoconference-having-internet-conversation-teleconference-call_482257-50395.jpg?w=740&t=st=1716383152~exp=1716383752~hmac=209ddeafc2a81e5ccf12e00c67eee75704106cbbf1f0eaafb91e589173c1337f';
+            $rsvpDeadline = !empty($event['rsvp_deadline']) ? date('M j', strtotime($event['rsvp_deadline'])) : 'No deadline';
+            $eventStartDate = new DateTime($event['event_start_date']);
+            $eventEndDate = new DateTime($event['event_end_date']);
+            if ($eventStartDate->format('Y-m-d') === $eventEndDate->format('Y-m-d')) {
+                // Same day event
+                $formattedDate = $eventStartDate->format('F j, Y');
+            } else {
+                // Multi-day event
+                $formattedDate = $eventStartDate->format('F j') . '-' . $eventEndDate->format('j, Y');
+            }
+            $cityName = getCityFromLocation($event['location']['location']);
             // Add a <div> tag with a specific color for each event name
             echo '<div class="container">
                   <div class="row">
@@ -153,15 +168,15 @@ function search_result_show()
                                   <div class="col-md-3">
                                       <div class="card-body">
                                           <h5 class="card-title">' . $event['event_name'] . '</h5>
-                                          <p class="card-text">' . $event['event_description'] . '</p>
-                                          <p class="card-text"><small class="text-muted">' . $eventDate . '</small></p>
+                                          <p class="card-text">' . $event['event_type'] . ' <small>RSVP by ' . $rsvpDeadline . '</small></p>
+                                          
                                       </div>
                                   </div>
                                   <div class="col-md-3">
-                                      <p class="card-text">Event Type: ' . $event['event_type'] . '</p>
+                                  <p class="card-text"><small class="text-muted">' . $formattedDate . '</small></p>
                                   </div>
                                   <div class="col-md-3">
-                                      <p class="card-text">Status: ' . ($event['status'] == 1 ? 'Active' : 'Inactive') . '</p>
+                                  <p class="card-text"><small class="text-muted">' . $cityName . '</small></p>
                                   </div>
                               </div>
                           </div>
