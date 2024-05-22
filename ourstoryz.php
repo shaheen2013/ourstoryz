@@ -83,3 +83,33 @@ function run_ourstoryz()
 	$plugin->run();
 }
 run_ourstoryz();
+
+
+add_shortcode('search_result', 'search_result_show');
+
+function search_result_show()
+{
+    // Get the value of 'event' from the URL query parameters
+    $search = urlencode($_GET['event']); // Encode the search query
+
+    // Construct the API endpoint URL with the search key
+    $url = "https://api.dev.ourstoryz.com/api/templates/event/list?searchKey=$search";
+
+    // Fetch data from the API
+    $response = file_get_contents($url);
+
+    // Check for errors
+    if ($response === false) {
+        // Get detailed error message
+        $error = error_get_last();
+        if ($error !== null) {
+            echo "Error fetching data from API: " . $error['message'];
+        } else {
+            echo "Failed to fetch data from API.";
+        }
+    } else {
+        // Display the response data
+        echo $response;
+    }
+}
+
