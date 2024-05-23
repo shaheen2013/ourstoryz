@@ -665,13 +665,18 @@ class ourstoryz_Admin
         );
     
         // Set headers to prevent caching
-        $response->header('Cache-Control', 'no-cache, no-store, must-revalidate');
-        $response->header('Pragma', 'no-cache');
-        $response->header('Expires', '0');
+      
     
         return $response;
     }
     
+    function disable_rest_api_cache( $response, $server, $request ) {
+        $response->header('Cache-Control', 'no-cache, no-store, must-revalidate');
+        $response->header('Pragma', 'no-cache');
+        $response->header('Expires', '0');
+ 
+        return $response;
+    }
 
 
 
