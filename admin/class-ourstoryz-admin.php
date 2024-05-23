@@ -652,18 +652,26 @@ class ourstoryz_Admin
         // Retrieve the status of the 'ourstoryz_is_updated' flag
         $is_updated = get_option('ourstoryz_is_updated', false);
         $is_updated = filter_var($is_updated, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-
+    
         // Ensure the value is strictly a boolean
         $is_updated = ($is_updated === null) ? false : $is_updated;
-
-        // Return the status of 'ourstoryz_is_updated' flag
-        return new WP_REST_Response(
+    
+        // Create the response
+        $response = new WP_REST_Response(
             array(
                 'is_updated' => $is_updated,
             ),
             200
         );
+    
+        // Set headers to prevent caching
+        $response->header('Cache-Control', 'no-cache, no-store, must-revalidate');
+        $response->header('Pragma', 'no-cache');
+        $response->header('Expires', '0');
+    
+        return $response;
     }
+    
 
 
 
