@@ -188,5 +188,3 @@ function search_result_show()
         echo "No events found.";
     }
 }
-
-

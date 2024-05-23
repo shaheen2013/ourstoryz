@@ -177,7 +177,7 @@ class ourstoryz
 		// Rest api
 		$this->loader->add_action('rest_api_init', $plugin_admin,  'register_custom_endpoints');
 		$this->loader->add_action('rest_api_init',$plugin_admin,'is_updated_check');
-		$this->loader->add_filter( 'rest_pre_serve_request', $plugin_admin ,'disable_rest_api_cache', 10, 3 );
+		 
 	}
 
 	/**

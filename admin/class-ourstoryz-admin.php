@@ -598,7 +598,7 @@ class ourstoryz_Admin
 
 
             // Return the response
-            return new WP_REST_Response(
+            $response= new WP_REST_Response(
                 array(
                     'posts' => $posts,
                     'total' => $total_posts,
@@ -609,6 +609,11 @@ class ourstoryz_Admin
                 ),
                 200
             );
+            $response->header('Cache-Control', 'no-cache, no-store, must-revalidate');
+            $response->header('Pragma', 'no-cache');
+            $response->header('Expires', '0');
+        
+            return $response;
         }
 
 
@@ -665,20 +670,13 @@ class ourstoryz_Admin
         );
     
         // Set headers to prevent caching
-      
-    
-        return $response;
-    }
-    
-    function disable_rest_api_cache( $response, $server, $request ) {
         $response->header('Cache-Control', 'no-cache, no-store, must-revalidate');
         $response->header('Pragma', 'no-cache');
         $response->header('Expires', '0');
- 
+    
         return $response;
     }
-
-
+     
 
 }
 
