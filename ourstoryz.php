@@ -99,7 +99,7 @@ function search_result_show()
     // Get and sanitize the value of 'event' from the URL query parameters
     $search = filter_input(INPUT_GET, 'event', FILTER_SANITIZE_STRING);
 
-    if ($search === false || $search === null) {
+    if ($search === false || $search === '') {
         echo "Invalid input.";
         return;
     }
@@ -127,12 +127,15 @@ function search_result_show()
 
     // Decode the JSON response
     $data = json_decode($response, true);
-    function getCityFromLocation($location) {
+
+    function getCityFromLocation($location)
+    {
         // Split the location string by commas
         $parts = explode(',', $location);
         // Return the second part (the city name) if it exists
         return isset($parts[0]) ? trim($parts[0]) : 'Unknown City';
     }
+
     // Check if decoding was successful
     if ($data === null) {
         echo "Error decoding JSON response.";
@@ -141,8 +144,13 @@ function search_result_show()
 
     // Check if API response contains data
     if (isset($data['data']) && is_array($data['data'])) {
-        // Loop through the data and display event names
+        // Check if there are no events in the data array
+        if (empty($data['data'])) {
+            echo "No data found.";
+            return;
+        }
 
+        // Loop through the data and display event names
         foreach ($data['data'] as $event) {
             $coverImage = !empty($event['cover_image']) ? $event['cover_image'] : 'https://img.freepik.com/free-photo/office-worker-using-videocall-conference-meet-with-business-people-webcam-talking-colleagues-remote-videoconference-having-internet-conversation-teleconference-call_482257-50395.jpg?w=740&t=st=1716383152~exp=1716383752~hmac=209ddeafc2a81e5ccf12e00c67eee75704106cbbf1f0eaafb91e589173c1337f';
             $rsvpDeadline = !empty($event['rsvp_deadline']) ? date('M j', strtotime($event['rsvp_deadline'])) : 'No deadline';
@@ -156,6 +164,7 @@ function search_result_show()
                 $formattedDate = $eventStartDate->format('F j') . '-' . $eventEndDate->format('j, Y');
             }
             $cityName = getCityFromLocation($event['location']['location']);
+
             // Add a <div> tag with a specific color for each event name
             echo '<div class="container">
                   <div class="row">
@@ -169,11 +178,10 @@ function search_result_show()
                                       <div class="card-body">
                                           <h5 class="card-title">' . $event['event_name'] . '</h5>
                                           <p class="card-text">' . $event['event_type'] . ' <small>RSVP by ' . $rsvpDeadline . '</small></p>
-                                          
                                       </div>
                                   </div>
-                                  <div class="col-md-3">
-                                  <p class="card-text"><small class="text-muted">' . $formattedDate . '</small></p>
+                                  <div class="col-md-3 text-center">
+                                  <p class="card-text "><small class="text-muted">' . $formattedDate . '</small></p>
                                   </div>
                                   <div class="col-md-3">
                                   <p class="card-text"><small class="text-muted">' . $cityName . '</small></p>
