@@ -153,7 +153,7 @@ function search_result_show()
         // Loop through the data and display event names
         foreach ($data['data'] as $event) {
             $coverImage = !empty($event['cover_image']) ? $event['cover_image'] : 'https://img.freepik.com/free-photo/office-worker-using-videocall-conference-meet-with-business-people-webcam-talking-colleagues-remote-videoconference-having-internet-conversation-teleconference-call_482257-50395.jpg?w=740&t=st=1716383152~exp=1716383752~hmac=209ddeafc2a81e5ccf12e00c67eee75704106cbbf1f0eaafb91e589173c1337f';
-            $rsvpDeadline = !empty($event['rsvp_deadline']) ? date('M j', strtotime($event['rsvp_deadline'])) : 'No deadline';
+            $rsvpDeadline = !empty($event['rsvp_deadline']) ? date('M j', strtotime($event['rsvp_deadline'])) : ' ';
             $eventStartDate = new DateTime($event['event_start_date']);
             $eventEndDate = new DateTime($event['event_end_date']);
             if ($eventStartDate->format('Y-m-d') === $eventEndDate->format('Y-m-d')) {
@@ -165,32 +165,46 @@ function search_result_show()
             }
             $cityName = getCityFromLocation($event['location']['location']);
 
-            // Add a <div> tag with a specific color for each event name
-            echo '<div class="container">
-                  <div class="row">
-                      <div class="col">
-                          <div class="card">
-                              <div class="row no-gutters">
-                                  <div class="col-md-2">
-                                      <img src="' . $coverImage . '" class="card-img" alt="Image">
-                                  </div>
-                                  <div class="col-md-3">
-                                      <div class="card-body">
-                                          <h5 class="card-title">' . $event['event_name'] . '</h5>
-                                          <p class="card-text">' . $event['event_type'] . ' <small>RSVP by ' . $rsvpDeadline . '</small></p>
-                                      </div>
-                                  </div>
-                                  <div class="col-md-3 text-center">
-                                  <p class="card-text "><small class="text-muted">' . $formattedDate . '</small></p>
-                                  </div>
-                                  <div class="col-md-3">
-                                  <p class="card-text"><small class="text-muted">' . $cityName . '</small></p>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+            echo '<div class="container mt-5">
+            <div class="card p-3">
+              <div class="row g-0">
+                <div class="col-md-2">
+                  <img
+                  src="' . htmlspecialchars($coverImage) . '"
+                    class="img-fluid rounded-start card-img"
+                    alt="Event Image"
+                  />
+                </div>
+                <div class="col-md-10">
+                  <div
+                    class="card-body d-flex align-items-center justify-content-between"
+                  >
+                    <div>
+                      <h5 class="card-title"><a href="event_display.php?event=' . urlencode($event['event_name']) . '" target="_blank">' . htmlspecialchars($event['event_name']) . '</a></h5>
+                      <p class="card-text text-muted">
+                      ' . htmlspecialchars($event['event_type']) . (!empty($rsvpDeadline) ? ' &bull; RSVP by ' . htmlspecialchars($rsvpDeadline) : '') . '
+                      </p>
+                    </div>
+                    <div>
+                      <p class="date-text">' . htmlspecialchars($formattedDate) . '</p>
+                    </div>
+                    <div>
+                      <p class="link-text">
+                      ' . htmlspecialchars($cityName) . ' <small class="text-muted arrow">&rarr;</small>
+                      </p>
+                      <div></div>
+                    </div>
                   </div>
-              </div>';
+                </div>
+              </div>
+            </div>
+          </div>';
+    
+
+
+
+
+
         }
     } else {
         echo "No events found.";
