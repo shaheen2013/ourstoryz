@@ -180,7 +180,7 @@ function search_result_show()
                   class="card-body d-flex align-items-center justify-content-between"
                 >
                   <div>
-                    <h5 class="card-title"><a href="#" class="event-link" data-event-id="' . $event['id'] . '">' . htmlspecialchars($event['event_name']) . '</a></h5>
+                    <h5 class="card-title"> ' . htmlspecialchars($event['event_name']) . ' </h5>
                     <p class="card-text text-muted">
                     ' . htmlspecialchars($event['event_type']) . (!empty($rsvpDeadline) ? ' &bull; RSVP by ' . htmlspecialchars($rsvpDeadline) : '') . '
                     </p>
