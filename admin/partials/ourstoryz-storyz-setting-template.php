@@ -26,6 +26,8 @@
     <h2 class="nav-tab-wrapper">
         <a href="#tab1" class="nav-tab ourstoryz-tab-link active">Find & Replace</a>
         <a href="#tab2" class="nav-tab ourstoryz-tab-link">Auth Token</a>
+        <a href="#tab3" class="nav-tab ourstoryz-tab-link">Default Template select</a>
+
     </h2>
 
     <div id="tab1" class="ourstoryz-tab-content" style="display:block;">
@@ -57,6 +59,22 @@
                 &#x1F4CB; <!-- Clipboard emoji, you can use any icon here -->
             </span>
             <div id="error-message" style="display: none; color: red;">Incorrect password</div>
+        </div>
+    </div>
+    <div id="tab3" class="ourstoryz-tab-content" style="display:none;">
+        <!-- Content for Tab 1 -->
+
+        <div class="container mt-5 w-25 m-auto">
+            <div class="container">
+                <label for="options" class="form-label">Select a number:</label>
+                <select id="options" class="form-select">
+                    <option value="6946">Avalone</option>
+                    <option value="6930">Basic</option>
+
+                </select>
+                <button id="submitBtn" class="btn btn-primary mt-3">Submit</button>
+                <div id="result" class="mt-3"></div>
+            </div>
         </div>
     </div>
 </div>

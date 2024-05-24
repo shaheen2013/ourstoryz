@@ -133,10 +133,28 @@ jQuery(document).ready(function ($) {
         });
     }
 
-
+    $('#submitBtn').on('click', function() {
+        var value = $('#options').val();
+        console.log(value);
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'save_custom_data',
+                value: value
+            },
+            success: function(response) {
+                $('#result').html(response);
+            },
+            error: function(errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    });
 
 
 });
 
+ 
 
 

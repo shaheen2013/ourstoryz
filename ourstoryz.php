@@ -256,7 +256,9 @@ function fetch_mini_website_template()
   $miniWebsiteTemplateId = $data->data->mini_website_template_id;
   if (!$data || !isset($data->data->mini_website_template_id)) {
     // Set default ID if API response is invalid or mini_website_template_id is not set
-    $miniWebsiteTemplateId = '6930'; // Replace 'default_id' with your actual default ID
+    $updated_value = get_option('default_template');
+
+    $miniWebsiteTemplateId =  $updated_value; // Replace 'default_id' with your actual default ID
   } else {
     $miniWebsiteTemplateId = $data->data->mini_website_template_id;
   }

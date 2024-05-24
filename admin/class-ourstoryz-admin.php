@@ -598,21 +598,21 @@ class ourstoryz_Admin
 
 
             // Return the response
-            $response= new WP_REST_Response(
+            $response = new WP_REST_Response(
                 array(
                     'posts' => $posts,
                     'total' => $total_posts,
                     'pages' => $total_pages,
                     'current_page' => $current_page,
                     'per_page' => $per_page,
-                    
+
                 ),
                 200
             );
             $response->header('Cache-Control', 'no-cache, no-store, must-revalidate');
             $response->header('Pragma', 'no-cache');
             $response->header('Expires', '0');
-        
+
             return $response;
         }
 
@@ -630,18 +630,19 @@ class ourstoryz_Admin
         if (!$update) {
             return;
         }
-    
+
         // Get the post object
         $post_object = get_post($post_id);
-    
+
         // Check if the updated post is of the 'ourstoryz' post type
         if ($post_object->post_type === 'ourstoryz') {
             // Update the is_updated flag in the options table
             update_option('ourstoryz_is_updated', true);
         }
     }
-    
-    function is_updated_check() {
+
+    function is_updated_check()
+    {
         register_rest_route(
             'ourstoryz/v1',
             '/is_updated/',
@@ -653,14 +654,15 @@ class ourstoryz_Admin
         );
     }
 
-    function get_is_updated() {
+    function get_is_updated()
+    {
         // Retrieve the status of the 'ourstoryz_is_updated' flag
         $is_updated = get_option('ourstoryz_is_updated', false);
         $is_updated = filter_var($is_updated, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-    
+
         // Ensure the value is strictly a boolean
         $is_updated = ($is_updated === null) ? false : $is_updated;
-    
+
         // Create the response
         $response = new WP_REST_Response(
             array(
@@ -668,15 +670,33 @@ class ourstoryz_Admin
             ),
             200
         );
-    
+
         // Set headers to prevent caching
         $response->header('Cache-Control', 'no-cache, no-store, must-revalidate');
         $response->header('Pragma', 'no-cache');
         $response->header('Expires', '0');
-    
+
         return $response;
     }
-     
+
+
+
+    function save_custom_data() {
+        if(isset($_POST['value'])) {
+            $value = $_POST['value'];
+            $existing_value = get_option('default_template');
+            
+            if($existing_value !== false) {
+                update_option('default_template', $value);
+                echo 'Data updated successfully!';
+            } else {
+                add_option('default_template', $value);
+                echo 'Data added successfully!';
+            }
+        }
+        wp_die();
+    }
+
 
 }
 
