@@ -54,6 +54,35 @@ jQuery(document).ready(function ($) {
 	});
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    const eventLinks = document.querySelectorAll(".event-link");
+    eventLinks.forEach(link => {
+        link.addEventListener("click", function(event) {
+            event.preventDefault();
+            const eventId = this.getAttribute("data-event-id");
+		 
+             
+            // AJAX request
+            jQuery.ajax({
+                type: 'POST',
+				url: ajax_object.ajax_url,
+                data: {
+                    action: 'fetch_mini_website_template', // AJAX action name
+                    security: ajax_object.ajax_nonce, // Nonce for security
+                    event_id: eventId // Event ID
+                },
+                success: function(response) {
+                    // Redirect to the second API URL
+					 
+                    window.location.href = `https://ourstoryz.com/wpdev/?p=${response.data}`;
+                },
+                error: function(error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+    });
+});
 
 
 
