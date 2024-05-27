@@ -498,3 +498,26 @@ function get_our_storyz_description() {
 
 // Register the shortcode [our_storyz_description]
 add_shortcode('our_storyz_description', 'get_our_storyz_description');
+
+
+function get_project_image() {
+  // Fetch the API data
+  $data = fetch_api_data();
+  
+  // Check if the data is not empty and the "project_image" key exists
+  if (!empty($data) && isset($data['data']['storyz']['project_image'])) {
+      // Get the "project_image" data
+      $projectImage = $data['data']['storyz']['project_image'];
+      
+      // Return the "project_image" data
+      return $projectImage;
+  }
+  
+  // Return a default message if "project_image" is not found
+  return 'Project image not found.';
+}
+
+// Register the shortcode [project_image]
+add_shortcode('project_image', 'get_project_image');
+
+
