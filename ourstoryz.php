@@ -271,3 +271,230 @@ function fetch_mini_website_template()
 add_action('wp_ajax_fetch_mini_website_template', 'fetch_mini_website_template');
 add_action('wp_ajax_nopriv_fetch_mini_website_template', 'fetch_mini_website_template');
 
+
+
+// Function to fetch API data
+function fetch_api_data() {
+  $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : '';
+  $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/storyz?event_id=" . $event_id);
+ 
+  if (is_wp_error($response)) {
+      return null;
+  }
+  $body = wp_remote_retrieve_body($response);
+  return json_decode($body, true);
+}
+
+// Function to fetch mini website template
+// function fetch_mini_website_template()
+// {
+//   // Check if the request is coming from a valid source
+//   check_ajax_referer('fetch_mini_website_template_nonce', 'security');
+
+//   // Get the event ID from the AJAX request
+//   $event_id = $_POST['event_id'];
+
+//   // Fetch API data
+//   $api_data = fetch_api_data($event_id);
+
+//   // Get mini website template ID from API data
+//   if (!empty($api_data) && isset($api_data['data']['mini_website_template_id'])) {
+//       $miniWebsiteTemplateId = $api_data['data']['mini_website_template_id'];
+//   } else {
+//       // Set default ID if API response is invalid or mini_website_template_id is not set
+//       $updated_value = get_option('default_template');
+//       $miniWebsiteTemplateId =  $updated_value; // Replace 'default_id' with your actual default ID
+//   }
+
+//   // Return the mini website template ID
+//   wp_send_json_success($miniWebsiteTemplateId);
+// }
+
+// // Hook up the AJAX action
+// add_action('wp_ajax_fetch_mini_website_template', 'fetch_mini_website_template');
+// add_action('wp_ajax_nopriv_fetch_mini_website_template', 'fetch_mini_website_template');
+
+// Fetch and return event name
+function get_event_name() {
+  $data = fetch_api_data();
+  if (!empty($data) && isset($data['data']['event_name'])) {
+      return esc_html($data['data']['event_name']);
+  }
+  return 'Event name not found.';
+}
+add_shortcode('event_name', 'get_event_name');
+
+// Fetch and return event description
+function get_event_description() {
+  // Fetch the API data
+  $data = fetch_api_data();
+  
+  // Check if the data is not empty and the event_description key exists
+  if (!empty($data) && isset($data['data']['event_description'])) {
+      // Get the event description
+      $eventDescription = $data['data']['event_description'];
+      
+      // Escape and return the event description
+      return esc_html($eventDescription);
+  }
+  
+  // Return a default message if event_description is not found
+  return 'Event description not found.';
+}
+
+// Register the shortcode [event_description]
+add_shortcode('event_description', 'get_event_description');
+
+
+// Fetch and return event start date
+function get_event_end_date() {
+  $data = fetch_api_data();
+  if (!empty($data) && isset($data['data']['event_start_date'])) {
+      // Get the event start date from the API data
+      $eventStartDate = $data['data']['event_start_date'];
+
+      // Create a DateTime object from the event start date
+      $date = new DateTime($eventStartDate);
+
+      // Format the date in the desired format
+      $formattedDate = $date->format('l, F d, Y');
+
+      // Escape and return the formatted date
+      return esc_html($formattedDate);
+  }
+  return 'Event start date not found.';
+}
+add_shortcode('event_date', 'get_event_end_date');
+
+function get_rsvp_deadline() {
+  $data = fetch_api_data();
+  if (!empty($data) && isset($data['data']['rsvp_deadline'])) {
+      // Get the RSVP deadline from the API data
+      $rsvpDeadline = $data['data']['rsvp_deadline'];
+
+      // Create a DateTime object from the RSVP deadline
+      $date = new DateTime($rsvpDeadline);
+
+      // Format the date in the desired format
+      $formattedDate = 'RSVP by ' . $date->format('F d');
+
+      // Escape and return the formatted date
+      return esc_html($formattedDate);
+  }
+  return 'RSVP deadline not found.';
+}
+add_shortcode('rsvp_deadline', 'get_rsvp_deadline');
+
+
+function get_event_start_time() {
+  $data = fetch_api_data();
+  if (!empty($data) && isset($data['data']['event_start_date'])) {
+      // Get the event start date from the API data
+      $eventStartDate = $data['data']['event_start_date'];
+
+      // Create a DateTime object from the event start date
+      $date = new DateTime($eventStartDate);
+
+      // Set the timezone to PST (Pacific Standard Time)
+      $timezone = new DateTimeZone('America/Los_Angeles');
+      $date->setTimezone($timezone);
+
+      // Format the time in the desired format
+      $formattedTime = $date->format('g:ia') . ' PST';
+
+      // Escape and return the formatted time
+      return esc_html($formattedTime);
+  }
+  return 'Event start date not found.';
+}
+add_shortcode('event_start_time', 'get_event_start_time');
+
+
+
+function get_greeting_title() {
+  // Fetch the API data
+  $data = fetch_api_data();
+  
+  // Check if the data is not empty and the storyz object with greeting_title key exists
+  if (!empty($data) && isset($data['data']['storyz']['greeting_title'])) {
+      // Get the greeting title from the storyz object
+      $greetingTitle = $data['data']['storyz']['greeting_title'];
+      
+      // Escape and return the greeting title
+      return esc_html($greetingTitle);
+  }
+  
+  // Return a default message if greeting_title is not found
+  return 'Greeting title not found.';
+}
+
+// Register the shortcode [greeting_title]
+add_shortcode('greeting_title', 'get_greeting_title');
+
+
+
+
+
+function get_storyz_name() {
+  // Fetch the API data
+  $data = fetch_api_data();
+  
+  // Check if the data is not empty and the storyz_name key exists
+  if (!empty($data) && isset($data['data']['storyz']['storyz_name'])) {
+      // Get the storyz name
+      $storyzName = $data['data']['storyz']['storyz_name'];
+      
+      // Escape and return the storyz name
+      return esc_html($storyzName);
+  }
+  
+  // Return a default message if storyz_name is not found
+  return 'Storyz name not found.';
+}
+
+// Register the shortcode [storyz_name]
+add_shortcode('storyz_name', 'get_storyz_name');
+
+
+
+function get_hosted_by() {
+  // Fetch the API data
+  $data = fetch_api_data();
+  
+  // Check if the data is not empty and the "hosted_by" key exists
+  if (!empty($data) && isset($data['data']['storyz']['hosted_by'])) {
+      // Get the "hosted_by" data
+      $hostedBy = $data['data']['storyz']['hosted_by'];
+      $host='Hosted by : ' .$hostedBy;
+      // Return the "hosted_by" data
+      return $host;
+  }
+  
+  // Return a default message if "hosted_by" is not found
+  return 'Hosted by data not found.';
+}
+
+// Register the shortcode [hosted_by]
+add_shortcode('hosted_by', 'get_hosted_by');
+
+
+
+function get_our_storyz_description() {
+  // Fetch the API data
+  $data = fetch_api_data();
+  
+  // Check if the data is not empty and the "our_storyz_description" key exists
+  if (!empty($data) && isset($data['data']['storyz']['our_storyz_description'])) {
+      // Get the "our_storyz_description" data
+      $ourStoryzDescription = $data['data']['storyz']['our_storyz_description'];
+      
+      // Return the "our_storyz_description" data
+      return $ourStoryzDescription;
+  }
+  
+  // Return a default message if "our_storyz_description" is not found
+  return 'Our Storyz description not found.';
+}
+
+// Register the shortcode [our_storyz_description]
+add_shortcode('our_storyz_description', 'get_our_storyz_description');

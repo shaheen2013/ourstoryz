@@ -68,7 +68,7 @@
             <div class="container">
                 <label for="options" class="form-label">Select a number:</label>
                 <select id="options" class="form-select">
-                    <option value="6946">Avalone</option>
+                    <option value="6378">Avalone</option>
                     <option value="6930">Basic</option>
 
                 </select>
