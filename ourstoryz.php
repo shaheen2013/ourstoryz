@@ -878,7 +878,15 @@ function display_guests_images_and_names()
         $output = '<div class="container">';
         $output .= '<div class="row justify-content-center">';
 
+        // Counter to keep track of the number of images displayed
+        $count = 0;
+
         foreach ($guests_data['data'] as $guest) {
+            // Limit the number of images displayed to 4
+            if ($count >= 4) {
+                break;
+            }
+
             $full_name = '';
             $image_url = '';
 
@@ -894,10 +902,11 @@ function display_guests_images_and_names()
 
             // If full_name and image_url are not empty, add them to the list
             if (!empty($full_name) && !empty($image_url)) {
-                $output .= '<div class="col-4 col-md-2 text-center">';
+                $output .= '<div class="col-6 col-md-3 text-center">';
                 $output .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($full_name) . '" class="rounded-circle img-fluid">';
                 $output .= '<div class="mt-2">' . esc_html($full_name) . '</div>';
                 $output .= '</div>';
+                $count++;
             }
         }
 
@@ -910,6 +919,7 @@ function display_guests_images_and_names()
 }
 
 add_shortcode('guests_images_and_names', 'display_guests_images_and_names');
+
 
 
 
