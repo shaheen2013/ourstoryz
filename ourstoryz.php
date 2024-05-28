@@ -958,7 +958,9 @@ add_shortcode('guests_count', 'display_guests_count');
 
 
 function display_related_event_info()
-{
+{ 
+  var_dump("2025");
+  die();
   $data = fetch_api_data();
 
   // Check if the data is not empty and contains necessary keys
