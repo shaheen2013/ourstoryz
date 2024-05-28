@@ -875,7 +875,8 @@ function display_guests_images_and_names()
             return 'No guests found.';
         }
 
-        $output = '<div class="row">';
+        $output = '<div class="container">';
+        $output .= '<div class="row justify-content-center">';
 
         foreach ($guests_data['data'] as $guest) {
             $full_name = '';
@@ -893,13 +894,14 @@ function display_guests_images_and_names()
 
             // If full_name and image_url are not empty, add them to the list
             if (!empty($full_name) && !empty($image_url)) {
-                $output .= '<div class="col-md-4 text-center">';
-                $output .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($full_name) . '" class="img-fluid">';
-                $output .= '<p>' . esc_html($full_name) . '</p>';
+                $output .= '<div class="col-4 col-md-2 text-center">';
+                $output .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($full_name) . '" class="rounded-circle img-fluid">';
+                $output .= '<div class="mt-2">' . esc_html($full_name) . '</div>';
                 $output .= '</div>';
             }
         }
 
+        $output .= '</div>';
         $output .= '</div>';
         return $output;
     } else {
@@ -908,6 +910,7 @@ function display_guests_images_and_names()
 }
 
 add_shortcode('guests_images_and_names', 'display_guests_images_and_names');
+
 
 
 function display_guests_count()
