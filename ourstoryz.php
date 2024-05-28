@@ -574,38 +574,74 @@ function fetch_related_events_data($storyz_id, $related_event_id)
 
 function display_related_events_name()
 {
+    $data = fetch_api_data();
 
-  $data = fetch_api_data();
+    // Check if the data is not empty and the required keys exist
+    if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+        // Get the "our_storyz_description" data
+        $storyz_id = $data['data']['storyz']['id'];
+        $event_id = $data['data']['id'];
 
-  // Check if the data is not empty and the "our_storyz_description" key exists
-  if (!empty($data) && (isset($data['data']['storyz']['id']) && isset($data['data']['id']))) {
-    // Get the "our_storyz_description" data
-    $storyz_id = $data['data']['storyz']['id'];
-    $event_id = $data['data']['id'];
+        // Fetch related events data
+        $data = fetch_related_events_data($storyz_id, $event_id);
 
-    // Return the "our_storyz_description" data
+        if (empty($data) || !isset($data['data'])) {
+            return 'No related events found.';
+        }
 
-    $data = fetch_related_events_data($storyz_id, $event_id);
+        $output = '<div class="container mt-5">';
 
+        foreach ($data['data'] as $event) {
+            // Check if all required fields are set
+            if (isset($event['event_name'], $event['event_type'], $event['cover_image'], $event['rsvp_deadline'], $event['event_start_date'], $event['event_end_date'], $event['location'])) {
+                
+                // Format the RSVP deadline
+                $rsvp_deadline = new DateTime($event['rsvp_deadline']);
+                $formatted_rsvp_deadline = $rsvp_deadline->format('M j');
 
-    if (empty($data) || !isset($data['data'])) {
-      return 'No related events found.';
+                // Format the event start and end dates
+                $event_start_date = new DateTime($event['event_start_date']);
+                $event_end_date = new DateTime($event['event_end_date']);
+                if ($event_start_date->format('Y-m-d') === $event_end_date->format('Y-m-d')) {
+                    $formatted_event_dates = $event_start_date->format('F j, Y');
+                } else {
+                    $formatted_event_dates = $event_start_date->format('F j') . ' - ' . $event_end_date->format('j, Y');
+                }
+
+                // Build the event card
+                $output .= '<div class="card p-3 mb-3">';
+                $output .= '<div class="row g-0">';
+                $output .= '<div class="col-md-2">';
+                $output .= '<img src="' . esc_url($event['cover_image']) . '" class="img-fluid rounded-start card-img" alt="' . esc_attr($event['event_name']) . '">';
+                $output .= '</div>';
+                $output .= '<div class="col-md-10">';
+                $output .= '<div class="card-body d-flex align-items-center justify-content-between">';
+                $output .= '<div>';
+                $output .= '<h5 class="card-title">' . esc_html($event['event_name']) . '</h5>';
+                $output .= '<p class="card-text text-muted">' . esc_html($event['event_type']) . ' &bull; RSVP by ' . esc_html($formatted_rsvp_deadline) . '</p>';
+                $output .= '</div>';
+                $output .= '<div>';
+                $output .= '<p class="date-text">' . esc_html($formatted_event_dates) . '</p>';
+                $output .= '</div>';
+                $output .= '<div>';
+                $output .= '<p class="link-text">' . esc_html($event['location']) . ' <small class="text-muted arrow">&rarr;</small></p>';
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '</div>';
+            }
+        }
+
+        $output .= '</div>';
+        return $output;
+    } else {
+        return 'No data available.';
     }
-
-    $output = '<ul>';
-
-    foreach ($data['data'] as $event) {
-      if (isset($event['event_name'])) {
-        $output .= '<li>' . esc_html($event['event_name']) . '</li>';
-      }
-    }
-
-    $output .= '</ul>';
-    return $output;
-  }
 }
 
 add_shortcode('related_events_names', 'display_related_events_name');
+
 
 
 
@@ -782,7 +818,7 @@ function fetch_related_guests_data($related_event_id)
 
 
 
-// function display_related_events_guests_image()
+ 
 // {
 //     $data = fetch_api_data();
 
@@ -959,8 +995,7 @@ add_shortcode('guests_count', 'display_guests_count');
 
 function display_related_event_info()
 { 
-  var_dump("2025");
-  die();
+  
   $data = fetch_api_data();
 
   // Check if the data is not empty and contains necessary keys
