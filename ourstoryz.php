@@ -1009,6 +1009,8 @@ function display_related_event_info()
    
     // Fetch related events data
     $related_events = fetch_related_events_data($storyz_id, $event_id);
+    var_dump($related_events );
+    die();
 
     if (empty($related_events) || !isset($related_events['data'])) {
       return 'No related events found.';
@@ -1019,8 +1021,7 @@ function display_related_event_info()
     foreach ($related_events['data'] as $event) {
       if (isset($event['title']) && isset($event['description']) && isset($event['event_start_date']) && isset($event['event_end_date'])) {
         $title = esc_html($event['title']);
-        var_dump($title );
-        die();
+      
         $description = esc_html($event['description']);
         $start_date = new DateTime($event['event_start_date']);
         $end_date = new DateTime($event['event_end_date']);
