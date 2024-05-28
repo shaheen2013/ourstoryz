@@ -1006,8 +1006,7 @@ function display_related_event_info()
     // Get the "our_storyz_description" data
     $storyz_id = $data['data']['storyz']['id'];
     $event_id = $data['data']['id'];
-    var_dump($storyz_id, $event_id);
-    die();
+   
     // Fetch related events data
     $related_events = fetch_related_events_data($storyz_id, $event_id);
 
@@ -1020,6 +1019,8 @@ function display_related_event_info()
     foreach ($related_events['data'] as $event) {
       if (isset($event['title']) && isset($event['description']) && isset($event['event_start_date']) && isset($event['event_end_date'])) {
         $title = esc_html($event['title']);
+        var_dump($title );
+        die();
         $description = esc_html($event['description']);
         $start_date = new DateTime($event['event_start_date']);
         $end_date = new DateTime($event['event_end_date']);
