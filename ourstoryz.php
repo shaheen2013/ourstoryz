@@ -324,6 +324,7 @@ function fetch_api_data()
 // Fetch and return event name
 function get_event_name()
 {
+  
   $data = fetch_api_data();
   if (!empty($data) && isset($data['data']['event_name'])) {
     return esc_html($data['data']['event_name']);
@@ -331,6 +332,23 @@ function get_event_name()
   return 'Event name not found.';
 }
 add_shortcode('event_name', 'get_event_name');
+
+
+function get_event_cover_image()
+{ 
+    $data = fetch_api_data();
+
+    if (!empty($data) && isset($data['data']['cover_image'])) {
+        // Construct the image tag with the cover image URL
+         
+        $image_tag = '<img src="' . esc_url($data['data']['cover_image']) . '" alt="Event Cover Image">';
+        return $image_tag;
+    }
+    return 'Event cover image not found.';
+}
+
+add_shortcode('event_cover_image', 'get_event_cover_image');
+
 
 // Fetch and return event description
 function get_event_description()

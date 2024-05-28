@@ -49,6 +49,7 @@ jQuery(document).ready(function ($) {
 		} else {
 			var baseUrl = window.location.origin;
 			var newUrl = baseUrl + '/wpdev/find-your-event/?event=' + encodeURIComponent(inputValue);
+            // var newUrl = baseUrl + '/find-your-event/?event=' + encodeURIComponent(inputValue);
 			window.open(newUrl, '_blank', 'noopener,noreferrer'); // Open the URL in a new window
 		}
 	});
