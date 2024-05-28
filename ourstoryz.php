@@ -861,6 +861,9 @@ add_shortcode('guests_names', 'display_guests_names');
 
 function display_guests_images_and_names()
 {
+  $version = phpversion();
+var_dump($version);
+die();
     $data = fetch_api_data();
 
     // Check if the data is not empty
