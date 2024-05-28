@@ -48,7 +48,7 @@ jQuery(document).ready(function ($) {
 			$('#wp-block-search__input-1').after(errorElement);
 		} else {
 			var baseUrl = window.location.origin;
-			var newUrl = baseUrl + '/find-your-event/?event=' + encodeURIComponent(inputValue);
+			var newUrl = baseUrl + '/wpdev/find-your-event/?event=' + encodeURIComponent(inputValue);
 			window.open(newUrl, '_blank', 'noopener,noreferrer'); // Open the URL in a new window
 		}
 	});
