@@ -859,6 +859,57 @@ function display_guests_names()
 
 add_shortcode('guests_names', 'display_guests_names');
 
+function display_guests_images_and_names()
+{
+    $data = fetch_api_data();
+
+    // Check if the data is not empty
+    if (!empty($data) && isset($data['data']['id'])) {
+        // Get the event ID
+        $event_id = $data['data']['id'];
+
+        // Fetch related guests data
+        $guests_data = fetch_related_guests_data($event_id);
+
+        if (empty($guests_data) || !isset($guests_data['data'])) {
+            return 'No guests found.';
+        }
+
+        $output = '<div class="row">';
+
+        foreach ($guests_data['data'] as $guest) {
+            $full_name = '';
+            $image_url = '';
+
+            // Check if both first_name and last_name are set
+            if (isset($guest['first_name']) && isset($guest['last_name'])) {
+                $full_name = $guest['first_name'] . ' ' . $guest['last_name'];
+            }
+
+            // Check if imageUrl is set
+            if (isset($guest['imageUrl']) && !empty($guest['imageUrl'])) {
+                $image_url = $guest['imageUrl'];
+            }
+
+            // If full_name and image_url are not empty, add them to the list
+            if (!empty($full_name) && !empty($image_url)) {
+                $output .= '<div class="col-md-4 text-center">';
+                $output .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($full_name) . '" class="img-fluid">';
+                $output .= '<p>' . esc_html($full_name) . '</p>';
+                $output .= '</div>';
+            }
+        }
+
+        $output .= '</div>';
+        return $output;
+    } else {
+        return 'No data available.';
+    }
+}
+
+add_shortcode('guests_images_and_names', 'display_guests_images_and_names');
+
+
 function display_guests_count()
 {
     $data = fetch_api_data();
