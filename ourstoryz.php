@@ -882,7 +882,7 @@ function display_guests_count()
         if ($guests_count > 1) {
             return $guests_count . ' guests attending.';
         } else {
-            return '1 guest attending.';
+            return $guests_count .' guest attending.';
         }
     } else {
         return 'No data available.';
