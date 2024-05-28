@@ -872,13 +872,18 @@ function display_guests_count()
         $guests_data = fetch_related_guests_data($event_id);
 
         if (empty($guests_data) || !isset($guests_data['data'])) {
-            return '0 guests attending.';
+            return 'No guests attending.';
         }
 
         // Count the number of guests
         $guests_count = count($guests_data['data']);
 
-        return $guests_count . ' guest(s) attending.';
+        // Check if the count is greater than 1
+        if ($guests_count > 1) {
+            return $guests_count . ' guests attending.';
+        } else {
+            return '1 guest attending.';
+        }
     } else {
         return 'No data available.';
     }
