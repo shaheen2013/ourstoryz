@@ -498,7 +498,7 @@ function get_hosted_by()
   if (!empty($data) && isset($data['data']['storyz']['hosted_by'])) {
     // Get the "hosted_by" data
     $hostedBy = $data['data']['storyz']['hosted_by'];
-    $host = 'Hosted by : ' . $hostedBy;
+    $host = $hostedBy;
     // Return the "hosted_by" data
     return $host;
   }
@@ -861,9 +861,7 @@ add_shortcode('guests_names', 'display_guests_names');
 
 function display_guests_images_and_names()
 {
-  $version = phpversion();
-var_dump($version);
-die();
+  
     $data = fetch_api_data();
 
     // Check if the data is not empty
