@@ -998,8 +998,7 @@ add_shortcode('guests_count', 'display_guests_count');
 
 function display_related_event_info()
 { 
-   var_dump('2025..');
-   die();
+  
   $data = fetch_api_data();
 
   // Check if the data is not empty and contains necessary keys
@@ -1007,6 +1006,8 @@ function display_related_event_info()
     // Get the "our_storyz_description" data
     $storyz_id = $data['data']['storyz']['id'];
     $event_id = $data['data']['id'];
+    var_dump($storyz_id, $event_id);
+    die();
     // Fetch related events data
     $related_events = fetch_related_events_data($storyz_id, $event_id);
 
