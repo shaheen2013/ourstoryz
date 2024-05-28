@@ -880,9 +880,9 @@ function display_guests_count()
 
         // Check if the count is greater than 1
         if ($guests_count > 1) {
-            return $guests_count . ' guests attending.';
+            return $guests_count  ;
         } else {
-            return $guests_count .' guest attending.';
+            return $guests_count  ;
         }
     } else {
         return 'No data available.';
