@@ -858,3 +858,30 @@ function display_guests_names()
 }
 
 add_shortcode('guests_names', 'display_guests_names');
+
+function display_guests_count()
+{
+    $data = fetch_api_data();
+
+    // Check if the data is not empty
+    if (!empty($data) && isset($data['data']['id'])) {
+        // Get the event ID
+        $event_id = $data['data']['id'];
+
+        // Fetch related guests data
+        $guests_data = fetch_related_guests_data($event_id);
+
+        if (empty($guests_data) || !isset($guests_data['data'])) {
+            return '0 guests attending.';
+        }
+
+        // Count the number of guests
+        $guests_count = count($guests_data['data']);
+
+        return $guests_count . ' guest(s) attending.';
+    } else {
+        return 'No data available.';
+    }
+}
+
+add_shortcode('guests_count', 'display_guests_count');
