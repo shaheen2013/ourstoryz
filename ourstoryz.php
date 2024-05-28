@@ -324,7 +324,7 @@ function fetch_api_data()
 // Fetch and return event name
 function get_event_name()
 {
-  
+
   $data = fetch_api_data();
   if (!empty($data) && isset($data['data']['event_name'])) {
     return esc_html($data['data']['event_name']);
@@ -335,16 +335,16 @@ add_shortcode('event_name', 'get_event_name');
 
 
 function get_event_cover_image()
-{ 
-    $data = fetch_api_data();
+{
+  $data = fetch_api_data();
 
-    if (!empty($data) && isset($data['data']['cover_image'])) {
-        // Construct the image tag with the cover image URL
-         
-        $image_tag = '<img src="' . esc_url($data['data']['cover_image']) . '" alt="Event Cover Image" style="width: 100%;">';
-        return $image_tag;
-    }
-    return 'Event cover image not found.';
+  if (!empty($data) && isset($data['data']['cover_image'])) {
+    // Construct the image tag with the cover image URL
+
+    $image_tag = '<img src="' . esc_url($data['data']['cover_image']) . '" alt="Event Cover Image" style="width: 100%;">';
+    return $image_tag;
+  }
+  return 'Event cover image not found.';
 }
 
 add_shortcode('event_cover_image', 'get_event_cover_image');
@@ -686,44 +686,44 @@ add_shortcode('rsvp_deadlines', 'display_rsvp_deadlines');
 
 function display_date()
 {
-    $data = fetch_api_data();
-    // Check if the data is not empty and the "our_storyz_description" key exists
-    if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
-        // Get the "our_storyz_description" data
-        $storyz_id = $data['data']['storyz']['id'];
-        $event_id = $data['data']['id'];
+  $data = fetch_api_data();
+  // Check if the data is not empty and the "our_storyz_description" key exists
+  if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+    // Get the "our_storyz_description" data
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
 
-        // Fetch related events data
-        $data = fetch_related_events_data($storyz_id, $event_id);
+    // Fetch related events data
+    $data = fetch_related_events_data($storyz_id, $event_id);
 
-        if (empty($data) || !isset($data['data'])) {
-            return 'No RSVP deadlines found.';
-        }
-
-        $output = '<ul>';
-
-        foreach ($data['data'] as $event) {
-            if (isset($event['event_start_date']) && isset($event['event_end_date'])) {
-
-                $eventStartDate = new DateTime($event['event_start_date']);
-                $eventEndDate = new DateTime($event['event_end_date']);
-                if ($eventStartDate->format('Y-m-d') === $eventEndDate->format('Y-m-d')) {
-                    // Same day event
-                    $formattedDate = $eventStartDate->format('F j, Y');
-                } else {
-                    // Multi-day event
-                    $formattedDate = $eventStartDate->format('F j') . '-' . $eventEndDate->format('j, Y');
-                }
-                $output .= '<li>' . esc_html($formattedDate) . '</li>';
-            }
-        }
-
-        $output .= '</ul>';
-        return $output;
-
-    } else {
-        return 'No data available.';
+    if (empty($data) || !isset($data['data'])) {
+      return 'No RSVP deadlines found.';
     }
+
+    $output = '<ul>';
+
+    foreach ($data['data'] as $event) {
+      if (isset($event['event_start_date']) && isset($event['event_end_date'])) {
+
+        $eventStartDate = new DateTime($event['event_start_date']);
+        $eventEndDate = new DateTime($event['event_end_date']);
+        if ($eventStartDate->format('Y-m-d') === $eventEndDate->format('Y-m-d')) {
+          // Same day event
+          $formattedDate = $eventStartDate->format('F j, Y');
+        } else {
+          // Multi-day event
+          $formattedDate = $eventStartDate->format('F j') . '-' . $eventEndDate->format('j, Y');
+        }
+        $output .= '<li>' . esc_html($formattedDate) . '</li>';
+      }
+    }
+
+    $output .= '</ul>';
+    return $output;
+
+  } else {
+    return 'No data available.';
+  }
 }
 
 add_shortcode('display_date', 'display_date');
@@ -769,7 +769,7 @@ add_shortcode('related_events_location', 'display_related_events_location');
 
 function fetch_related_guests_data($related_event_id)
 {
-  
+
   $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/guest/list?event_id=" . intval($related_event_id));
 
   if (is_wp_error($response)) {
@@ -782,141 +782,141 @@ function fetch_related_guests_data($related_event_id)
 
 
 
-function display_related_events_guests_image()
-{
-    $data = fetch_api_data();
+// function display_related_events_guests_image()
+// {
+//     $data = fetch_api_data();
 
-    // Check if the data is not empty and the "our_storyz_description" key exists
-    if (!empty($data) && isset($data['data']['id'])) {
-        // Get the "our_storyz_description" data
-        $event_id = $data['data']['id'];
+//     // Check if the data is not empty and the "our_storyz_description" key exists
+//     if (!empty($data) && isset($data['data']['id'])) {
+//         // Get the "our_storyz_description" data
+//         $event_id = $data['data']['id'];
 
-        // Fetch related guests data
-        $data = fetch_related_guests_data($event_id);
+//         // Fetch related guests data
+//         $data = fetch_related_guests_data($event_id);
 
-        if (empty($data) || !isset($data['data'])) {
-            return 'No related events found.';
-        }
+//         if (empty($data) || !isset($data['data'])) {
+//             return 'No related events found.';
+//         }
 
-        $output = '<ul>';
+//         $output = '<ul>';
 
-        foreach ($data['data'] as $event) {
-            if (isset($event['imageUrl']) && !empty($event['imageUrl'])) {
-                // If image URL is available, add it to the list
-                $output .= '<li><img src="' . esc_url($event['imageUrl']) . '" alt="Guest Image"></li>';
-            }
-        }
+//         foreach ($data['data'] as $event) {
+//             if (isset($event['imageUrl']) && !empty($event['imageUrl'])) {
+//                 // If image URL is available, add it to the list
+//                 $output .= '<li><img src="' . esc_url($event['imageUrl']) . '" alt="Guest Image"></li>';
+//             }
+//         }
 
-        $output .= '</ul>';
-        return $output;
-    } else {
-        return 'No data available.';
-    }
-}
+//         $output .= '</ul>';
+//         return $output;
+//     } else {
+//         return 'No data available.';
+//     }
+// }
 
-add_shortcode('related_events_guests_image', 'display_related_events_guests_image');
+// add_shortcode('related_events_guests_image', 'display_related_events_guests_image');
 
 
 
-function display_guests_names()
-{
-    $data = fetch_api_data();
+// function display_guests_names()
+// {
+//     $data = fetch_api_data();
 
-    // Check if the data is not empty
-    if (!empty($data) && isset($data['data']['id'])) {
-        // Get the event ID
-        $event_id = $data['data']['id'];
+//     // Check if the data is not empty
+//     if (!empty($data) && isset($data['data']['id'])) {
+//         // Get the event ID
+//         $event_id = $data['data']['id'];
 
-        // Fetch related guests data
-        $guests_data = fetch_related_guests_data($event_id);
+//         // Fetch related guests data
+//         $guests_data = fetch_related_guests_data($event_id);
 
-        if (empty($guests_data) || !isset($guests_data['data'])) {
-            return 'No guests found.';
-        }
+//         if (empty($guests_data) || !isset($guests_data['data'])) {
+//             return 'No guests found.';
+//         }
 
-        $output = '<ul>';
+//         $output = '<ul>';
 
-        foreach ($guests_data['data'] as $guest) {
-            $full_name = '';
+//         foreach ($guests_data['data'] as $guest) {
+//             $full_name = '';
 
-            // Check if both first_name and last_name are set
-            if (isset($guest['first_name']) && isset($guest['last_name'])) {
-                $full_name = $guest['first_name'] . ' ' . $guest['last_name'];
-            }
+//             // Check if both first_name and last_name are set
+//             if (isset($guest['first_name']) && isset($guest['last_name'])) {
+//                 $full_name = $guest['first_name'] . ' ' . $guest['last_name'];
+//             }
 
-            // If full_name is not empty, add it to the list
-            if (!empty($full_name)) {
-                $output .= '<li>' . esc_html($full_name) . '</li>';
-            }
-        }
+//             // If full_name is not empty, add it to the list
+//             if (!empty($full_name)) {
+//                 $output .= '<li>' . esc_html($full_name) . '</li>';
+//             }
+//         }
 
-        $output .= '</ul>';
-        return $output;
-    } else {
-        return 'No data available.';
-    }
-}
+//         $output .= '</ul>';
+//         return $output;
+//     } else {
+//         return 'No data available.';
+//     }
+// }
 
-add_shortcode('guests_names', 'display_guests_names');
+// add_shortcode('guests_names', 'display_guests_names');
 
 function display_guests_images_and_names()
 {
-  
-    $data = fetch_api_data();
 
-    // Check if the data is not empty
-    if (!empty($data) && isset($data['data']['id'])) {
-        // Get the event ID
-        $event_id = $data['data']['id'];
+  $data = fetch_api_data();
 
-        // Fetch related guests data
-        $guests_data = fetch_related_guests_data($event_id);
+  // Check if the data is not empty
+  if (!empty($data) && isset($data['data']['id'])) {
+    // Get the event ID
+    $event_id = $data['data']['id'];
 
-        if (empty($guests_data) || !isset($guests_data['data'])) {
-            return 'No guests found.';
-        }
+    // Fetch related guests data
+    $guests_data = fetch_related_guests_data($event_id);
 
-        $output = '<div class="container">';
-        $output .= '<div class="row justify-content-center">';
-
-        // Counter to keep track of the number of images displayed
-        $count = 0;
-
-        foreach ($guests_data['data'] as $guest) {
-            // Limit the number of images displayed to 4
-            if ($count >= 4) {
-                break;
-            }
-
-            $full_name = '';
-            $image_url = '';
-
-            // Check if both first_name and last_name are set
-            if (isset($guest['first_name']) && isset($guest['last_name'])) {
-                $full_name = $guest['first_name'] . ' ' . $guest['last_name'];
-            }
-
-            // Check if imageUrl is set
-            if (isset($guest['imageUrl']) && !empty($guest['imageUrl'])) {
-                $image_url = $guest['imageUrl'];
-            }
-
-            // If full_name and image_url are not empty, add them to the list
-            if (!empty($full_name) && !empty($image_url)) {
-                $output .= '<div class="col-6 col-md-3 text-center">';
-                $output .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($full_name) . '" class="rounded-circle img-fluid">';
-                $output .= '<div class="mt-2">' . esc_html($full_name) . '</div>';
-                $output .= '</div>';
-                $count++;
-            }
-        }
-
-        $output .= '</div>';
-        $output .= '</div>';
-        return $output;
-    } else {
-        return 'No data available.';
+    if (empty($guests_data) || !isset($guests_data['data'])) {
+      return 'No guests found.';
     }
+
+    $output = '<div class="container">';
+    $output .= '<div class="row justify-content-center">';
+
+    // Counter to keep track of the number of images displayed
+    $count = 0;
+
+    foreach ($guests_data['data'] as $guest) {
+      // Limit the number of images displayed to 4
+      if ($count >= 4) {
+        break;
+      }
+
+      $full_name = '';
+      $image_url = '';
+
+      // Check if both first_name and last_name are set
+      if (isset($guest['first_name']) && isset($guest['last_name'])) {
+        $full_name = $guest['first_name'] . ' ' . $guest['last_name'];
+      }
+
+      // Check if imageUrl is set
+      if (isset($guest['imageUrl']) && !empty($guest['imageUrl'])) {
+        $image_url = $guest['imageUrl'];
+      }
+
+      // If full_name and image_url are not empty, add them to the list
+      if (!empty($full_name) && !empty($image_url)) {
+        $output .= '<div class="col-6 col-md-3 text-center">';
+        $output .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($full_name) . '" class="rounded-circle img-fluid">';
+        $output .= '<div class="mt-2">' . esc_html($full_name) . '</div>';
+        $output .= '</div>';
+        $count++;
+      }
+    }
+
+    $output .= '</div>';
+    $output .= '</div>';
+    return $output;
+  } else {
+    return 'No data available.';
+  }
 }
 
 add_shortcode('guests_images_and_names', 'display_guests_images_and_names');
@@ -926,32 +926,89 @@ add_shortcode('guests_images_and_names', 'display_guests_images_and_names');
 
 function display_guests_count()
 {
-    $data = fetch_api_data();
+  $data = fetch_api_data();
 
-    // Check if the data is not empty
-    if (!empty($data) && isset($data['data']['id'])) {
-        // Get the event ID
-        $event_id = $data['data']['id'];
+  // Check if the data is not empty
+  if (!empty($data) && isset($data['data']['id'])) {
+    // Get the event ID
+    $event_id = $data['data']['id'];
 
-        // Fetch related guests data
-        $guests_data = fetch_related_guests_data($event_id);
+    // Fetch related guests data
+    $guests_data = fetch_related_guests_data($event_id);
 
-        if (empty($guests_data) || !isset($guests_data['data'])) {
-            return 'No guests attending.';
-        }
-
-        // Count the number of guests
-        $guests_count = count($guests_data['data']);
-
-        // Check if the count is greater than 1
-        if ($guests_count > 1) {
-            return $guests_count  ;
-        } else {
-            return $guests_count  ;
-        }
-    } else {
-        return 'No data available.';
+    if (empty($guests_data) || !isset($guests_data['data'])) {
+      return 'No guests attending.';
     }
+
+    // Count the number of guests
+    $guests_count = count($guests_data['data']);
+
+    // Check if the count is greater than 1
+    if ($guests_count > 1) {
+      return $guests_count;
+    } else {
+      return $guests_count;
+    }
+  } else {
+    return 'No data available.';
+  }
 }
 
 add_shortcode('guests_count', 'display_guests_count');
+
+
+function display_related_event_info()
+{
+  $data = fetch_api_data();
+
+  // Check if the data is not empty and contains necessary keys
+  if (!empty($data) && (isset($data['data']['storyz']['id']) && isset($data['data']['id']))) {
+    // Get the "our_storyz_description" data
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
+    // Fetch related events data
+    $related_events = fetch_related_events_data($storyz_id, $event_id);
+
+    if (empty($related_events) || !isset($related_events['data'])) {
+      return 'No related events found.';
+    }
+
+    $output = '<div class="related-events">';
+
+    foreach ($related_events['data'] as $event) {
+      if (isset($event['title']) && isset($event['description']) && isset($event['event_start_date']) && isset($event['event_end_date'])) {
+        $title = esc_html($event['title']);
+        $description = esc_html($event['description']);
+        $start_date = new DateTime($event['event_start_date']);
+        $end_date = new DateTime($event['event_end_date']);
+        $formatted_date = $start_date->format('F j, Y') . ($start_date->format('Y-m-d') !== $end_date->format('Y-m-d') ? ' - ' . $end_date->format('F j, Y') : '');
+        $cover_image = isset($event['cover_image']) ? esc_url($event['cover_image']) : '';
+        $event_type = isset($event['event_type']) ? esc_html($event['event_type']) : 'N/A';
+        $rsvp_deadline = isset($event['rsvp_deadline']) ? (new DateTime($event['rsvp_deadline']))->format('F j, Y') : 'N/A';
+        $location = isset($event['location']) ? esc_html($event['location']) : 'N/A';
+
+        $output .= '<div class="event">';
+        if (!empty($cover_image)) {
+          $output .= '<div class="event-image"><img src="' . $cover_image . '" alt="' . $title . '" style="width: 100%;"></div>';
+        }
+        $output .= '<div class="event-info">';
+        $output .= '<h3 class="event-title">' . $title . '</h3>';
+        $output .= '<div class="event-type"><strong>Type:</strong> ' . $event_type . '</div>';
+        $output .= '<div class="event-date"><strong>Date:</strong> ' . $formatted_date . '</div>';
+        $output .= '<div class="event-rsvp"><strong>RSVP by:</strong> ' . $rsvp_deadline . '</div>';
+        $output .= '<div class="event-location"><strong>Location:</strong> ' . $location . '</div>';
+        $output .= '<div class="event-description">' . $description . '</div>';
+        $output .= '</div>'; // .event-info
+        $output .= '</div>'; // .event
+      }
+    }
+
+    $output .= '</div>'; // .related-events
+
+    return $output;
+  } else {
+    return 'No data available.';
+  }
+}
+
+add_shortcode('related_event_info', 'display_related_event_info');
