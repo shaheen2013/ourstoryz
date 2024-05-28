@@ -218,10 +218,13 @@ function enqueue_custom_script()
   wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/custom-script.js', array('jquery'), '1.0', true);
 
   // Localize script with AJAX URL and nonce
-  wp_localize_script('custom-script', 'ajax_object', array(
-    'ajax_url' => admin_url('admin-ajax.php'),
-    'ajax_nonce' => wp_create_nonce('fetch_mini_website_template_nonce')
-  )
+  wp_localize_script(
+    'custom-script',
+    'ajax_object',
+    array(
+      'ajax_url' => admin_url('admin-ajax.php'),
+      'ajax_nonce' => wp_create_nonce('fetch_mini_website_template_nonce')
+    )
   );
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_script');
@@ -258,7 +261,7 @@ function fetch_mini_website_template()
     // Set default ID if API response is invalid or mini_website_template_id is not set
     $updated_value = get_option('default_template');
 
-    $miniWebsiteTemplateId =  $updated_value; // Replace 'default_id' with your actual default ID
+    $miniWebsiteTemplateId = $updated_value; // Replace 'default_id' with your actual default ID
   } else {
     $miniWebsiteTemplateId = $data->data->mini_website_template_id;
   }
@@ -274,16 +277,20 @@ add_action('wp_ajax_nopriv_fetch_mini_website_template', 'fetch_mini_website_tem
 
 
 // Function to fetch API data
-function fetch_api_data() {
+function fetch_api_data()
+{
   $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : '';
   $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/storyz?event_id=" . $event_id);
- 
+
   if (is_wp_error($response)) {
-      return null;
+    return null;
   }
   $body = wp_remote_retrieve_body($response);
   return json_decode($body, true);
 }
+
+// Related event api fetch 
+
 
 // Function to fetch mini website template
 // function fetch_mini_website_template()
@@ -315,29 +322,31 @@ function fetch_api_data() {
 // add_action('wp_ajax_nopriv_fetch_mini_website_template', 'fetch_mini_website_template');
 
 // Fetch and return event name
-function get_event_name() {
+function get_event_name()
+{
   $data = fetch_api_data();
   if (!empty($data) && isset($data['data']['event_name'])) {
-      return esc_html($data['data']['event_name']);
+    return esc_html($data['data']['event_name']);
   }
   return 'Event name not found.';
 }
 add_shortcode('event_name', 'get_event_name');
 
 // Fetch and return event description
-function get_event_description() {
+function get_event_description()
+{
   // Fetch the API data
   $data = fetch_api_data();
-  
+
   // Check if the data is not empty and the event_description key exists
   if (!empty($data) && isset($data['data']['event_description'])) {
-      // Get the event description
-      $eventDescription = $data['data']['event_description'];
-      
-      // Escape and return the event description
-      return esc_html($eventDescription);
+    // Get the event description
+    $eventDescription = $data['data']['event_description'];
+
+    // Escape and return the event description
+    return esc_html($eventDescription);
   }
-  
+
   // Return a default message if event_description is not found
   return 'Event description not found.';
 }
@@ -347,63 +356,66 @@ add_shortcode('event_description', 'get_event_description');
 
 
 // Fetch and return event start date
-function get_event_end_date() {
+function get_event_end_date()
+{
   $data = fetch_api_data();
   if (!empty($data) && isset($data['data']['event_start_date'])) {
-      // Get the event start date from the API data
-      $eventStartDate = $data['data']['event_start_date'];
+    // Get the event start date from the API data
+    $eventStartDate = $data['data']['event_start_date'];
 
-      // Create a DateTime object from the event start date
-      $date = new DateTime($eventStartDate);
+    // Create a DateTime object from the event start date
+    $date = new DateTime($eventStartDate);
 
-      // Format the date in the desired format
-      $formattedDate = $date->format('l, F d, Y');
+    // Format the date in the desired format
+    $formattedDate = $date->format('l, F d, Y');
 
-      // Escape and return the formatted date
-      return esc_html($formattedDate);
+    // Escape and return the formatted date
+    return esc_html($formattedDate);
   }
   return 'Event start date not found.';
 }
 add_shortcode('event_date', 'get_event_end_date');
 
-function get_rsvp_deadline() {
+function get_rsvp_deadline()
+{
   $data = fetch_api_data();
   if (!empty($data) && isset($data['data']['rsvp_deadline'])) {
-      // Get the RSVP deadline from the API data
-      $rsvpDeadline = $data['data']['rsvp_deadline'];
+    // Get the RSVP deadline from the API data
+    $rsvpDeadline = $data['data']['rsvp_deadline'];
 
-      // Create a DateTime object from the RSVP deadline
-      $date = new DateTime($rsvpDeadline);
+    // Create a DateTime object from the RSVP deadline
+    $date = new DateTime($rsvpDeadline);
 
-      // Format the date in the desired format
-      $formattedDate = 'RSVP by ' . $date->format('F d');
+    // Format the date in the desired format
+    $formattedDate = 'RSVP by ' . $date->format('F d');
 
-      // Escape and return the formatted date
-      return esc_html($formattedDate);
+    // Escape and return the formatted date
+    return esc_html($formattedDate);
   }
   return 'RSVP deadline not found.';
 }
 add_shortcode('rsvp_deadline', 'get_rsvp_deadline');
 
 
-function get_event_start_time() {
+function get_event_start_time()
+{
   $data = fetch_api_data();
   if (!empty($data) && isset($data['data']['event_start_date'])) {
-      // Get the event start date from the API data
-      $eventStartDate = $data['data']['event_start_date'];
+    // Get the event start date from the API data
+    $eventStartDate = $data['data']['event_start_date'];
 
-      // Create a DateTime object from the event start date
-      $date = new DateTime($eventStartDate);
+    // Create a DateTime object from the event start date
+    $date = new DateTime($eventStartDate);
 
-      // Set the timezone to PST (Pacific Standard Time)
-      $timezone = new DateTimeZone('America/Los_Angeles');
-      $date->setTimezone($timezone);
+    // Set the timezone to PST (Pacific Standard Time)
+    $timezone = new DateTimeZone('America/Los_Angeles');
+    $date->setTimezone($timezone);
 
-      // Format the time in the desired format
-      $formattedTime = $date->format('g:ia') . ' PST';
+    // Format the time in the desired format
+    $formattedTime = $date->format('g:ia') . ' PST';
 
-      // Escape and return the formatted time
-      return esc_html($formattedTime);
+    // Escape and return the formatted time
+    return esc_html($formattedTime);
   }
   return 'Event start date not found.';
 }
@@ -411,19 +423,20 @@ add_shortcode('event_start_time', 'get_event_start_time');
 
 
 
-function get_greeting_title() {
+function get_greeting_title()
+{
   // Fetch the API data
   $data = fetch_api_data();
-  
+
   // Check if the data is not empty and the storyz object with greeting_title key exists
   if (!empty($data) && isset($data['data']['storyz']['greeting_title'])) {
-      // Get the greeting title from the storyz object
-      $greetingTitle = $data['data']['storyz']['greeting_title'];
-      
-      // Escape and return the greeting title
-      return esc_html($greetingTitle);
+    // Get the greeting title from the storyz object
+    $greetingTitle = $data['data']['storyz']['greeting_title'];
+
+    // Escape and return the greeting title
+    return esc_html($greetingTitle);
   }
-  
+
   // Return a default message if greeting_title is not found
   return 'Greeting title not found.';
 }
@@ -435,19 +448,20 @@ add_shortcode('greeting_title', 'get_greeting_title');
 
 
 
-function get_storyz_name() {
+function get_storyz_name()
+{
   // Fetch the API data
   $data = fetch_api_data();
-  
+
   // Check if the data is not empty and the storyz_name key exists
   if (!empty($data) && isset($data['data']['storyz']['storyz_name'])) {
-      // Get the storyz name
-      $storyzName = $data['data']['storyz']['storyz_name'];
-      
-      // Escape and return the storyz name
-      return esc_html($storyzName);
+    // Get the storyz name
+    $storyzName = $data['data']['storyz']['storyz_name'];
+
+    // Escape and return the storyz name
+    return esc_html($storyzName);
   }
-  
+
   // Return a default message if storyz_name is not found
   return 'Storyz name not found.';
 }
@@ -457,19 +471,20 @@ add_shortcode('storyz_name', 'get_storyz_name');
 
 
 
-function get_hosted_by() {
+function get_hosted_by()
+{
   // Fetch the API data
   $data = fetch_api_data();
-  
+
   // Check if the data is not empty and the "hosted_by" key exists
   if (!empty($data) && isset($data['data']['storyz']['hosted_by'])) {
-      // Get the "hosted_by" data
-      $hostedBy = $data['data']['storyz']['hosted_by'];
-      $host='Hosted by : ' .$hostedBy;
-      // Return the "hosted_by" data
-      return $host;
+    // Get the "hosted_by" data
+    $hostedBy = $data['data']['storyz']['hosted_by'];
+    $host = 'Hosted by : ' . $hostedBy;
+    // Return the "hosted_by" data
+    return $host;
   }
-  
+
   // Return a default message if "hosted_by" is not found
   return 'Hosted by data not found.';
 }
@@ -479,19 +494,20 @@ add_shortcode('hosted_by', 'get_hosted_by');
 
 
 
-function get_our_storyz_description() {
+function get_our_storyz_description()
+{
   // Fetch the API data
   $data = fetch_api_data();
-  
+
   // Check if the data is not empty and the "our_storyz_description" key exists
   if (!empty($data) && isset($data['data']['storyz']['our_storyz_description'])) {
-      // Get the "our_storyz_description" data
-      $ourStoryzDescription = $data['data']['storyz']['our_storyz_description'];
-      
-      // Return the "our_storyz_description" data
-      return $ourStoryzDescription;
+    // Get the "our_storyz_description" data
+    $ourStoryzDescription = $data['data']['storyz']['our_storyz_description'];
+
+    // Return the "our_storyz_description" data
+    return $ourStoryzDescription;
   }
-  
+
   // Return a default message if "our_storyz_description" is not found
   return 'Our Storyz description not found.';
 }
@@ -500,19 +516,20 @@ function get_our_storyz_description() {
 add_shortcode('our_storyz_description', 'get_our_storyz_description');
 
 
-function get_project_image() {
+function get_project_image()
+{
   // Fetch the API data
   $data = fetch_api_data();
-  
+
   // Check if the data is not empty and the "project_image" key exists
   if (!empty($data) && isset($data['data']['storyz']['project_image'])) {
-      // Get the "project_image" data
-      $projectImage = $data['data']['storyz']['project_image'];
-      
-      // Return the "project_image" data
-      return $projectImage;
+    // Get the "project_image" data
+    $projectImage = $data['data']['storyz']['project_image'];
+
+    // Return the "project_image" data
+    return $projectImage;
   }
-  
+
   // Return a default message if "project_image" is not found
   return 'Project image not found.';
 }
@@ -521,3 +538,305 @@ function get_project_image() {
 add_shortcode('project_image', 'get_project_image');
 
 
+
+// Releted event data fetch 
+
+function fetch_related_events_data($storyz_id, $related_event_id)
+{
+
+  $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/list?storyz_id=" . intval($storyz_id) . "&related_event_id=" . intval($related_event_id));
+
+  if (is_wp_error($response)) {
+    return null;
+  }
+
+  $body = wp_remote_retrieve_body($response);
+  return json_decode($body, true);
+}
+
+function display_related_events_name()
+{
+
+  $data = fetch_api_data();
+
+  // Check if the data is not empty and the "our_storyz_description" key exists
+  if (!empty($data) && (isset($data['data']['storyz']['id']) && isset($data['data']['id']))) {
+    // Get the "our_storyz_description" data
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
+
+    // Return the "our_storyz_description" data
+
+    $data = fetch_related_events_data($storyz_id, $event_id);
+
+
+    if (empty($data) || !isset($data['data'])) {
+      return 'No related events found.';
+    }
+
+    $output = '<ul>';
+
+    foreach ($data['data'] as $event) {
+      if (isset($event['event_name'])) {
+        $output .= '<li>' . esc_html($event['event_name']) . '</li>';
+      }
+    }
+
+    $output .= '</ul>';
+    return $output;
+  }
+}
+
+add_shortcode('related_events_names', 'display_related_events_name');
+
+
+
+function display_related_events_types($atts)
+{
+
+  $data = fetch_api_data();
+
+  // Check if the data is not empty and the "our_storyz_description" key exists
+  if (!empty($data) && (isset($data['data']['storyz']['id']) && isset($data['data']['id']))) {
+    // Get the "our_storyz_description" data
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
+
+    // Return the "our_storyz_description" data
+
+    $data = fetch_related_events_data($storyz_id, $event_id);
+
+
+    if (empty($data) || !isset($data['data'])) {
+      return 'No related events found.';
+    }
+
+    $output = '<ul>';
+
+    foreach ($data['data'] as $event) {
+      if (isset($event['event_type'])) {
+        $output .= '<li>' . esc_html($event['event_type']) . '</li>';
+      }
+    }
+
+    $output .= '</ul>';
+    return $output;
+  }
+}
+
+add_shortcode('related_events_types', 'display_related_events_types');
+
+
+function display_rsvp_deadlines()
+{
+  $data = fetch_api_data();
+  // Check if the data is not empty and the "our_storyz_description" key exists
+  if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+    // Get the "our_storyz_description" data
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
+
+    // Fetch related events data
+    $data = fetch_related_events_data($storyz_id, $event_id);
+
+    if (empty($data) || !isset($data['data'])) {
+      return 'No RSVP deadlines found.';
+    }
+
+    $output = '<ul>';
+
+    foreach ($data['data'] as $event) {
+      if (isset($event['rsvp_deadline'])) {
+        // Parse the deadline date
+        $deadline_date = date_create($event['rsvp_deadline']);
+        // Format the date to display only month and day
+        $formatted_deadline = "RSVP by " . date_format($deadline_date, "M d");
+        $output .= '<li>' . esc_html($formatted_deadline) . '</li>';
+      }
+    }
+
+    $output .= '</ul>';
+    return $output;
+  } else {
+    return 'No data available.';
+  }
+}
+
+add_shortcode('rsvp_deadlines', 'display_rsvp_deadlines');
+
+
+
+function display_date()
+{
+    $data = fetch_api_data();
+    // Check if the data is not empty and the "our_storyz_description" key exists
+    if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+        // Get the "our_storyz_description" data
+        $storyz_id = $data['data']['storyz']['id'];
+        $event_id = $data['data']['id'];
+
+        // Fetch related events data
+        $data = fetch_related_events_data($storyz_id, $event_id);
+
+        if (empty($data) || !isset($data['data'])) {
+            return 'No RSVP deadlines found.';
+        }
+
+        $output = '<ul>';
+
+        foreach ($data['data'] as $event) {
+            if (isset($event['event_start_date']) && isset($event['event_end_date'])) {
+
+                $eventStartDate = new DateTime($event['event_start_date']);
+                $eventEndDate = new DateTime($event['event_end_date']);
+                if ($eventStartDate->format('Y-m-d') === $eventEndDate->format('Y-m-d')) {
+                    // Same day event
+                    $formattedDate = $eventStartDate->format('F j, Y');
+                } else {
+                    // Multi-day event
+                    $formattedDate = $eventStartDate->format('F j') . '-' . $eventEndDate->format('j, Y');
+                }
+                $output .= '<li>' . esc_html($formattedDate) . '</li>';
+            }
+        }
+
+        $output .= '</ul>';
+        return $output;
+
+    } else {
+        return 'No data available.';
+    }
+}
+
+add_shortcode('display_date', 'display_date');
+
+
+function display_related_events_location()
+{
+
+  $data = fetch_api_data();
+
+  // Check if the data is not empty and the "our_storyz_description" key exists
+  if (!empty($data) && (isset($data['data']['storyz']['id']) && isset($data['data']['id']))) {
+    // Get the "our_storyz_description" data
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
+
+    // Return the "our_storyz_description" data
+
+    $data = fetch_related_events_data($storyz_id, $event_id);
+
+
+    if (empty($data) || !isset($data['data'])) {
+      return 'No related events found.';
+    }
+
+    $output = '<ul>';
+
+    foreach ($data['data'] as $event) {
+      if (isset($event['location'])) {
+        $output .= '<li>' . esc_html($event['location']) . '</li>';
+      }
+    }
+
+    $output .= '</ul>';
+    return $output;
+  }
+}
+
+add_shortcode('related_events_location', 'display_related_events_location');
+
+
+// Guests Data fetch
+
+function fetch_related_guests_data($related_event_id)
+{
+  
+  $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/guest/list?event_id=" . intval($related_event_id));
+
+  if (is_wp_error($response)) {
+    return null;
+  }
+
+  $body = wp_remote_retrieve_body($response);
+  return json_decode($body, true);
+}
+
+
+
+function display_related_events_guests_image()
+{
+    $data = fetch_api_data();
+
+    // Check if the data is not empty and the "our_storyz_description" key exists
+    if (!empty($data) && isset($data['data']['id'])) {
+        // Get the "our_storyz_description" data
+        $event_id = $data['data']['id'];
+
+        // Fetch related guests data
+        $data = fetch_related_guests_data($event_id);
+
+        if (empty($data) || !isset($data['data'])) {
+            return 'No related events found.';
+        }
+
+        $output = '<ul>';
+
+        foreach ($data['data'] as $event) {
+            if (isset($event['imageUrl']) && !empty($event['imageUrl'])) {
+                // If image URL is available, add it to the list
+                $output .= '<li><img src="' . esc_url($event['imageUrl']) . '" alt="Guest Image"></li>';
+            }
+        }
+
+        $output .= '</ul>';
+        return $output;
+    } else {
+        return 'No data available.';
+    }
+}
+
+add_shortcode('related_events_guests_image', 'display_related_events_guests_image');
+
+
+
+function display_guests_names()
+{
+    $data = fetch_api_data();
+
+    // Check if the data is not empty
+    if (!empty($data) && isset($data['data']['id'])) {
+        // Get the event ID
+        $event_id = $data['data']['id'];
+
+        // Fetch related guests data
+        $guests_data = fetch_related_guests_data($event_id);
+
+        if (empty($guests_data) || !isset($guests_data['data'])) {
+            return 'No guests found.';
+        }
+
+        $output = '<ul>';
+
+        foreach ($guests_data['data'] as $guest) {
+            $full_name = '';
+
+            // Check if both first_name and last_name are set
+            if (isset($guest['first_name']) && isset($guest['last_name'])) {
+                $full_name = $guest['first_name'] . ' ' . $guest['last_name'];
+            }
+
+            // If full_name is not empty, add it to the list
+            if (!empty($full_name)) {
+                $output .= '<li>' . esc_html($full_name) . '</li>';
+            }
+        }
+
+        $output .= '</ul>';
+        return $output;
+    } else {
+        return 'No data available.';
+    }
+}
+
+add_shortcode('guests_names', 'display_guests_names');
