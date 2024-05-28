@@ -598,6 +598,7 @@ function display_related_events_name()
                 // Format the RSVP deadline
                 $rsvp_deadline = new DateTime($event['rsvp_deadline']);
                 $formatted_rsvp_deadline = $rsvp_deadline->format('M j');
+                 
 
                 // Format the event start and end dates
                 $event_start_date = new DateTime($event['event_start_date']);
@@ -643,6 +644,105 @@ function display_related_events_name()
 add_shortcode('related_events_names', 'display_related_events_name');
 
 
+// test
+function search_result_show_shortcode($atts)
+{
+    // Extract shortcode attributes
+    $atts = shortcode_atts(array(
+        'event' => '',
+    ), $atts, 'search_results');
+
+    // Get and sanitize the value of 'event' from the shortcode attributes
+    $search = sanitize_text_field($atts['event']);
+
+    if (empty($search)) {
+        return "Invalid input.";
+    }
+
+    // Encode the search query
+    $search = urlencode($search);
+
+    // Construct the API endpoint URL with the search key
+    $url = "https://api.dev.ourstoryz.com/api/templates/event/list?searchKey=$search";
+
+    // Fetch data from the API
+    $response = wp_remote_get($url);
+
+    // Check for errors during the API request
+    if (is_wp_error($response)) {
+        return "Error fetching data from API: " . $response->get_error_message();
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+
+    // Helper function to get city name from location string
+    function getCityFromLocation($location)
+    {
+        $parts = explode(',', $location);
+        return isset($parts[0]) ? trim($parts[0]) : 'Unknown City';
+    }
+
+    // Check if JSON decoding was successful
+    if ($data === null) {
+        return "Error decoding JSON response.";
+    }
+
+    // Check if API response contains data
+    if (!isset($data['data']) || !is_array($data['data']) || empty($data['data'])) {
+        return "No data found.";
+    }
+
+    // Initialize output buffer
+    ob_start();
+
+    // Loop through the data and display event names
+    foreach ($data['data'] as $event) {
+        $coverImage = !empty($event['cover_image']) ? $event['cover_image'] : 'https://img.freepik.com/free-photo/office-worker-using-videocall-conference-meet-with-business-people-webcam-talking-colleagues-remote-videoconference-having-internet-conversation-teleconference-call_482257-50395.jpg?w=740&t=st=1716383152~exp=1716383752~hmac=209ddeafc2a81e5ccf12e00c67eee75704106cbbf1f0eaafb91e589173c1337f';
+        $rsvpDeadline = !empty($event['rsvp_deadline']) ? date('M j', strtotime($event['rsvp_deadline'])) : ' ';
+        $eventStartDate = new DateTime($event['event_start_date']);
+        $eventEndDate = new DateTime($event['event_end_date']);
+        $formattedDate = ($eventStartDate->format('Y-m-d') === $eventEndDate->format('Y-m-d')) ? 
+            $eventStartDate->format('F j, Y') : 
+            $eventStartDate->format('F j') . '-' . $eventEndDate->format('j, Y');
+        $cityName = getCityFromLocation($event['location']['location']);
+
+        echo '<div class="container mt-5">
+                <div class="card p-3 event-link" data-event-id="' . esc_attr($event['id']) . '" style="cursor:pointer">
+                    <div class="row g-0">
+                        <div class="col-md-2">
+                            <img src="' . esc_url($coverImage) . '" class="img-fluid rounded-start card-img" alt="Event Image"/>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h5 class="card-title">' . esc_html($event['event_name']) . '</h5>
+                                    <p class="card-text text-muted">
+                                        ' . esc_html($event['event_type']) . (!empty($rsvpDeadline) ? ' &bull; RSVP by ' . esc_html($rsvpDeadline) : '') . '
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="date-text">' . esc_html($formattedDate) . '</p>
+                                </div>
+                                <div>
+                                    <p class="link-text">' . esc_html($cityName) . ' <small class="text-muted arrow">&rarr;</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+    }
+
+    // Return the buffered content
+    return ob_get_clean();
+}
+
+// Register the shortcode
+add_shortcode('search_results_event_list', 'search_result_show_shortcode');
+
+
+// test
 
 
 function display_related_events_types($atts)
