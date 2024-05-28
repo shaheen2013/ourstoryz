@@ -74,7 +74,8 @@ jQuery(document).ready(function ($) {
                     success: function(response) {
                         // Redirect to the second API URL
                         console.log(response.data)
-                        window.location.href = `http://adhoc.test/our-storyz/?p=${response.data}&event_id=${eventId}`;
+                        // window.location.href = `http://adhoc.test/our-storyz/?p=${response.data}&event_id=${eventId}`;
+                        window.location.href = `https://ourstoryz.com/wpdev/our-storyz/?p=${response.data}&event_id=${eventId}`
                     },
                     error: function(error) {
                         console.error("Error:", error);
