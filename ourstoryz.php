@@ -341,7 +341,7 @@ function get_event_cover_image()
     if (!empty($data) && isset($data['data']['cover_image'])) {
         // Construct the image tag with the cover image URL
          
-        $image_tag = '<img src="' . esc_url($data['data']['cover_image']) . '" alt="Event Cover Image">';
+        $image_tag = '<img src="' . esc_url($data['data']['cover_image']) . '" alt="Event Cover Image" style="width: 100%;">';
         return $image_tag;
     }
     return 'Event cover image not found.';
