@@ -985,8 +985,7 @@ add_shortcode('event_end_time', 'display_event_end_time');
 
 function display_full_location() {
   $data = fetch_api_data();
-  var_dump('location');
-  die();
+   
 
   // Check if the data is not empty and the required keys exist
   if (!empty($data) && isset($data['data']['id']) && isset($data['data']['location']['location'])) {
