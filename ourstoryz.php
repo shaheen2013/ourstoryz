@@ -617,7 +617,7 @@ function display_related_events_info()
                 }
 
                 // Format location
-                $location = getCityFromLocation($event['location']['location']);
+                $location = getCityFromLocation($event['location']);
                  
         
                 // Build the event card
