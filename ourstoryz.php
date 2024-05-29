@@ -616,12 +616,15 @@ function display_related_events_info()
                 }
 
                 // Format location
-        
-                 $location = '';
-                 $location = getCityFromLocation($event['location']['location']);
-                 var_dump($location);
-                 die();
-                 
+                $location = '';
+                if (is_array($event['location'])) {
+                    $location .= $event['location']['location'] . "\n";
+                    $location .= isset($event['location']['latitude']) ? $event['location']['latitude'] . "\n" : '';
+                    $location .= isset($event['location']['longitude']) ? $event['location']['longitude'] . "\n" : '';
+                    // You can include other location details if needed
+                } else {
+                    $location = $event['location'];
+                }
         
                 // Build the event card
                 $output .= '<div class="card p-3 mb-3">';
@@ -658,6 +661,7 @@ function display_related_events_info()
 }
 
 add_shortcode('related_events_info', 'display_related_events_info'); 
+
 
 
 
