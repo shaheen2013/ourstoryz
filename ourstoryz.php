@@ -615,6 +615,17 @@ function display_related_events_info()
                 } else {
                     $formatted_event_dates = $event_start_date->format('F j') . ' - ' . $event_end_date->format('j, Y');
                 }
+
+                // Format location
+                $location = '';
+                if (is_array($event['location'])) {
+                    $location .= $event['location']['location'] . "\n";
+                    $location .= isset($event['location']['latitude']) ? $event['location']['latitude'] . "\n" : '';
+                    $location .= isset($event['location']['longitude']) ? $event['location']['longitude'] . "\n" : '';
+                    // You can include other location details if needed
+                } else {
+                    $location = $event['location'];
+                }
         
                 // Build the event card
                 $output .= '<div class="card p-3 mb-3">';
@@ -631,9 +642,9 @@ function display_related_events_info()
                 $output .= '<div class="text-center flex-grow-1">';
                 $output .= '<p class="date-text">' . esc_html($formatted_event_dates) . '</p>';
                 $output .= '</div>';
-                if (!empty($event['location'])) {
+                if (!empty($location)) {
                     $output .= '<div class="text-end">';
-                    $output .= '<p class="link-text">' . esc_html($event['location']) . ' <small class="text-muted arrow">&rarr;</small></p>';
+                    $output .= '<p class="link-text">' . esc_html($location) . ' <small class="text-muted arrow">&rarr;</small></p>';
                     $output .= '</div>';
                 }
                 $output .= '</div>';
@@ -650,7 +661,8 @@ function display_related_events_info()
     }
 }
 
-add_shortcode('related_events_info', 'display_related_events_info');
+add_shortcode('related_events_info', 'display_related_events_info'); 
+
 
 
 
