@@ -534,8 +534,7 @@ function get_our_storyz_description()
 add_shortcode('our_storyz_description', 'get_our_storyz_description');
 
 
-function get_project_image()
-{
+function get_project_image() {
   // Fetch the API data
   $data = fetch_api_data();
 
@@ -544,8 +543,8 @@ function get_project_image()
     // Get the "project_image" data
     $projectImage = $data['data']['storyz']['project_image'];
 
-    // Return the "project_image" data
-    return $projectImage;
+    // Return the HTML img tag with the "project_image" data
+    return '<img src="' . esc_url($projectImage) . '" height="300" width="300" alt="Project Image">';
   }
 
   // Return a default message if "project_image" is not found
@@ -554,6 +553,7 @@ function get_project_image()
 
 // Register the shortcode [project_image]
 add_shortcode('project_image', 'get_project_image');
+
 
 
 
