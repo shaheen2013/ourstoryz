@@ -644,6 +644,12 @@ function display_related_events_info()
           $output .= '<p class="link-text">' . esc_html($location) . ' <small class="text-muted arrow">&rarr;</small></p>';
           $output .= '</div>';
         }
+        else {
+          // If location is empty, just display the arrow
+          $output .= '<div class="text-end">';
+          $output .= '<p class="link-text"><small class="text-muted arrow">&rarr;</small></p>';
+          $output .= '</div>';
+      }
         $output .= '</div>';
         $output .= '</div>';
         $output .= '</div>';
