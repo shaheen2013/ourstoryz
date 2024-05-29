@@ -617,8 +617,8 @@ function display_related_events_info()
                 }
 
                 // Format location
-                $location = '';
-                $location = getCityFromLocation($event['location']['location']);
+          
+                // $location = getCityFromLocation($event['location']['location']);
                 var_dump($event['location']['location']);
                 die();
                  
