@@ -1009,8 +1009,7 @@ function display_related_event_info()
    
     // Fetch related events data
     $related_events = fetch_related_events_data($storyz_id, $event_id);
-    var_dump($related_events );
-    die();
+    
 
     if (empty($related_events) || !isset($related_events['data'])) {
       return 'No related events found.';
