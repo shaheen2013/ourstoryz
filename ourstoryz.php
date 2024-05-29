@@ -619,9 +619,10 @@ function display_related_events_info()
                 // Format location
                  $location='';
                  $location = $event['location']['location'];
+                 var_dump($location );
+                 die();
                  $city = getCityFromLocation($location);
-                var_dump($city );
-                die();
+            
                  
         
                 // Build the event card
