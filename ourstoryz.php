@@ -617,9 +617,10 @@ function display_related_events_info()
                 }
 
                 // Format location
-          
-                // $location = getCityFromLocation($event['location']['location']);
-                var_dump($event['location']['location']);
+                 $location='';
+                 $location = $event['location']['location'];
+                 $city = getCityFromLocation($location);
+                var_dump($city );
                 die();
                  
         
@@ -640,7 +641,7 @@ function display_related_events_info()
                 $output .= '</div>';
                 if (!empty($location)) {
                     $output .= '<div class="text-end">';
-                    $output .= '<p class="link-text">' . esc_html($location) . ' <small class="text-muted arrow">&rarr;</small></p>';
+                    $output .= '<p class="link-text">' . esc_html($city) . ' <small class="text-muted arrow">&rarr;</small></p>';
                     $output .= '</div>';
                 }
                 $output .= '</div>';
