@@ -617,11 +617,11 @@ function display_related_events_info()
                 }
 
                 // Format location
-                
+
                 $location_parts = explode(',', $event['location']);
                 if (count($location_parts) > 1) {
                     // Keep only the second part
-                    $location = trim($location_parts[1]);
+                    $location = trim($location_parts[0]);
                 } else {
                     $location = $event['location']; // If no comma found, keep the entire location
                 }
