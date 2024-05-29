@@ -164,7 +164,6 @@ function search_result_show()
         $formattedDate = $eventStartDate->format('F j') . '-' . $eventEndDate->format('j, Y');
       }
       $cityName = getCityFromLocation($event['location']['location']);
-
       echo '<div class="container mt-5">
           <div class="card p-3 event-link" data-event-id="' . $event['id'] . '" style="cursor:pointer">
             <div class="row g-0">
@@ -617,11 +616,9 @@ function display_related_events_info()
                 }
 
                 // Format location
-                 $location='';
-                 $location = $event['location']['location'];
-                 var_dump($location );
-                 die();
-                 $city = getCityFromLocation($location);
+        
+                 $location = '';
+                 $location = getCityFromLocation($event['location']['location']);
             
                  
         
@@ -642,7 +639,7 @@ function display_related_events_info()
                 $output .= '</div>';
                 if (!empty($location)) {
                     $output .= '<div class="text-end">';
-                    $output .= '<p class="link-text">' . esc_html($city) . ' <small class="text-muted arrow">&rarr;</small></p>';
+                    $output .= '<p class="link-text">' . esc_html($location) . ' <small class="text-muted arrow">&rarr;</small></p>';
                     $output .= '</div>';
                 }
                 $output .= '</div>';
