@@ -528,7 +528,8 @@ function get_our_storyz_description()
 add_shortcode('our_storyz_description', 'get_our_storyz_description');
 
 
-function get_project_image() {
+function get_project_image()
+{
   // Fetch the API data
   $data = fetch_api_data();
 
@@ -568,99 +569,96 @@ function fetch_related_events_data($storyz_id, $related_event_id)
 
 function display_related_events_info()
 {
-    $data = fetch_api_data();
-        
-    // Check if the data is not empty and the required keys exist
-    if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
-        // Get the "our_storyz_description" data
-        $storyz_id = $data['data']['storyz']['id'];
-        $event_id = $data['data']['id'];
-       
-        // Fetch related events data
-        $data = fetch_related_events_data($storyz_id, $event_id);
-        
-        if (empty($data) || !isset($data['data'])) {
-            return 'No related events found.';
-        }
+  $data = fetch_api_data();
 
-        $output = '<div class="container mt-5">';
+  // Check if the data is not empty and the required keys exist
+  if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+    // Get the "our_storyz_description" data
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
 
-        foreach ($data['data'] as $event) {
-            // Define an array of required fields
-            $required_fields = ['event_name', 'event_type', 'cover_image', 'rsvp_deadline', 'event_start_date', 'event_end_date', 'location'];
-            
-            // Check if all required fields are present
-            $all_fields_present = true;
-            foreach ($required_fields as $field) {
-                if (!array_key_exists($field, $event)) {
-                    $all_fields_present = false;
-                    break;
-                }
-            }
-        
-            if ($all_fields_present) {
-                // Use a default image if cover_image is null
-                $cover_image = $event['cover_image'] ?: 'https://mootup.com/wp-content/uploads/2020/07/Zoom-webinar-3d-8.8-screens-1024x576.png';
-        
-                // Format the RSVP deadline
-                $rsvp_deadline = new DateTime($event['rsvp_deadline']);
-                $formatted_rsvp_deadline = $rsvp_deadline->format('M j');
-                
-                // Format the event start and end dates
-                $event_start_date = new DateTime($event['event_start_date']);
-                $event_end_date = new DateTime($event['event_end_date']);
-                if ($event_start_date->format('Y-m-d') === $event_end_date->format('Y-m-d')) {
-                    $formatted_event_dates = $event_start_date->format('F j, Y');
-                } else {
-                    $formatted_event_dates = $event_start_date->format('F j') . ' - ' . $event_end_date->format('j, Y');
-                }
+    // Fetch related events data
+    $data = fetch_related_events_data($storyz_id, $event_id);
 
-                // Format location
-                $location = '';
-                if (is_array($event['location'])) {
-                    $location .= $event['location']['location'] . "\n";
-                    $location .= isset($event['location']['latitude']) ? $event['location']['latitude'] . "\n" : '';
-                    $location .= isset($event['location']['longitude']) ? $event['location']['longitude'] . "\n" : '';
-                    // You can include other location details if needed
-                } else {
-                    $location = $event['location'];
-                }
-        
-                // Build the event card
-                $output .= '<div class="card p-3 mb-3">';
-                $output .= '<div class="row g-0">';
-                $output .= '<div class="col-md-2">';
-                $output .= '<img src="' . esc_url($cover_image) . '" class="img-fluid rounded-start card-img" alt="' . esc_attr($event['event_name']) . '">';
-                $output .= '</div>';
-                $output .= '<div class="col-md-10">';
-                $output .= '<div class="card-body d-flex align-items-center justify-content-between">';
-                $output .= '<div>';
-                $output .= '<h5 class="card-title">' . esc_html($event['event_name']) . '</h5>';
-                $output .= '<p class="card-text text-muted">' . esc_html($event['event_type']) . ' &bull; RSVP by ' . esc_html($formatted_rsvp_deadline) . '</p>';
-                $output .= '</div>';
-                $output .= '<div class="text-center flex-grow-1">';
-                $output .= '<p class="date-text">' . esc_html($formatted_event_dates) . '</p>';
-                $output .= '</div>';
-                if (!empty($location)) {
-                    $output .= '<div class="text-end">';
-                    $output .= '<p class="link-text">' . esc_html($location) . ' <small class="text-muted arrow">&rarr;</small></p>';
-                    $output .= '</div>';
-                }
-                $output .= '</div>';
-                $output .= '</div>';
-                $output .= '</div>';
-                $output .= '</div>';
-            }
-        }
-
-        $output .= '</div>';
-        return $output;
-    } else {
-        return 'No data available.';
+    if (empty($data) || !isset($data['data'])) {
+      return 'No related events found.';
     }
+
+    $output = '<div class="container mt-5">';
+
+    foreach ($data['data'] as $event) {
+      // Define an array of required fields
+      $required_fields = ['event_name', 'event_type', 'cover_image', 'rsvp_deadline', 'event_start_date', 'event_end_date', 'location'];
+
+      // Check if all required fields are present
+      $all_fields_present = true;
+      foreach ($required_fields as $field) {
+        if (!array_key_exists($field, $event)) {
+          $all_fields_present = false;
+          break;
+        }
+      }
+
+      if ($all_fields_present) {
+        // Use a default image if cover_image is null
+        $cover_image = $event['cover_image'] ?: 'https://mootup.com/wp-content/uploads/2020/07/Zoom-webinar-3d-8.8-screens-1024x576.png';
+
+        // Format the RSVP deadline
+        $rsvp_deadline = new DateTime($event['rsvp_deadline']);
+        $formatted_rsvp_deadline = $rsvp_deadline->format('M j');
+
+        // Format the event start and end dates
+        $event_start_date = new DateTime($event['event_start_date']);
+        $event_end_date = new DateTime($event['event_end_date']);
+        if ($event_start_date->format('Y-m-d') === $event_end_date->format('Y-m-d')) {
+          $formatted_event_dates = $event_start_date->format('F j, Y');
+        } else {
+          $formatted_event_dates = $event_start_date->format('F j') . ' - ' . $event_end_date->format('j, Y');
+        }
+
+        // Format location
+        $location = '';
+        if (is_array($event['location'])) {
+          $location .= explode("\n", $event['location']['location'])[0]; // Take only the first portion
+        } else {
+          $location = explode("\n", $event['location'])[0]; // Take only the first portion
+        }
+
+        // Build the event card
+        $output .= '<div class="card p-3 mb-3">';
+        $output .= '<div class="row g-0">';
+        $output .= '<div class="col-md-2">';
+        $output .= '<img src="' . esc_url($cover_image) . '" class="img-fluid rounded-start card-img" alt="' . esc_attr($event['event_name']) . '">';
+        $output .= '</div>';
+        $output .= '<div class="col-md-10">';
+        $output .= '<div class="card-body d-flex align-items-center justify-content-between">';
+        $output .= '<div>';
+        $output .= '<h5 class="card-title">' . esc_html($event['event_name']) . '</h5>';
+        $output .= '<p class="card-text text-muted">' . esc_html($event['event_type']) . ' &bull; RSVP by ' . esc_html($formatted_rsvp_deadline) . '</p>';
+        $output .= '</div>';
+        $output .= '<div class="text-center flex-grow-1">';
+        $output .= '<p class="date-text">' . esc_html($formatted_event_dates) . '</p>';
+        $output .= '</div>';
+        if (!empty($location)) {
+          $output .= '<div class="text-end">';
+          $output .= '<p class="link-text">' . esc_html($location) . ' <small class="text-muted arrow">&rarr;</small></p>';
+          $output .= '</div>';
+        }
+        $output .= '</div>';
+        $output .= '</div>';
+        $output .= '</div>';
+        $output .= '</div>';
+      }
+    }
+
+    $output .= '</div>';
+    return $output;
+  } else {
+    return 'No data available.';
+  }
 }
 
-add_shortcode('related_events_info', 'display_related_events_info'); 
+add_shortcode('related_events_info', 'display_related_events_info');
 
 
 
@@ -750,7 +748,7 @@ function display_date()
 add_shortcode('display_date', 'display_date');
 
 
- 
+
 
 
 // Guests Data fetch
@@ -770,7 +768,7 @@ function fetch_related_guests_data($related_event_id)
 
 
 
- 
+
 // {
 //     $data = fetch_api_data();
 
@@ -945,77 +943,80 @@ function display_guests_count()
 add_shortcode('guests_count', 'display_guests_count');
 
 
- 
-function display_event_start_time() {
+
+function display_event_start_time()
+{
   $data = fetch_api_data();
 
   // Check if the data is not empty and the required keys exist
   if (!empty($data) && isset($data['data']['id']) && isset($data['data']['event_start_date'])) {
-      // Extract the event start date and time
-      $event_start_date = new DateTime($data['data']['event_start_date']);
+    // Extract the event start date and time
+    $event_start_date = new DateTime($data['data']['event_start_date']);
 
-      // Convert timezone to CST
-      $event_start_date->setTimezone(new DateTimeZone('America/Chicago'));
+    // Convert timezone to CST
+    $event_start_date->setTimezone(new DateTimeZone('America/Chicago'));
 
-      // Format the time
-      $formatted_time = $event_start_date->format('g:i A');
+    // Format the time
+    $formatted_time = $event_start_date->format('g:i A');
 
-      // Output the formatted time with prefix
-      return 'Begins: ' . $formatted_time . ' CST';
+    // Output the formatted time with prefix
+    return 'Begins: ' . $formatted_time . ' CST';
   } else {
-      // No event start time available, return empty string
-      return '';
+    // No event start time available, return empty string
+    return '';
   }
 }
 
 add_shortcode('event_start_time', 'display_event_start_time');
 
-function display_event_end_time() {
+function display_event_end_time()
+{
   $data = fetch_api_data();
 
   // Check if the data is not empty and the required keys exist
   if (!empty($data) && isset($data['data']['id']) && isset($data['data']['event_end_date'])) {
-      // Extract the event end date and time
-      $event_end_date = new DateTime($data['data']['event_end_date']);
+    // Extract the event end date and time
+    $event_end_date = new DateTime($data['data']['event_end_date']);
 
-      // Convert timezone to CST
-      $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
+    // Convert timezone to CST
+    $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
 
-      // Format the time
-      $formatted_time = $event_end_date->format('g:i A');
+    // Format the time
+    $formatted_time = $event_end_date->format('g:i A');
 
-      // Output the formatted time with prefix
-      return 'Ends: ' . $formatted_time . ' CST';
+    // Output the formatted time with prefix
+    return 'Ends: ' . $formatted_time . ' CST';
   } else {
-      // No event end time available, return empty string
-      return '';
+    // No event end time available, return empty string
+    return '';
   }
 }
 
 add_shortcode('event_end_time', 'display_event_end_time');
 
 
-function display_full_location() {
+function display_full_location()
+{
   $data = fetch_api_data();
-   
+
 
   // Check if the data is not empty and the required keys exist
   if (!empty($data) && isset($data['data']['id']) && isset($data['data']['location']['location'])) {
-      $location_data = $data['data']['location'];
+    $location_data = $data['data']['location'];
 
-      // Extract location details
-      $location = isset($location_data['location']) ? $location_data['location'] : '';
-      $latitude = isset($location_data['latitude']) ? $location_data['latitude'] : '';
-      $longitude = isset($location_data['longitude']) ? $location_data['longitude'] : '';
+    // Extract location details
+    $location = isset($location_data['location']) ? $location_data['location'] : '';
+    $latitude = isset($location_data['latitude']) ? $location_data['latitude'] : '';
+    $longitude = isset($location_data['longitude']) ? $location_data['longitude'] : '';
 
-      // Format the location
-      $formatted_location = $location . "\n" . $latitude . "\n" . $longitude;
+    // Format the location
+    $formatted_location = $location . "\n" . $latitude . "\n" . $longitude;
 
-      // Output the formatted location
-      return $formatted_location;
+    // Output the formatted location
+    return $formatted_location;
   } else {
-      // No location available, return empty string
-      return '';
+    // No location available, return empty string
+    return '';
   }
 }
 
