@@ -981,3 +981,31 @@ function display_event_end_time() {
 }
 
 add_shortcode('event_end_time', 'display_event_end_time');
+
+
+function display_full_location() {
+  $data = fetch_api_data();
+  var_dump('location');
+  die();
+
+  // Check if the data is not empty and the required keys exist
+  if (!empty($data) && isset($data['data']['id']) && isset($data['data']['location']['location'])) {
+      $location_data = $data['data']['location'];
+
+      // Extract location details
+      $location = isset($location_data['location']) ? $location_data['location'] : '';
+      $latitude = isset($location_data['latitude']) ? $location_data['latitude'] : '';
+      $longitude = isset($location_data['longitude']) ? $location_data['longitude'] : '';
+
+      // Format the location
+      $formatted_location = $location . "\n" . $latitude . "\n" . $longitude;
+
+      // Output the formatted location
+      return $formatted_location;
+  } else {
+      // No location available, return empty string
+      return '';
+  }
+}
+
+add_shortcode('full_location', 'display_full_location');
