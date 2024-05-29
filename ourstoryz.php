@@ -934,3 +934,27 @@ add_shortcode('guests_count', 'display_guests_count');
 
 
  
+function display_event_start_time() {
+  $data = fetch_api_data();
+
+  // Check if the data is not empty and the required keys exist
+  if (!empty($data) && isset($data['data']['id']) && isset($data['data']['event_start_date'])) {
+      // Extract the event start date and time
+      $event_start_date = new DateTime($data['data']['event_start_date']);
+
+      // Convert timezone to CST
+      $event_start_date->setTimezone(new DateTimeZone('America/Chicago'));
+
+      // Format the time
+      $formatted_time = $event_start_date->format('g:i A');
+
+      // Output the formatted time with prefix
+      return 'Begins: ' . $formatted_time . ' CST';
+  } else {
+      // No event start time available, return empty string
+      return '';
+  }
+}
+
+add_shortcode('event_start_time', 'display_event_start_time');
+
