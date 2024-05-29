@@ -958,3 +958,26 @@ function display_event_start_time() {
 
 add_shortcode('event_start_time', 'display_event_start_time');
 
+function display_event_end_time() {
+  $data = fetch_api_data();
+
+  // Check if the data is not empty and the required keys exist
+  if (!empty($data) && isset($data['data']['id']) && isset($data['data']['event_end_date'])) {
+      // Extract the event end date and time
+      $event_end_date = new DateTime($data['data']['event_end_date']);
+
+      // Convert timezone to CST
+      $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
+
+      // Format the time
+      $formatted_time = $event_end_date->format('g:i A');
+
+      // Output the formatted time with prefix
+      return 'Ends: ' . $formatted_time . ' CST';
+  } else {
+      // No event end time available, return empty string
+      return '';
+  }
+}
+
+add_shortcode('event_end_time', 'display_event_end_time');
