@@ -290,8 +290,6 @@ function fetch_api_data()
 }
 
 // Related event api fetch 
-
-
 // Function to fetch mini website template
 // function fetch_mini_website_template()
 // {
@@ -461,9 +459,6 @@ function get_greeting_title()
 
 // Register the shortcode [greeting_title]
 add_shortcode('greeting_title', 'get_greeting_title');
-
-
-
 
 
 function get_storyz_name()
@@ -659,47 +654,6 @@ add_shortcode('related_events_info', 'display_related_events_info');
 
 
 
-
- 
- 
-
-
-function display_related_events_types($atts)
-{
-
-  $data = fetch_api_data();
-
-  // Check if the data is not empty and the "our_storyz_description" key exists
-  if (!empty($data) && (isset($data['data']['storyz']['id']) && isset($data['data']['id']))) {
-    // Get the "our_storyz_description" data
-    $storyz_id = $data['data']['storyz']['id'];
-    $event_id = $data['data']['id'];
-
-    // Return the "our_storyz_description" data
-
-    $data = fetch_related_events_data($storyz_id, $event_id);
-
-
-    if (empty($data) || !isset($data['data'])) {
-      return 'No related events found.';
-    }
-
-    $output = '<ul>';
-
-    foreach ($data['data'] as $event) {
-      if (isset($event['event_type'])) {
-        $output .= '<li>' . esc_html($event['event_type']) . '</li>';
-      }
-    }
-
-    $output .= '</ul>';
-    return $output;
-  }
-}
-
-add_shortcode('related_events_types', 'display_related_events_types');
-
-
 function display_rsvp_deadlines()
 {
   $data = fetch_api_data();
@@ -784,40 +738,7 @@ function display_date()
 add_shortcode('display_date', 'display_date');
 
 
-function display_related_events_location()
-{
-
-  $data = fetch_api_data();
-
-  // Check if the data is not empty and the "our_storyz_description" key exists
-  if (!empty($data) && (isset($data['data']['storyz']['id']) && isset($data['data']['id']))) {
-    // Get the "our_storyz_description" data
-    $storyz_id = $data['data']['storyz']['id'];
-    $event_id = $data['data']['id'];
-
-    // Return the "our_storyz_description" data
-
-    $data = fetch_related_events_data($storyz_id, $event_id);
-
-
-    if (empty($data) || !isset($data['data'])) {
-      return 'No related events found.';
-    }
-
-    $output = '<ul>';
-
-    foreach ($data['data'] as $event) {
-      if (isset($event['location'])) {
-        $output .= '<li>' . esc_html($event['location']) . '</li>';
-      }
-    }
-
-    $output .= '</ul>';
-    return $output;
-  }
-}
-
-add_shortcode('related_events_location', 'display_related_events_location');
+ 
 
 
 // Guests Data fetch

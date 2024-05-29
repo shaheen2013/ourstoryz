@@ -48,8 +48,8 @@ jQuery(document).ready(function ($) {
 			$('#wp-block-search__input-1').after(errorElement);
 		} else {
 			var baseUrl = window.location.origin;
-			// var newUrl = baseUrl + '/wpdev/find-your-event/?event=' + encodeURIComponent(inputValue);
-            var newUrl = baseUrl + '/find-your-event/?event=' + encodeURIComponent(inputValue);
+			var newUrl = baseUrl + '/wpdev/find-your-event/?event=' + encodeURIComponent(inputValue);
+            // var newUrl = baseUrl + '/find-your-event/?event=' + encodeURIComponent(inputValue);
 			window.open(newUrl, '_blank', 'noopener,noreferrer'); // Open the URL in a new window
 		}
 	});
@@ -75,8 +75,8 @@ jQuery(document).ready(function ($) {
                     success: function(response) {
                         // Redirect to the second API URL
                         console.log(response.data)
-                        window.location.href = `http://adhoc.test/our-storyz/?p=${response.data}&event_id=${eventId}`;
-                        // window.location.href = `https://ourstoryz.com/wpdev/our-storyz/?p=${response.data}&event_id=${eventId}`
+                        // window.location.href = `http://adhoc.test/our-storyz/?p=${response.data}&event_id=${eventId}`;
+                        window.location.href = `https://ourstoryz.com/wpdev/our-storyz/?p=${response.data}&event_id=${eventId}`
                     },
                     error: function(error) {
                         console.error("Error:", error);
