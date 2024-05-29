@@ -617,14 +617,13 @@ function display_related_events_info()
                 }
 
                 // Format location
-                $location = '';
-                if (is_array($event['location'])) {
-                    $location .= $event['location']['location'] . "\n";
-                    $location .= isset($event['location']['latitude']) ? $event['location']['latitude'] . "\n" : '';
-                    $location .= isset($event['location']['longitude']) ? $event['location']['longitude'] . "\n" : '';
-                    // You can include other location details if needed
+                
+                $location_parts = explode(',', $event['location']);
+                if (count($location_parts) > 1) {
+                    // Keep only the second part
+                    $location = trim($location_parts[1]);
                 } else {
-                    $location = $event['location'];
+                    $location = $event['location']; // If no comma found, keep the entire location
                 }
         
                 // Build the event card
