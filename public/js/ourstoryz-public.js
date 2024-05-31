@@ -91,12 +91,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     // window.location.href = `http://adhoc.test/our-storyz/?p=${response.data}&event_id=${eventId}`;
                     // window.location.href = `https://ourstoryz.com/wpdev/our-storyz/?p=${response.data}&event_id=${eventId}`
                     if (baseUrl .startsWith("http://adhoc.test/")) {
-                        window.location.href = `${baseUrl}our-storyz/?p=${response.data}&event_id=${eventId}`;
+                        window.location.href = `our-storyz/?p=${response.data}&event_id=${eventId}`;
                     } else if (baseUrl.startsWith("https://ourstoryz.com/wpdev/")) {
-                        window.location.href = `${baseUrl}/our-storyz/?p=${response.data}&event_id=${eventId}`;
+                        window.location.href = `/our-storyz/?p=${response.data}&event_id=${eventId}`;
                     } else {
                         // Default case, if needed
-                        window.location.href = `${baseUrl}our-storyz/?p=${response.data}&event_id=${eventId}`;
+                        window.location.href = `our-storyz/?p=${response.data}&event_id=${eventId}`;
                     }
                 },
                 error: function (error) {
