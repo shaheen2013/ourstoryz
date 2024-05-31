@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (baseUrl .startsWith("http://adhoc.test/")) {
                         window.location.href = `our-storyz/?p=${response.data}&event_id=${eventId}`;
                     } else if (baseUrl.startsWith("https://ourstoryz.com/wpdev/")) {
-                        window.location.href = `/our-storyz/?p=${response.data}&event_id=${eventId}`;
+                        window.location.href = `wpdev/our-storyz/?p=${response.data}&event_id=${eventId}`;
                     } else {
                         // Default case, if needed
                         window.location.href = `our-storyz/?p=${response.data}&event_id=${eventId}`;
