@@ -54,8 +54,8 @@ jQuery(document).ready(function ($) {
             var newUrl;
             if (baseUrl === "http://adhoc.test/") {
                 newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
-            } else if (baseUrl === "https://ourstoryz.com/") {
-                newUrl = baseUrl + 'wpdev/find-your-event/?event=' + encodeURIComponent(inputValue);
+            } else if (baseUrl === "https://ourstoryz.com/wpdev/") {
+                newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
             } else {
                 // Default case, if needed
                 newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
