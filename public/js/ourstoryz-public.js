@@ -50,11 +50,11 @@ jQuery(document).ready(function ($) {
             // var baseUrl = window.location.origin;
             // var newUrl = baseUrl + '/wpdev/find-your-event/?event=' + encodeURIComponent(inputValue);
             // var newUrl = baseUrl + '/find-your-event/?event=' + encodeURIComponent(inputValue);
-            var baseUrl = "http://adhoc.test/"; // Example base URL
+            var baseUrl = window.location.href; // Example base URL
             var newUrl;
-            if (baseUrl === "https://ourstoryz.com/wpdev/") {
+            if (baseUrl === "http://adhoc.test/") {
                 newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
-            } else if (baseUrl === "http://adhoc.test/") {
+            } else if (baseUrl === "https://ourstoryz.com/wpdev/") {
                 newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
             } else {
                 // Default case, if needed
@@ -86,13 +86,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 success: function (response) {
                     // Redirect to the second API URL
-                    console.log(response.data)
-                    var baseUrl = "http://adhoc.test/";
+              
+                    var baseUrl = window.location.href;
                     // window.location.href = `http://adhoc.test/our-storyz/?p=${response.data}&event_id=${eventId}`;
                     // window.location.href = `https://ourstoryz.com/wpdev/our-storyz/?p=${response.data}&event_id=${eventId}`
-                    if (baseUrl === "https://ourstoryz.com/wpdev/") {
+                    if (baseUrl === "http://adhoc.test/") {
                         window.location.href = `${baseUrl}our-storyz/?p=${response.data}&event_id=${eventId}`;
-                    } else if (baseUrl === "http://adhoc.test/") {
+                    } else if (baseUrl === "https://ourstoryz.com/wpdev/") {
                         window.location.href = `${baseUrl}/our-storyz/?p=${response.data}&event_id=${eventId}`;
                     } else {
                         // Default case, if needed
