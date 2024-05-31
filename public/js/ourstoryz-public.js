@@ -92,8 +92,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     // window.location.href = `https://ourstoryz.com/wpdev/our-storyz/?p=${response.data}&event_id=${eventId}`
                     if (baseUrl === "http://adhoc.test/") {
                         window.location.href = `${baseUrl}our-storyz/?p=${response.data}&event_id=${eventId}`;
-                    } else if (baseUrl === "https://ourstoryz.com/") {
-                        window.location.href = `${baseUrl}wpdev/our-storyz/?p=${response.data}&event_id=${eventId}`;
+                    } else if (baseUrl === "https://ourstoryz.com/wpdev/") {
+                        window.location.href = `${baseUrl}/our-storyz/?p=${response.data}&event_id=${eventId}`;
                     } else {
                         // Default case, if needed
                         window.location.href = `${baseUrl}our-storyz/?p=${response.data}&event_id=${eventId}`;
