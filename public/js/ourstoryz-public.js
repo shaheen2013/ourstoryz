@@ -52,9 +52,9 @@ jQuery(document).ready(function ($) {
             // var newUrl = baseUrl + '/find-your-event/?event=' + encodeURIComponent(inputValue);
             var baseUrl = window.location.href; // Example base URL
             var newUrl;
-            if (baseUrl === "http://adhoc.test/") {
+            if (baseUrl.startsWith( "http://adhoc.test/")) {
                 newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
-            } else if (baseUrl === "https://ourstoryz.com/wpdev/") {
+            } else if (baseUrl.startsWith("https://ourstoryz.com/wpdev/")) {
                 newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
             } else {
                 // Default case, if needed
@@ -90,9 +90,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     var baseUrl = window.location.href;
                     // window.location.href = `http://adhoc.test/our-storyz/?p=${response.data}&event_id=${eventId}`;
                     // window.location.href = `https://ourstoryz.com/wpdev/our-storyz/?p=${response.data}&event_id=${eventId}`
-                    if (baseUrl === "http://adhoc.test/") {
+                    if (baseUrl .startsWith("http://adhoc.test/")) {
                         window.location.href = `${baseUrl}our-storyz/?p=${response.data}&event_id=${eventId}`;
-                    } else if (baseUrl === "https://ourstoryz.com/wpdev/") {
+                    } else if (baseUrl.startsWith("https://ourstoryz.com/wpdev/")) {
                         window.location.href = `${baseUrl}/our-storyz/?p=${response.data}&event_id=${eventId}`;
                     } else {
                         // Default case, if needed
