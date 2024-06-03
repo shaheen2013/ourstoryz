@@ -972,11 +972,11 @@ function keepsakealbum()
     $output .= '<div class="row justify-content-center">';
 
     // Counter to keep track of the number of images displayed
-    $count = 0;
+    // $count = 0;
 
     foreach ($images as $data) {
       // Limit the loop to run only four times
-      if ($count < 4) {
+      // if ($count < 4) {
         // Variable to store HTML for media display
         $media_html = '';
 
@@ -1007,10 +1007,10 @@ function keepsakealbum()
 
           $count++;
         }
-      } else {
-        // If four images have been displayed, break out of the loop
-        break;
-      }
+      // } else {
+      //   // If four images have been displayed, break out of the loop
+      //   break;
+      // }
     }
 
     $output .= '</div>';
