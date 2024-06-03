@@ -643,13 +643,12 @@ function display_related_events_info()
           $output .= '<div class="text-end">';
           $output .= '<p class="link-text">' . esc_html($location) . ' <small class="text-muted arrow">&rarr;</small></p>';
           $output .= '</div>';
-        }
-        else {
+        } else {
           // If location is empty, just display the arrow
           $output .= '<div class="text-end">';
           $output .= '<p class="link-text"><small class="text-muted arrow">&rarr;</small></p>';
           $output .= '</div>';
-      }
+        }
         $output .= '</div>';
         $output .= '</div>';
         $output .= '</div>';
@@ -665,10 +664,6 @@ function display_related_events_info()
 }
 
 add_shortcode('related_events_info', 'display_related_events_info');
-
-
-
-
 
 function display_rsvp_deadlines()
 {
@@ -706,8 +701,6 @@ function display_rsvp_deadlines()
 }
 
 add_shortcode('rsvp_deadlines', 'display_rsvp_deadlines');
-
-
 
 function display_date()
 {
@@ -754,9 +747,6 @@ function display_date()
 add_shortcode('display_date', 'display_date');
 
 
-
-
-
 // Guests Data fetch
 
 function fetch_related_guests_data($related_event_id)
@@ -771,85 +761,6 @@ function fetch_related_guests_data($related_event_id)
   $body = wp_remote_retrieve_body($response);
   return json_decode($body, true);
 }
-
-
-
-
-// {
-//     $data = fetch_api_data();
-
-//     // Check if the data is not empty and the "our_storyz_description" key exists
-//     if (!empty($data) && isset($data['data']['id'])) {
-//         // Get the "our_storyz_description" data
-//         $event_id = $data['data']['id'];
-
-//         // Fetch related guests data
-//         $data = fetch_related_guests_data($event_id);
-
-//         if (empty($data) || !isset($data['data'])) {
-//             return 'No related events found.';
-//         }
-
-//         $output = '<ul>';
-
-//         foreach ($data['data'] as $event) {
-//             if (isset($event['imageUrl']) && !empty($event['imageUrl'])) {
-//                 // If image URL is available, add it to the list
-//                 $output .= '<li><img src="' . esc_url($event['imageUrl']) . '" alt="Guest Image"></li>';
-//             }
-//         }
-
-//         $output .= '</ul>';
-//         return $output;
-//     } else {
-//         return 'No data available.';
-//     }
-// }
-
-// add_shortcode('related_events_guests_image', 'display_related_events_guests_image');
-
-
-
-// function display_guests_names()
-// {
-//     $data = fetch_api_data();
-
-//     // Check if the data is not empty
-//     if (!empty($data) && isset($data['data']['id'])) {
-//         // Get the event ID
-//         $event_id = $data['data']['id'];
-
-//         // Fetch related guests data
-//         $guests_data = fetch_related_guests_data($event_id);
-
-//         if (empty($guests_data) || !isset($guests_data['data'])) {
-//             return 'No guests found.';
-//         }
-
-//         $output = '<ul>';
-
-//         foreach ($guests_data['data'] as $guest) {
-//             $full_name = '';
-
-//             // Check if both first_name and last_name are set
-//             if (isset($guest['first_name']) && isset($guest['last_name'])) {
-//                 $full_name = $guest['first_name'] . ' ' . $guest['last_name'];
-//             }
-
-//             // If full_name is not empty, add it to the list
-//             if (!empty($full_name)) {
-//                 $output .= '<li>' . esc_html($full_name) . '</li>';
-//             }
-//         }
-
-//         $output .= '</ul>';
-//         return $output;
-//     } else {
-//         return 'No data available.';
-//     }
-// }
-
-// add_shortcode('guests_names', 'display_guests_names');
 
 function display_guests_images_and_names()
 {
@@ -913,9 +824,6 @@ function display_guests_images_and_names()
 
 add_shortcode('guests_images_and_names', 'display_guests_images_and_names');
 
-
-
-
 function display_guests_count()
 {
   $data = fetch_api_data();
@@ -947,8 +855,6 @@ function display_guests_count()
 }
 
 add_shortcode('guests_count', 'display_guests_count');
-
-
 
 function display_event_start_time()
 {
@@ -1000,7 +906,6 @@ function display_event_end_time()
 
 add_shortcode('event_end_time', 'display_event_end_time');
 
-
 function display_full_location()
 {
   $data = fetch_api_data();
@@ -1027,3 +932,87 @@ function display_full_location()
 }
 
 add_shortcode('full_location', 'display_full_location');
+
+
+//   keepsakealbum data
+function fetch_related_events_keepsakealbum_data( $related_event_id,$storyz_id)
+{
+
+  $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/keepsakealbum?event_id=" . intval($related_event_id) . "&storyz_id=" . intval($storyz_id));
+
+  if (is_wp_error($response)) {
+    return null;
+  }
+
+  $body = wp_remote_retrieve_body($response);
+  return json_decode($body, true);
+}
+
+function keepsakealbum() {
+  $data = fetch_api_data();
+  
+  // Check if the data is not empty and the "our_storyz_description" key exists
+  if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+      // Get the "our_storyz_description" data
+      $storyz_id = $data['data']['storyz']['id'];
+      $event_id = $data['data']['id'];
+ 
+      // Fetch related events data
+      $album_data = fetch_related_events_keepsakealbum_data($event_id,$storyz_id);
+      
+      if (empty($album_data) || !isset($album_data['data'])) {
+          return 'No Keepsakealum data found.';
+      }
+
+      $all = $album_data['data']['keepsakeAlbum'];
+
+      $images = $all[0]['images'];
+
+      
+
+      $output = '<div class="container">';
+      $output .= '<div class="row justify-content-center">';
+  
+      // Counter to keep track of the number of images displayed
+      $count = 0;
+  
+      foreach ($images  as $data) {
+        // Limit the number of images displayed to 4
+        if ($count >= 4) {
+          break;
+        }
+  
+       
+        $image_url = '';
+  
+        
+        
+  
+        // Check if imageUrl is set
+        if (isset($data['photo_url']) && !empty($data['photo_url'])) {
+          $image_url = $data['photo_url'];
+        }
+
+    
+  
+        // If caption and image_url are not empty, add them to the list
+        if ( !empty($image_url)) {
+          $output .= '<div class="col-6 col-md-3 text-center">';
+          $output .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($data['caption']) . '" class="rounded-circle img-fluid">';
+          $output .= '<div class="mt-2">' . esc_html($data['caption']) . '</div>';
+          $output .= '</div>';
+          $count++;
+        }
+      }
+  
+      $output .= '</div>';
+      $output .= '</div>';
+      return $output;
+    } else {
+      return 'No data available.';
+    }
+  }
+
+
+
+add_shortcode('keepsakealbum_data', 'keepsakealbum');
