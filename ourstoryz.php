@@ -1002,6 +1002,7 @@ function keepsakealbum() {
                   $output .= $media_html;
                   $output .= '<div class="mt-2">' . esc_html($data['caption']) . '</div>';
                   $output .= '</div>';
+                  
                   $count++;
               }
           } else {
