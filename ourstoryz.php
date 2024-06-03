@@ -987,14 +987,14 @@ function keepsakealbum()
           // Check if the media URL ends with ".mp4"
           if (substr($media_url, -4) === '.mp4') {
             // If it's a video, generate HTML for video player
-            $media_html = '<video controls class="img-fluid" style="width: 300px; height: 250px;border-radius: 10px;text-white">';
+            $media_html = '<video controls class="img-fluid" style="width: 300px; height: 250px;border-radius: 10px; ">';
             $media_html .= '<source src="' . esc_url($media_url) . '" type="video/mp4">';
             $media_html .= 'Your browser does not support the video tag.';
             $media_html .= '</video>';
 
           } else {
             // If it's not a video, generate HTML for image
-            $media_html = '<img src="' . esc_url($media_url) . '" alt="' . esc_attr($data['caption']) . '" class="img-fluid" style="width: 300px; height: 250px;border-radius: 10px;text-white">';
+            $media_html = '<img src="' . esc_url($media_url) . '" alt="' . esc_attr($data['caption']) . '" class="img-fluid" style="width: 300px; height: 250px;border-radius: 10px;">';
           }
         }
 
@@ -1002,7 +1002,7 @@ function keepsakealbum()
         if (!empty($media_html)) {
           $output .= '<div class="col-6 col-md-3 text-center">';
           $output .= $media_html;
-          $output .= '<div class="mt-2">' . esc_html($data['caption']) . '</div>';
+          $output .= '<div class="mt-2 text-white">' . esc_html($data['caption']) . '</div>';
           $output .= '</div>';
 
           $count++;
