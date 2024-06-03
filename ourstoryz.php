@@ -935,7 +935,7 @@ add_shortcode('full_location', 'display_full_location');
 
 
 //   keepsakealbum data
-function fetch_related_events_keepsakealbum_data( $related_event_id,$storyz_id)
+function fetch_related_events_keepsakealbum_data($related_event_id, $storyz_id)
 {
 
   $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/keepsakealbum?event_id=" . intval($related_event_id) . "&storyz_id=" . intval($storyz_id));
@@ -956,62 +956,68 @@ function keepsakealbum() {
       // Get the "our_storyz_description" data
       $storyz_id = $data['data']['storyz']['id'];
       $event_id = $data['data']['id'];
- 
+   
       // Fetch related events data
-      $album_data = fetch_related_events_keepsakealbum_data($event_id,$storyz_id);
+      $album_data = fetch_related_events_keepsakealbum_data($event_id, $storyz_id);
       
       if (empty($album_data) || !isset($album_data['data'])) {
           return 'No Keepsakealum data found.';
       }
-
+  
       $all = $album_data['data']['keepsakeAlbum'];
-
       $images = $all[0]['images'];
-
-      
-
+  
       $output = '<div class="container">';
       $output .= '<div class="row justify-content-center">';
   
       // Counter to keep track of the number of images displayed
       $count = 0;
+      
+      foreach ($images as $data) {
+          // Limit the loop to run only four times
+          if ($count < 4) {
+              // Variable to store HTML for media display
+              $media_html = '';
   
-      foreach ($images  as $data) {
-        // Limit the number of images displayed to 4
-        if ($count >= 4) {
-          break;
-        }
+              // Check if imageUrl is set
+              if (isset($data['photo_url']) && !empty($data['photo_url'])) {
+                  $media_url = $data['photo_url'];
   
-       
-        $image_url = '';
+                  // Check if the media URL ends with ".mp4"
+                  if (substr($media_url, -4) === '.mp4') {
+                      // If it's a video, generate HTML for video player
+                      $media_html = '<video controls class="rounded-circle img-fluid">';
+                      $media_html .= '<source src="' . esc_url($media_url) . '" type="video/mp4">';
+                      $media_html .= 'Your browser does not support the video tag.';
+                      $media_html .= '</video>';
+                  } else {
+                      // If it's not a video, generate HTML for image
+                      $media_html = '<img src="' . esc_url($media_url) . '" alt="' . esc_attr($data['caption']) . '" class="rounded-circle img-fluid">';
+                  }
+              }
   
-        
-        
-  
-        // Check if imageUrl is set
-        if (isset($data['photo_url']) && !empty($data['photo_url'])) {
-          $image_url = $data['photo_url'];
-        }
-
-    
-  
-        // If caption and image_url are not empty, add them to the list
-        if ( !empty($image_url)) {
-          $output .= '<div class="col-6 col-md-3 text-center">';
-          $output .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($data['caption']) . '" class="rounded-circle img-fluid">';
-          $output .= '<div class="mt-2">' . esc_html($data['caption']) . '</div>';
-          $output .= '</div>';
-          $count++;
-        }
+              // If media HTML is not empty, add it to the output
+              if (!empty($media_html)) {
+                  $output .= '<div class="col-6 col-md-3 text-center">';
+                  $output .= $media_html;
+                  $output .= '<div class="mt-2">' . esc_html($data['caption']) . '</div>';
+                  $output .= '</div>';
+                  $count++;
+              }
+          } else {
+              // If four images have been displayed, break out of the loop
+              break;
+          }
       }
   
       $output .= '</div>';
       $output .= '</div>';
       return $output;
-    } else {
+  } else {
       return 'No data available.';
-    }
   }
+}
+
 
 
 
