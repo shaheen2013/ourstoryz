@@ -1065,18 +1065,16 @@ function keepsake_album_cover_image_data($atts)
 
     // Fetch related events data
     $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id,$display_type);
-     
- 
-     
+      
+    // Check if album data is not empty and contains the necessary keys
+    if (empty($album_data) || !isset($album_data['data']['cover_image'])) {
+      return 'No Keepsakealbum data found.';
+    }
 
     // Get the cover image URL
     $cover_image_url = $album_data['data']['cover_image'];
-    var_dump($cover_image_url);
-     die();
  
-    if (empty($cover_image_url)) {
-      return 'No cover image available.';
-    }
+     
 
     // Generate HTML for image
     $output = '<div class="container">';
@@ -1084,12 +1082,9 @@ function keepsake_album_cover_image_data($atts)
     $output .= '<div class="col-12 text-center">';
     
     // Check display type
-    if ($display_type === 'image') {
-      $output .= '<img src="' . esc_url($cover_image_url) . '" alt="Cover Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 10px;">';
-    } else {
-      return 'Invalid display type specified.';
-    }
-    
+     
+    $output .= '<img src="' . ( !empty($cover_image_url) ? esc_url($cover_image_url) : 'https://example.com/dummy-image.jpg' ) . '" alt="Cover Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 10px;">';
+
     $output .= '</div>'; // Close col-12
     $output .= '</div>'; // Close row
     $output .= '</div>'; // Close container
