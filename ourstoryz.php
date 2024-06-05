@@ -997,34 +997,81 @@ add_shortcode('keepsakealbum_data', 'keepsakealbum');
 
 // Keepsakealbum by guest
 
-function keepsakealbum_by_guest_event_date() {
+function keepsakealbum_by_guest_event_date()
+{
   $data = fetch_api_data();
 
   // Check if the data is not empty and the required keys exist
   if (!empty($data) && isset($data['data']['id']) && isset($data['data']['event_end_date'])) {
-      // Extract the event end date and time
-      $event_end_date = new DateTime($data['data']['event_end_date']);
+    // Extract the event end date and time
+    $event_end_date = new DateTime($data['data']['event_end_date']);
 
-      // Convert timezone to CST
-      $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
+    // Convert timezone to CST
+    $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
 
-      // Format the start and end dates as desired (e.g., "August 14-15, 2024")
-      $start_date = clone $event_end_date;
-      $end_date = clone $event_end_date;
-      $end_date->modify('+1 day');
+    // Format the start and end dates as desired (e.g., "August 14-15, 2024")
+    $start_date = clone $event_end_date;
+    $end_date = clone $event_end_date;
+    $end_date->modify('+1 day');
 
-      // Check if the month is the same for both dates
-      if ($start_date->format('F') === $end_date->format('F')) {
-          $output = $start_date->format('F j') . '-' . $end_date->format('j, Y');
-      } else {
-          $output = $start_date->format('F j') . ' - ' . $end_date->format('F j, Y');
-      }
+    // Check if the month is the same for both dates
+    if ($start_date->format('F') === $end_date->format('F')) {
+      $output = $start_date->format('F j') . '-' . $end_date->format('j, Y');
+    } else {
+      $output = $start_date->format('F j') . ' - ' . $end_date->format('F j, Y');
+    }
 
-      return $output;
+    return $output;
   } else {
-      return 'No data available.';
+    return 'No data available.';
   }
 }
 
 // Register the shortcode
 add_shortcode('keepsakealbum_event_date', 'keepsakealbum_by_guest_event_date');
+
+
+
+function keepsake_album_cover_image_data()
+{
+  $data = fetch_api_data();
+
+  // Check if the data is not empty and the "cover_image" key exists
+  if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+    // Get the necessary IDs
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
+
+    // Fetch related events data
+    $album_data = fetch_related_events_keepsakealbum_data($event_id, $storyz_id);
+
+    // Check if album data is not empty and contains the necessary keys
+    if (empty($album_data) || !isset($album_data['data']['cover_image'])) {
+      return 'No Keepsakealbum data found.';
+    }
+
+    // Get the cover image URL
+    $cover_image_url = $album_data['data']['cover_image'];
+
+    if (empty($cover_image_url)) {
+      return 'No cover image available.';
+    }
+
+    $output = '<div class="container">';
+    $output .= '<div class="row justify-content-center">';
+    $output .= '<div class="col-12 text-center">';
+
+    // Generate HTML for image
+    $output .= '<img src="' . esc_url($cover_image_url) . '" alt="Cover Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 10px;">';
+
+    $output .= '</div>'; // Close col-12
+    $output .= '</div>'; // Close row
+    $output .= '</div>'; // Close container
+
+    return $output;
+  } else {
+    return 'No data available.';
+  }
+}
+
+add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data');
