@@ -1049,13 +1049,12 @@ function keepsake_album_cover_image_data($atts)
 {
   // Extract shortcode attributes
   $atts = shortcode_atts(array(
-    'display_type' => 'image' // Default display type is 'image'
+    'display_type' => 'Guest' // Default display type is 'image'
   ), $atts);
 
   // Extract display type from shortcode attributes
   $display_type = $atts['display_type'];
-var_dump($display_type);
-die();
+ 
   $data = fetch_api_data();
 
   // Check if the data is not empty and the "cover_image" key exists
@@ -1066,7 +1065,8 @@ die();
 
     // Fetch related events data
     $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id,$display_type);
-     
+     var_dump($album_data);
+     die();
     // Check if album data is not empty and contains the necessary keys
     if (empty($album_data) || !isset($album_data['data']['cover_image'])) {
       return 'No Keepsakealbum data found.';
