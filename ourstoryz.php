@@ -288,35 +288,6 @@ function fetch_api_data()
   return json_decode($body, true);
 }
 
-// Related event api fetch 
-// Function to fetch mini website template
-// function fetch_mini_website_template()
-// {
-//   // Check if the request is coming from a valid source
-//   check_ajax_referer('fetch_mini_website_template_nonce', 'security');
-
-//   // Get the event ID from the AJAX request
-//   $event_id = $_POST['event_id'];
-
-//   // Fetch API data
-//   $api_data = fetch_api_data($event_id);
-
-//   // Get mini website template ID from API data
-//   if (!empty($api_data) && isset($api_data['data']['mini_website_template_id'])) {
-//       $miniWebsiteTemplateId = $api_data['data']['mini_website_template_id'];
-//   } else {
-//       // Set default ID if API response is invalid or mini_website_template_id is not set
-//       $updated_value = get_option('default_template');
-//       $miniWebsiteTemplateId =  $updated_value; // Replace 'default_id' with your actual default ID
-//   }
-
-//   // Return the mini website template ID
-//   wp_send_json_success($miniWebsiteTemplateId);
-// }
-
-// // Hook up the AJAX action
-// add_action('wp_ajax_fetch_mini_website_template', 'fetch_mini_website_template');
-// add_action('wp_ajax_nopriv_fetch_mini_website_template', 'fetch_mini_website_template');
 
 // Fetch and return event name
 function get_event_name()
@@ -1026,42 +997,34 @@ add_shortcode('keepsakealbum_data', 'keepsakealbum');
 
 // Keepsakealbum by guest
 
-function keepsakealbum_by_guest()
-{
+function keepsakealbum_by_guest_event_date() {
   $data = fetch_api_data();
 
   // Check if the data is not empty and the required keys exist
   if (!empty($data) && isset($data['data']['id']) && isset($data['data']['event_end_date'])) {
-    // Extract the event end date and time
-    $event_end_date = new DateTime($data['data']['event_end_date']);
+      // Extract the event end date and time
+      $event_end_date = new DateTime($data['data']['event_end_date']);
 
-    // Convert timezone to CST
-    $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
+      // Convert timezone to CST
+      $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
 
-    // Format the time
-    $formatted_time = $event_end_date->format('g:i A');
-    $storyz_id = $data['data']['storyz']['id'];
-    $event_id = $data['data']['id'];
+      // Format the start and end dates as desired (e.g., "August 14-15, 2024")
+      $start_date = clone $event_end_date;
+      $end_date = clone $event_end_date;
+      $end_date->modify('+1 day');
 
-    // Fetch related events data
-    $album_data = fetch_related_events_keepsakealbum_data($event_id, $storyz_id);
+      // Check if the month is the same for both dates
+      if ($start_date->format('F') === $end_date->format('F')) {
+          $output = $start_date->format('F j') . '-' . $end_date->format('j, Y');
+      } else {
+          $output = $start_date->format('F j') . ' - ' . $end_date->format('F j, Y');
+      }
 
-    if (empty($album_data) || !isset($album_data['data'])) {
-      return 'No Keepsakealum data found.';
-    }
-
-    $all = $album_data['data']['keepsakeAlbum'];
-    $images = $all[0]['images'];
-
-    $output = '<div class="container">';
-    $output .= '<div class="row justify-content-center">';
-
-
-
-    return $output;
+      return $output;
   } else {
-    return 'No data available.';
+      return 'No data available.';
   }
 }
 
-add_shortcode('keepsakealbum_by_guest_data','keepsakealbum_by_guest');
+// Register the shortcode
+add_shortcode('keepsakealbum_event_date', 'keepsakealbum_by_guest_event_date');
