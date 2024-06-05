@@ -1054,7 +1054,8 @@ function keepsake_album_cover_image_data($atts)
 
   // Extract display type from shortcode attributes
   $display_type = $atts['display_type'];
-
+var_dump($display_type);
+die();
   $data = fetch_api_data();
 
   // Check if the data is not empty and the "cover_image" key exists
