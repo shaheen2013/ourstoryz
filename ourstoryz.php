@@ -1065,8 +1065,7 @@ function keepsake_album_cover_image_data($atts)
 
     // Fetch related events data
     $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id,$display_type);
-    var_dump($album_data);
-    die();
+     
     // Check if album data is not empty and contains the necessary keys
     if (empty($album_data) || !isset($album_data['data']['cover_image'])) {
       return 'No Keepsakealbum data found.';
