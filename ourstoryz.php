@@ -1031,9 +1031,30 @@ function keepsakealbum_by_guest_event_date()
 add_shortcode('keepsakealbum_event_date', 'keepsakealbum_by_guest_event_date');
 
 
+// keepsakealbum data fetch by guest 
 
-function keepsake_album_cover_image_data()
+function fetch_keepsakealbum_data_by_display_type($related_event_id, $storyz_id, $display_type)
 {
+
+  $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/keepsakealbum?event_id=" . intval($related_event_id) . "&storyz_id=" . intval($storyz_id) . "&display_by=" . intval($display_type));
+
+  if (is_wp_error($response)) {
+    return null;
+  }
+
+  $body = wp_remote_retrieve_body($response);
+  return json_decode($body, true);
+}
+function keepsake_album_cover_image_data($atts)
+{
+  // Extract shortcode attributes
+  $atts = shortcode_atts(array(
+    'display_type' => 'image' // Default display type is 'image'
+  ), $atts);
+
+  // Extract display type from shortcode attributes
+  $display_type = $atts['display_type'];
+
   $data = fetch_api_data();
 
   // Check if the data is not empty and the "cover_image" key exists
@@ -1043,7 +1064,7 @@ function keepsake_album_cover_image_data()
     $event_id = $data['data']['id'];
 
     // Fetch related events data
-    $album_data = fetch_related_events_keepsakealbum_data($event_id, $storyz_id);
+    $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id,$display_type);
 
     // Check if album data is not empty and contains the necessary keys
     if (empty($album_data) || !isset($album_data['data']['cover_image'])) {
@@ -1052,18 +1073,24 @@ function keepsake_album_cover_image_data()
 
     // Get the cover image URL
     $cover_image_url = $album_data['data']['cover_image'];
-
+  var_dump($cover_image_url);
+  die();
     if (empty($cover_image_url)) {
       return 'No cover image available.';
     }
 
+    // Generate HTML for image
     $output = '<div class="container">';
     $output .= '<div class="row justify-content-center">';
     $output .= '<div class="col-12 text-center">';
-
-    // Generate HTML for image
-    $output .= '<img src="' . esc_url($cover_image_url) . '" alt="Cover Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 10px;">';
-
+    
+    // Check display type
+    if ($display_type === 'image') {
+      $output .= '<img src="' . esc_url($cover_image_url) . '" alt="Cover Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 10px;">';
+    } else {
+      return 'Invalid display type specified.';
+    }
+    
     $output .= '</div>'; // Close col-12
     $output .= '</div>'; // Close row
     $output .= '</div>'; // Close container
@@ -1075,3 +1102,5 @@ function keepsake_album_cover_image_data()
 }
 
 add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data');
+
+
