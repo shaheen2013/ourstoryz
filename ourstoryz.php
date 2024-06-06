@@ -1047,8 +1047,7 @@ function fetch_keepsakealbum_data_by_display_type($related_event_id, $storyz_id,
 }
 function keepsake_album_cover_image_data($atts)
 {
-  var_dump('test');
-  die();
+  
   // Extract shortcode attributes
   $atts = shortcode_atts(
     array(
@@ -1108,7 +1107,8 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 function keepsakealbum_data_by_guest($atts)
 {  
 
- 
+  var_dump('test 202');
+  die();
   $atts = shortcode_atts(
     array(
       'display_type' => 'Guest' // Default display type is 'Guest'
