@@ -1112,9 +1112,10 @@ function keepsakealbum_data_by_guest($atts)
       'display_type' => 'Guest' // Default display type is 'Guest'
     ), $atts);
   $display_type = $atts['display_type'];
-  $data = fetch_api_data();
   var_dump($display_type);
   die();
+  $data = fetch_api_data();
+ 
   // Check if the data is not empty and the required keys exist
   if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
     // Get the IDs
