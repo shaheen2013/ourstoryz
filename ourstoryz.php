@@ -1069,7 +1069,7 @@ function keepsake_album_cover_image_data($atts)
 
     // Fetch related events data
     $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
- 
+
     // Check if album data is not empty and contains the necessary keys
     if (empty($album_data) || !isset($album_data['data']['cover_image'])) {
       return 'No Keepsakealbum data found.';
@@ -1106,82 +1106,68 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 
 function keepsakealbum_data_by_guest($atts)
 {
-    $atts = shortcode_atts(
-        array(
-            'display_type' => 'Guest' // Default display type is 'Guest'
-        ),
-        $atts
-    );
-    $display_type = $atts['display_type'];
+  $atts = shortcode_atts(
+    array(
+      'display_type' => 'Guest' // Default display type is 'Guest'
+    ),
+    $atts
+  );
+  $display_type = $atts['display_type'];
 
-    $data = fetch_api_data();
+  $data = fetch_api_data();
 
-    // Check if the data is not empty and the required keys exist
-    if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
-        // Get the IDs
-        $storyz_id = $data['data']['storyz']['id'];
-        $event_id = $data['data']['id'];
+  // Check if the data is not empty and the required keys exist
+  if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+    // Get the IDs
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
 
-        // Fetch related events data
-        $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
+    // Fetch related events data
+    $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
 
-        // Check if album data is available
-        if (!empty($album_data['data']['keepsakeAlbum'])) {
-            $all = $album_data['data']['keepsakeAlbum'];
-            $images = $all[0]['images'];
+    // Check if album data is available
+    if (!empty($album_data['data']['keepsakeAlbum'])) {
+      $all = $album_data['data']['keepsakeAlbum'];
+      $images = $all[0]['images'];
 
-            // Fetch guest profile and name
-            $guest_profile = ''; // Assuming there's a single guest profile for all images
-            $guest_name = ''; // Assuming there's a single guest name for all images
+      // Start HTML output
+      $output = '';
 
-            if (!empty($images)) {
-                $guest_profile = '<img style="border-radius: 10px;" src="' . esc_url($images[0]['guest_profile']) . '" class="mb-3" alt="Main Event">';
-                $guest_name = '<h5>' . esc_html($images[0]['guest_name']) . '</h5>';
-            }
+      foreach ($all as $guest) {
+        $guest_name = $guest['data']['guest_name'];
+        $guest_profile = $guest['data']['guest_profile'];
 
-            // Start HTML output
-            $output = '<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">';
-            $output .= '<div class="event-card bg-white">';
+        $output .= '<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">';
+        $output .= '<div class="event-card bg-white">';
+        $output .= '<div style="gap:16px;" class="d-flex align-items-center justify-content-center">';
+        $output .= '<img style="border-radius: 10px;" src="' . esc_url($guest_profile) . '" class="mb-3" alt="Main Event">';
+        $output .= '<div>';
+        $output .= '<h5>' . esc_html($guest_name) . '</h5>';
+        $output .= '<p>Date</p>'; // Replace "Date" with the actual date
+        $output .= '</div>';
+        $output .= '</div>';
+        $output .= '<div class="event-img-container">';
 
-            // Output guest profile and name outside the loop
-            $output .= '<div style="gap:16px;" class="d-flex align-items-center justify-content-center">';
-            $output .= $guest_profile;
-            $output .= '<div>';
-            $output .= $guest_name;
-            $output .= '</div>';
-            $output .= '</div>';
-
-            // Loop to display only the first four images
-            $count = 0;
-            foreach ($images as $data) {
-                if ($count >= 9) {
-                    break; // Break the loop if four images have been displayed
-                }
-
-                $event_image = '<img src="' . esc_url($data['photo_url']) . '" alt="' . esc_attr($data['caption']) . '" class="event-img-small" style="border-radius: 10px;">';
-
-                // Add media HTML to output if not empty
-                if (!empty($event_image)) {
-                    $output .= '<div class="event-img-container">';
-                    $output .= $event_image;
-                    $output .= '</div>'; // Close event-img-container
-                }
-
-                $count++; // Increment the count after each image
-            }
-
-            $output .= '</div>'; // Close event-card
-            $output .= '</div>'; // Close main container
-
-            return $output;
-        } else {
-            return 'No Keepsakealum data found.';
+        // Event images
+        foreach ($images as $index => $data) {
+          $output .= '<img src="' . esc_url($data['photo_url']) . '" class="event-img-small" alt="Event Image ' . ($index + 1) . '">';
         }
+
+        $output .= '</div>'; // Close event-img-container
+        $output .= '</div>'; // Close event-card
+        $output .= '</div>'; // Close main container
+      }
+
+      return $output;
     } else {
-        return 'No data available.';
+      return 'No Keepsakealum data found.';
     }
+  } else {
+    return 'No data available.';
+  }
 }
 
 add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
+
 
 
