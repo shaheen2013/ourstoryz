@@ -1036,7 +1036,7 @@ add_shortcode('keepsakealbum_event_date', 'keepsakealbum_by_guest_event_date');
 function fetch_keepsakealbum_data_by_display_type($related_event_id, $storyz_id, $display_type)
 {
 
-  $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/keepsakealbum?event_id=" . intval($related_event_id) . "&storyz_id=" . intval($storyz_id) . "&display_by=" . intval($display_type));
+  $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/keepsakealbum?event_id=" . intval($related_event_id) . "&storyz_id=" . intval($storyz_id) . "&display_by=" . $display_type);
 
   if (is_wp_error($response)) {
     return null;
@@ -1123,26 +1123,14 @@ function keepsakealbum_data_by_guest($atts)
     // Get the IDs
     $storyz_id = $data['data']['storyz']['id'];
     $event_id = $data['data']['id'];
-    $event_end_date = new DateTime($data['data']['event_end_date']);
-
-    // Convert timezone to CST
-    $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
-
-    // Format the start and end dates as desired (e.g., "August 14-15, 2024")
-    $start_date = clone $event_end_date;
-    $end_date = clone $event_end_date;
-    $end_date->modify('+1 day');
-    $event_date = '';
+     
     // Check if the month and year are the same for both dates
-    if ($start_date->format('Ym') === $end_date->format('Ym')) {
-      $event_date = $start_date->format('F j') . '-' . $end_date->format('j, Y');
-    } else {
-      $event_date = $start_date->format('F j') . ' - ' . $end_date->format('F j, Y');
-    }
+     
 
     // Fetch related events data
     $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
-   
+   var_dump($album_data);
+   die();
     // Check if album data is available
     
     $all = $album_data['data']['keepsakeAlbum'];
@@ -1169,7 +1157,7 @@ function keepsakealbum_data_by_guest($atts)
         $output .= $guest_profile; // Assuming $data['guest_profile'] contains the guest profile image URL
         $output .= '<div>';
         $output .= '<h5>' . esc_html($data['guest_name']) . '</h5>'; // Assuming $data['guest_name'] contains the guest name
-        $output .= '<p>' . esc_html($event_date) . '</p>'; // Assuming $data['date'] contains the date
+        // $output .= '<p>' . esc_html($event_date) . '</p>'; // Assuming $data['date'] contains the date
         $output .= '</div>';
         $output .= '</div>';
         $output .= '<div class="event-img-container">';
