@@ -1115,8 +1115,7 @@ function keepsakealbum_data_by_guest($atts)
     $atts
   );
   $display_type = $atts['display_type'];
-  var_dump($display_type);
-  die();
+  
   $data = fetch_api_data();
 
   // Check if the data is not empty and the required keys exist
@@ -1125,7 +1124,8 @@ function keepsakealbum_data_by_guest($atts)
     $storyz_id = $data['data']['storyz']['id'];
     $event_id = $data['data']['id'];
     $event_end_date = new DateTime($data['data']['event_end_date']);
-
+    var_dump($event_end_date);
+    die();
     // Convert timezone to CST
     $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
 
