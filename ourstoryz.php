@@ -1106,15 +1106,15 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 function keepsakealbum_data_by_guest($atts)
 {  
 
-  var_dump('imran 2025');
-  die();
+ 
   $atts = shortcode_atts(
     array(
       'display_type' => 'Guest' // Default display type is 'Guest'
     ), $atts);
   $display_type = $atts['display_type'];
   $data = fetch_api_data();
-
+  var_dump($display_type);
+  die();
   // Check if the data is not empty and the required keys exist
   if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
     // Get the IDs
@@ -1195,5 +1195,5 @@ function keepsakealbum_data_by_guest($atts)
   }
 }
 
-add_shortcode('keepsakealbum_data_guest', 'keepsakealbum_data_by_guest');
+add_shortcode(' ', 'keepsakealbum_data_by_guest');
 
