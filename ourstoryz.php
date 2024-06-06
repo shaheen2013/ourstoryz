@@ -1196,5 +1196,5 @@ function keepsakealbum_data_by_guest($atts)
   }
 }
 
-add_shortcode(' ', 'keepsakealbum_data_by_guest');
+add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
 
