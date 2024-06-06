@@ -1223,7 +1223,7 @@ function keepsakealbum_data_by_guest($atts)
                 $guest_images = isset($guest['images']) ? $guest['images'] : array();
 
                 // Start guest HTML
-                $output .= '<div class="justify-content-center align-items-center" >';
+                $output .= '<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">';
                 $output .= '<div class="event-card bg-white">';
                 $output .= '<div class="d-flex align-items-center justify-content-center" style="gap: 16px;">';
                 $output .= '<img src="' . esc_url($guest_profile) . '" class="mb-3 event-img-big" style="border-radius: 10px; height: 150px; width: 150px;" alt="Main Event">';
