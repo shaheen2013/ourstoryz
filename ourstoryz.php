@@ -1104,7 +1104,10 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 
 
 function keepsakealbum_data_by_guest($atts)
-{
+{  
+
+  var_dump('imran 2025');
+  die();
   $atts = shortcode_atts(
     array(
       'display_type' => 'Guest' // Default display type is 'Guest'
