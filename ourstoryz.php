@@ -1047,6 +1047,8 @@ function fetch_keepsakealbum_data_by_display_type($related_event_id, $storyz_id,
 }
 function keepsake_album_cover_image_data($atts)
 {
+  var_dump('test');
+  die();
   // Extract shortcode attributes
   $atts = shortcode_atts(
     array(
