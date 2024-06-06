@@ -1115,7 +1115,7 @@ function keepsakealbum_data_by_guest($atts)
     $atts
   );
   $display_type = $atts['display_type'];
-  
+
   $data = fetch_api_data();
 
   // Check if the data is not empty and the required keys exist
@@ -1124,8 +1124,7 @@ function keepsakealbum_data_by_guest($atts)
     $storyz_id = $data['data']['storyz']['id'];
     $event_id = $data['data']['id'];
     $event_end_date = new DateTime($data['data']['event_end_date']);
-    var_dump($event_end_date);
-    die();
+
     // Convert timezone to CST
     $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
 
@@ -1142,7 +1141,8 @@ function keepsakealbum_data_by_guest($atts)
     }
     // Fetch related events data
     $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
-
+    var_dump($album_data);
+    die();
     // Check if album data is available
     if (empty($album_data) || !isset($album_data['data'])) {
       return 'No Keepsakealum data found.';
@@ -1159,20 +1159,11 @@ function keepsakealbum_data_by_guest($atts)
       $event_image = '';
       $guest_profile = '';
 
-      // Check if photo_url is set and not empty
-      if (isset($data['photo_url']) && !empty($data['photo_url'])) {
-        $media_url = $data['photo_url'];
 
-        // Generate HTML for image
-        $event_image = '<img src="' . esc_url($media_url) . '" alt="' . esc_attr($data['caption']) . '" class="event-img-small" style="border-radius: 10px;">';
-      }
+      $event_image = '<img src="' . esc_url($data['photo_url']) . '" alt="' . esc_attr($data['caption']) . '" class="event-img-small" style="border-radius: 10px;">';
 
-      if (isset($data['guest_profile']) && !empty($data['guest_profile'])) {
-        $guest_profile = $data['guest_profile'];
+      $guest_profile = '<img style="border-radius: 10px;" src="' . esc_url($data['guest_profile']) . '" class="mb-3" alt="Main Event">';
 
-        // Generate HTML for image
-        $guest_profile = '<img style="border-radius: 10px;" src="' . esc_url($guest_profile) . '" class="mb-3" alt="Main Event">';
-      }
 
 
       // Add media HTML to output if not empty
