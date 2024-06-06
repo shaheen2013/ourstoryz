@@ -1154,7 +1154,7 @@ function keepsakealbum_data_by_guest($atts)
             // Loop to display only the first four images
             $count = 0;
             foreach ($images as $data) {
-                if ($count >= 4) {
+                if ($count >= 9) {
                     break; // Break the loop if four images have been displayed
                 }
 
