@@ -1135,7 +1135,7 @@ function keepsakealbum_data_by_guest($atts)
 
       // Initialize guest counter
       $guest_count = 0;
-
+      echo '<div class="d-flex">';
       foreach ($all as $guest) {
         // Check if guest counter has reached 3
         if ($guest_count >= 3) {
@@ -1192,7 +1192,7 @@ function keepsakealbum_data_by_guest($atts)
         // Increment guest counter
         $guest_count++;
       }
-
+      echo '</div>';
       return $output;
     } else {
       return 'No Keepsakealum data found.';
