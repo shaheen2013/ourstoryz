@@ -1125,12 +1125,12 @@ function keepsakealbum_data_by_guest($atts)
     $event_id = $data['data']['id'];
      
     // Check if the month and year are the same for both dates
-     
+    var_dump($storyz_id, $event_id);
+    die();
 
     // Fetch related events data
     $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
-   var_dump($album_data);
-   die();
+  
     // Check if album data is available
     
     $all = $album_data['data']['keepsakeAlbum'];
