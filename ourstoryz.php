@@ -1132,7 +1132,7 @@ function keepsakealbum_data_by_guest($atts)
       // Start HTML output
       $output = '';
 
-      foreach ($all[0] as $guest) {
+      foreach ($all as $guest) {
         var_dump( $guest);
         die();
         $guest_name = $guest['data']['guest_name'];
