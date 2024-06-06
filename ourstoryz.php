@@ -1128,15 +1128,15 @@ function keepsakealbum_data_by_guest($atts)
     // Check if album data is available
     if (!empty($album_data['data']['keepsakeAlbum'])) {
       $all = $album_data['data']['keepsakeAlbum'];
-
+      var_dump($all);
+      die();
       // Start HTML output
       $output = '';
 
       foreach ($all as $guest) {
         $guest_name = $guest['data']['guest_name'];
         $guest_profile = $guest['data']['guest_profile'];
-         var_dump($guest_profile);
-         die();
+        
         // Start guest HTML
         $output .= '<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">';
         $output .= '<div class="event-card bg-white">';
