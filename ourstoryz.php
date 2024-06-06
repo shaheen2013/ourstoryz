@@ -1128,20 +1128,20 @@ function keepsakealbum_data_by_guest($atts)
     // Check if album data is available
     if (!empty($album_data['data']['keepsakeAlbum'])) {
       $all = $album_data['data']['keepsakeAlbum'];
-  
+
       // Start HTML output
       $output = '';
 
       foreach ($all as $guest) {
-        
+
         $guest_name = $guest['guest_name'];
         $guest_profile = $guest['guest_profile'];
-        
+
         // Start guest HTML
         $output .= '<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">';
         $output .= '<div class="event-card bg-white">';
         $output .= '<div class="d-flex align-items-center justify-content-center" style="gap: 16px;">';
-        $output .= '<img src="' . esc_url($guest_profile) . '" class="mb-3 event-img-big" style="border-radius: 10px;" alt="Main Event">';
+        $output .= '<img src="' . esc_url($guest_profile) . '" class="mb-3 event-img-big" style="border-radius: 10px; height: 150px; width: 150px;" alt="Main Event">';
         $output .= '<div>';
         $output .= '<h5>' . esc_html($guest_name) . '</h5>';
         $output .= '<p>Date</p>'; // Replace "Date" with the actual date
