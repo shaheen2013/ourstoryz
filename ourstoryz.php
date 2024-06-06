@@ -1106,80 +1106,69 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 
 function keepsakealbum_data_by_guest($atts)
 {
-    $atts = shortcode_atts(
-        array(
-            'display_type' => 'Guest' // Default display type is 'Guest'
-        ),
-        $atts
-    );
-    $display_type = $atts['display_type'];
+  $atts = shortcode_atts(
+    array(
+      'display_type' => '' // Default display type is 'Guest'
+    ),
+    $atts
+  );
+  $display_type = $atts['display_type'];
 
-    $data = fetch_api_data();
+  $data = fetch_api_data();
 
-    // Check if the data is not empty and the required keys exist
-    if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
-        // Get the IDs
-        $storyz_id = $data['data']['storyz']['id'];
-        $event_id = $data['data']['id'];
+  // Check if the data is not empty and the required keys exist
+  if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+    // Get the IDs
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
 
-        // Fetch related events data
-        $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
+    // Fetch related events data
+    $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
 
-        // Check if album data is available
-        if (!empty($album_data['data']['keepsakeAlbum'])) {
-            $all = $album_data['data']['keepsakeAlbum'];
-            $images = $all[0]['images'];
+    // Check if album data is available
+    if (!empty($album_data['data']['keepsakeAlbum'])) {
+      $all = $album_data['data']['keepsakeAlbum'];
 
-            // Start HTML output
-            $output = '';
-            $guest_counter = 0;
+      // Start HTML output
+      $output = '';
 
-            foreach ($all as $guest) {
-                if ($guest_counter >= 3) {
-                    break; // Exit loop after displaying three guests
-                }
+      foreach ($all as $guest) {
+        $guest_name = $guest['data']['guest_name'];
+        $guest_profile = $guest['data']['guest_profile'];
 
-                $guest_name = $guest['data']['guest_name'];
-                $guest_profile = $guest['data']['guest_profile'];
+        // Start guest HTML
+        $output .= '<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">';
+        $output .= '<div class="event-card bg-white">';
+        $output .= '<div class="d-flex align-items-center justify-content-center" style="gap: 16px;">';
+        $output .= '<img src="' . esc_url($guest_profile) . '" class="mb-3 event-img-big" style="border-radius: 10px;" alt="Main Event">';
+        $output .= '<div>';
+        $output .= '<h5>' . esc_html($guest_name) . '</h5>';
+        $output .= '<p>Date</p>'; // Replace "Date" with the actual date
+        $output .= '</div>';
+        $output .= '</div>';
+        $output .= '<div class="event-img-container">';
 
-                $output .= '<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">';
-                $output .= '<div class="event-card bg-white">';
-                $output .= '<div style="gap:16px;" class="d-flex align-items-center justify-content-center">';
-                $output .= '<img style="border-radius: 10px;" src="' . esc_url($guest_profile) . '" class="mb-3" alt="Main Event">';
-                $output .= '<div>';
-                $output .= '<h5>' . esc_html($guest_name) . '</h5>';
-                $output .= '<p>Date</p>'; // Replace "Date" with the actual date
-                $output .= '</div>';
-                $output .= '</div>';
-                $output .= '<div class="event-img-container">';
-                
-                // Event images
-                $image_counter = 0;
-                foreach ($images as $index => $data) {
-                    if ($image_counter >= 3) {
-                        break; // Exit loop after displaying three images
-                    }
-                    $output .= '<img src="' . esc_url($data['photo_url']) . '" class="event-img-small" alt="Event Image ' . ($index + 1) . '">';
-                    $image_counter++;
-                }
+        // Static event images
+        $output .= '<img src="https://via.placeholder.com/70" class="event-img-small" alt="Event Image 1">';
+        $output .= '<img src="https://via.placeholder.com/70" class="event-img-small" alt="Event Image 2">';
+        $output .= '<img src="https://via.placeholder.com/70" class="event-img-small" alt="Event Image 3">';
 
-                $output .= '</div>'; // Close event-img-container
-                $output .= '</div>'; // Close event-card
-                $output .= '</div>'; // Close main container
+        $output .= '</div>'; // Close event-img-container
+        $output .= '</div>'; // Close event-card
+        $output .= '</div>'; // Close main container
+      }
 
-                $guest_counter++;
-            }
-
-            return $output;
-        } else {
-            return 'No Keepsakealum data found.';
-        }
+      return $output;
     } else {
-        return 'No data available.';
+      return 'No Keepsakealum data found.';
     }
+  } else {
+    return 'No data available.';
+  }
 }
 
 add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
+
 
 
 
