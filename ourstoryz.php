@@ -1108,7 +1108,7 @@ function keepsakealbum_data_by_guest($atts)
 {
   $atts = shortcode_atts(
     array(
-      'display_type' => 'Guest' // Default display type is 'Guest'
+      'display_type' => '' // Default display type is 'Guest'
     ),
     $atts
   );
@@ -1132,20 +1132,15 @@ function keepsakealbum_data_by_guest($atts)
       // Start HTML output
       $output = '';
 
-      for ($guest_counter = 0; $guest_counter <= 3; $guest_counter++) {
-        if (!isset($all[$guest_counter])) {
-          break; // Exit loop if there are less than 3 guests
-        }
-
-        $guest = $all[$guest_counter];
+      foreach ($all as $guest) {
         $guest_name = $guest['data']['guest_name'];
         $guest_profile = $guest['data']['guest_profile'];
-        $images = $guest['images'];
 
+        // Start guest HTML
         $output .= '<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">';
         $output .= '<div class="event-card bg-white">';
-        $output .= '<div style="gap:16px;" class="d-flex align-items-center justify-content-center">';
-        $output .= '<img style="border-radius: 10px;" src="' . esc_url($guest_profile) . '" class="mb-3" alt="Main Event">';
+        $output .= '<div class="d-flex align-items-center justify-content-center" style="gap: 16px;">';
+        $output .= '<img src="' . esc_url($guest_profile) . '" class="mb-3 event-img-big" style="border-radius: 10px;" alt="Main Event">';
         $output .= '<div>';
         $output .= '<h5>' . esc_html($guest_name) . '</h5>';
         $output .= '<p>Date</p>'; // Replace "Date" with the actual date
@@ -1153,14 +1148,10 @@ function keepsakealbum_data_by_guest($atts)
         $output .= '</div>';
         $output .= '<div class="event-img-container">';
 
-        // Event images
-        for ($image_counter = 0; $image_counter < 3; $image_counter++) {
-          if (!isset($images[$image_counter])) {
-            break; // Exit loop if there are less than 3 images
-          }
-          $data = $images[$image_counter];
-          $output .= '<img src="' . esc_url($data['photo_url']) . '" class="event-img-small" alt="Event Image ' . ($image_counter + 1) . '">';
-        }
+        // Static event images
+        $output .= '<img src="https://via.placeholder.com/70" class="event-img-small" alt="Event Image 1">';
+        $output .= '<img src="https://via.placeholder.com/70" class="event-img-small" alt="Event Image 2">';
+        $output .= '<img src="https://via.placeholder.com/70" class="event-img-small" alt="Event Image 3">';
 
         $output .= '</div>'; // Close event-img-container
         $output .= '</div>'; // Close event-card
