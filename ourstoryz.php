@@ -1048,13 +1048,16 @@ function fetch_keepsakealbum_data_by_display_type($related_event_id, $storyz_id,
 function keepsake_album_cover_image_data($atts)
 {
   // Extract shortcode attributes
-  $atts = shortcode_atts(array(
-    'display_type' => 'Guest' // Default display type is 'image'
-  ), $atts);
+  $atts = shortcode_atts(
+    array(
+      'display_type' => 'Guest' // Default display type is 'image'
+    ),
+    $atts
+  );
 
   // Extract display type from shortcode attributes
   $display_type = $atts['display_type'];
- 
+
   $data = fetch_api_data();
 
   // Check if the data is not empty and the "cover_image" key exists
@@ -1064,8 +1067,8 @@ function keepsake_album_cover_image_data($atts)
     $event_id = $data['data']['id'];
 
     // Fetch related events data
-    $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id,$display_type);
-      
+    $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
+
     // Check if album data is not empty and contains the necessary keys
     if (empty($album_data) || !isset($album_data['data']['cover_image'])) {
       return 'No Keepsakealbum data found.';
@@ -1073,17 +1076,17 @@ function keepsake_album_cover_image_data($atts)
 
     // Get the cover image URL
     $cover_image_url = $album_data['data']['cover_image'];
- 
-     
+
+
 
     // Generate HTML for image
     $output = '<div class="container">';
     $output .= '<div class="row justify-content-center">';
     $output .= '<div class="col-12 text-center">';
-    
+
     // Check display type
-     
-    $output .= '<img src="' . ( !empty($cover_image_url) ? esc_url($cover_image_url) : 'https://example.com/dummy-image.jpg' ) . '" alt="Cover Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 10px;">';
+
+    $output .= '<img src="' . (!empty($cover_image_url) ? esc_url($cover_image_url) : 'https://example.com/dummy-image.jpg') . '" alt="Cover Image" class="img-fluid" style="width: 100%; height: auto; border-radius: 10px;">';
 
     $output .= '</div>'; // Close col-12
     $output .= '</div>'; // Close row
@@ -1097,4 +1100,97 @@ function keepsake_album_cover_image_data($atts)
 
 add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data');
 
+
+
+
+function keepsakealbum_data_by_guest($atts)
+{
+  $atts = shortcode_atts(
+    array(
+      'display_type' => 'Guest' // Default display type is 'Guest'
+    ), $atts);
+  $display_type = $atts['display_type'];
+  $data = fetch_api_data();
+
+  // Check if the data is not empty and the required keys exist
+  if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+    // Get the IDs
+    $storyz_id = $data['data']['storyz']['id'];
+    $event_id = $data['data']['id'];
+    $event_end_date = new DateTime($data['data']['event_end_date']);
+
+    // Convert timezone to CST
+    $event_end_date->setTimezone(new DateTimeZone('America/Chicago'));
+
+    // Format the start and end dates as desired (e.g., "August 14-15, 2024")
+    $start_date = clone $event_end_date;
+    $end_date = clone $event_end_date;
+    $end_date->modify('+1 day');
+    $event_date = '';
+    // Check if the month is the same for both dates
+    if ($start_date->format('F') === $end_date->format('F')) {
+      $event_date = $start_date->format('F j') . '-' . $end_date->format('j, Y');
+    } else {
+      $event_date = $start_date->format('F j') . ' - ' . $end_date->format('F j, Y');
+    }
+    // Fetch related events data
+    $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
+
+    // Check if album data is available
+    if (empty($album_data) || !isset($album_data['data'])) {
+      return 'No Keepsakealum data found.';
+    }
+
+    $all = $album_data['data']['keepsakeAlbum'];
+    $images = $all[0]['images'];
+
+    // Start HTML output
+    $output = '<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">';
+    $output .= '<div class="event-card bg-white">';
+
+    foreach ($images as $data) {
+      $event_image = '';
+      $guest_profile = '';
+
+      // Check if photo_url is set and not empty
+      if (isset($data['photo_url']) && !empty($data['photo_url'])) {
+        $media_url = $data['photo_url'];
+
+        // Generate HTML for image
+        $event_image = '<img src="' . esc_url($media_url) . '" alt="' . esc_attr($data['caption']) . '" class="event-img-small" style="border-radius: 10px;">';
+      }
+
+      if (isset($data['guest_profile']) && !empty($data['guest_profile'])) {
+        $guest_profile = $data['guest_profile'];
+
+        // Generate HTML for image
+        $guest_profile =  '<img style="border-radius: 10px;" src="' . esc_url($guest_profile) . '" class="mb-3" alt="Main Event">';
+      }
+      
+
+      // Add media HTML to output if not empty
+      if (!empty($event_image)) {
+        $output .= '<div style="gap:16px;" class="d-flex align-items-center justify-content-center">';
+        $output .= $guest_profile; // Assuming $data['guest_profile'] contains the guest profile image URL
+        $output .= '<div>';
+        $output .= '<h5>' . esc_html($data['guest_name']) . '</h5>'; // Assuming $data['guest_name'] contains the guest name
+        $output .= '<p>' . esc_html($event_date) . '</p>'; // Assuming $data['date'] contains the date
+        $output .= '</div>';
+        $output .= '</div>';
+        $output .= '<div class="event-img-container">';
+        $output .= $event_image;
+        $output .= '</div>'; // Close event-img-container
+      }
+    }
+
+    $output .= '</div>'; // Close event-card
+    $output .= '</div>'; // Close main container
+
+    return $output;
+  } else {
+    return 'No data available.';
+  }
+}
+
+add_shortcode('keepsakealbum_data_guest', 'keepsakealbum_data_by_guest');
 
