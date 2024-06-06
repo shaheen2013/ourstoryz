@@ -1133,12 +1133,13 @@ function keepsakealbum_data_by_guest($atts)
     $end_date = clone $event_end_date;
     $end_date->modify('+1 day');
     $event_date = '';
-    // Check if the month is the same for both dates
-    if ($start_date->format('F') === $end_date->format('F')) {
+    // Check if the month and year are the same for both dates
+    if ($start_date->format('Ym') === $end_date->format('Ym')) {
       $event_date = $start_date->format('F j') . '-' . $end_date->format('j, Y');
     } else {
       $event_date = $start_date->format('F j') . ' - ' . $end_date->format('F j, Y');
     }
+
     // Fetch related events data
     $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
     var_dump($album_data);
