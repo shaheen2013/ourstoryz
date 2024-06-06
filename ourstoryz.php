@@ -1238,7 +1238,7 @@ function keepsakealbum_data_by_guest($atts)
       $guest_count = 0;
 
       // Empty div to include the loop data
-      $output .= '<div class="guests-container">';
+      $output .= '<div class="d-flex">';
        
       foreach ($all as $guest) {
         // Check if guest counter has reached 3
