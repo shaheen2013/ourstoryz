@@ -1248,13 +1248,13 @@ function keepsakealbum_data_by_guest($atts)
                     
                     if (strpos($photo_url, 'mpr') !== false) {
                         // If the URL contains "mpr", assume it's a video
-                        $output .= '<video class="event-img-small" controls>
+                        $output .= '<video class="event-img-small" controls style="height: 150px; width: 150px;">
                                         <source src="' . esc_url($photo_url) . '" type="video/mp4">
                                         Your browser does not support the video tag.
                                     </video>';
                     } else {
                         // Otherwise, it's an image
-                        $output .= '<img src="' . esc_url($photo_url) . '" class="event-img-small" alt="Event Image">';
+                        $output .= '<img src="' . esc_url($photo_url) . '" class="event-img-small" style="height: 150px; width: 150px;" alt="Event Image">';
                     }
 
                     // Increment media counter
@@ -1279,6 +1279,7 @@ function keepsakealbum_data_by_guest($atts)
 }
 
 add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
+
 
 
 
