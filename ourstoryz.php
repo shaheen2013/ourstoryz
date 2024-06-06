@@ -1128,7 +1128,7 @@ function keepsakealbum_data_by_guest($atts)
     // Check if album data is available
     if (!empty($album_data['data']['keepsakeAlbum'])) {
       $all = $album_data['data']['keepsakeAlbum'];
-      var_dump($all);
+      var_dump($all['guest_profile']);
       die();
       // Start HTML output
       $output = '';
