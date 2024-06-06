@@ -1151,7 +1151,13 @@ function keepsakealbum_data_by_guest($atts)
             $output .= '</div>';
             $output .= '</div>';
 
+            // Loop to display only the first four images
+            $count = 0;
             foreach ($images as $data) {
+                if ($count >= 4) {
+                    break; // Break the loop if four images have been displayed
+                }
+
                 $event_image = '<img src="' . esc_url($data['photo_url']) . '" alt="' . esc_attr($data['caption']) . '" class="event-img-small" style="border-radius: 10px;">';
 
                 // Add media HTML to output if not empty
@@ -1160,6 +1166,8 @@ function keepsakealbum_data_by_guest($atts)
                     $output .= $event_image;
                     $output .= '</div>'; // Close event-img-container
                 }
+
+                $count++; // Increment the count after each image
             }
 
             $output .= '</div>'; // Close event-card
@@ -1175,4 +1183,5 @@ function keepsakealbum_data_by_guest($atts)
 }
 
 add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
+
 
