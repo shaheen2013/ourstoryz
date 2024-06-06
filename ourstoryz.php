@@ -1047,7 +1047,7 @@ function fetch_keepsakealbum_data_by_display_type($related_event_id, $storyz_id,
 }
 function keepsake_album_cover_image_data($atts)
 {
-  
+
   // Extract shortcode attributes
   $atts = shortcode_atts(
     array(
@@ -1105,18 +1105,20 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 
 
 function keepsakealbum_data_by_guest($atts)
-{  
+{
 
-  var_dump('test 202');
-  die();
+
   $atts = shortcode_atts(
     array(
       'display_type' => 'Guest' // Default display type is 'Guest'
-    ), $atts);
+    ),
+    $atts
+  );
   $display_type = $atts['display_type'];
- 
+  var_dump($display_type);
+  die();
   $data = fetch_api_data();
- 
+
   // Check if the data is not empty and the required keys exist
   if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
     // Get the IDs
@@ -1169,9 +1171,9 @@ function keepsakealbum_data_by_guest($atts)
         $guest_profile = $data['guest_profile'];
 
         // Generate HTML for image
-        $guest_profile =  '<img style="border-radius: 10px;" src="' . esc_url($guest_profile) . '" class="mb-3" alt="Main Event">';
+        $guest_profile = '<img style="border-radius: 10px;" src="' . esc_url($guest_profile) . '" class="mb-3" alt="Main Event">';
       }
-      
+
 
       // Add media HTML to output if not empty
       if (!empty($event_image)) {
