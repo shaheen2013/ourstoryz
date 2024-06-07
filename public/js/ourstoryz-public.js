@@ -110,3 +110,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+$(document).ready(function() {
+    // Event listener for guest name click
+    $('.guest-name').click(function() {
+        // Extract guest data
+        var guestId = $(this).data('guest-id');
+        var guestName = $(this).data('guest-name');
+        var guestProfile = $(this).data('guest-profile');
+
+        // Get guest photo URLs
+        var photoUrls = [];
+        $(this).parent().next().find('img').each(function() {
+            photoUrls.push($(this).attr('src'));
+        });
+
+        // Save data to session storage
+        sessionStorage.setItem('guestId', guestId);
+        sessionStorage.setItem('guestName', guestName);
+        sessionStorage.setItem('guestProfile', guestProfile);
+        sessionStorage.setItem('photoUrls', JSON.stringify(photoUrls));
+
+        // Navigate to a new URL with guest ID as query parameter
+        var newUrl = 'https://ourstoryz.com/wpdev/our-storyz/single-keepsake-album/?guest_id=' + guestId;
+        window.location.href = newUrl;
+    });
+});
+
+
+

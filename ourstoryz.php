@@ -1102,11 +1102,6 @@ function keepsake_album_cover_image_data($atts)
 add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data');
 
 
-
-
-
- 
-
 // done
 // function keepsakealbum_data_by_guest($atts)
 // {
@@ -1214,7 +1209,6 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 // add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
 
 
-
 function keepsakealbum_data_by_guest($atts)
 {
     $atts = shortcode_atts(
@@ -1260,22 +1254,13 @@ function keepsakealbum_data_by_guest($atts)
                 $guest_profile = $guest['guest_profile'];
                 $guest_images = isset($guest['images']) ? $guest['images'] : array();
 
-                // Extract only the photo_url values
-                $guest_photo_urls = array_map(function($image) {
-                    return $image['photo_url'];
-                }, $guest_images);
-
-                // Start guest HTML with data attributes for JavaScript
-                $output .= '<div class="d-flex justify-content-center align-items-center" onclick="openGuestDetails(this)" ';
-                $output .= 'data-guest-id="' . esc_attr($guest_id) . '" ';
-                $output .= 'data-guest-name="' . esc_attr($guest_name) . '" ';
-                $output .= 'data-guest-profile="' . esc_url($guest_profile) . '" ';
-                $output .= 'data-guest-photos="' . esc_attr(json_encode($guest_photo_urls)) . '">';
+                // Start guest HTML with a clickable guest name
+                $output .= '<div class="d-flex justify-content-center align-items-center">';
                 $output .= '<div class="event-card bg-white">';
                 $output .= '<div class="d-flex align-items-center justify-content-center" style="gap: 16px;">';
                 $output .= '<img src="' . esc_url($guest_profile) . '" class="mb-3 event-img-big" style="border-radius: 10px; height: 150px; width: 150px;" alt="Main Event">';
                 $output .= '<div>';
-                $output .= '<h5>' . esc_html($guest_name) . '</h5>';
+                $output .= '<h5 class="guest-name" data-guest-id="' . $guest_id . '" data-guest-name="' . esc_attr($guest_name) . '" data-guest-profile="' . esc_attr($guest_profile) . '">' . esc_html($guest_name) . '</h5>';
                 $output .= '<p>Date</p>'; // Replace "Date" with the actual date
                 $output .= '</div>';
                 $output .= '</div>';
@@ -1329,3 +1314,56 @@ function keepsakealbum_data_by_guest($atts)
 }
 
 add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
+
+
+
+
+// Add this code to your theme's functions.php file or a custom plugin
+
+// Register shortcode
+
+
+// Shortcode function
+function single_guest_data_show($atts) {
+    // Start a session
+    if (!session_id()) {
+        session_start();
+    }
+
+    // Get the guest ID from session storage (set by JavaScript)
+    $guest_id = isset($_SESSION['guestId']) ? $_SESSION['guestId'] : '';
+
+    // Get the ID from the URL
+    $current_url = $_SERVER['REQUEST_URI'];
+    $url_parts = parse_url($current_url);
+    $url_path = isset($url_parts['path']) ? $url_parts['path'] : '';
+    $url_segments = explode('/', rtrim($url_path, '/'));
+    $url_id = end($url_segments);
+
+    // Compare guest ID with ID from the URL
+    if ($guest_id && $guest_id == $url_id) {
+        // If they match, display session storage data
+        $guest_name = isset($_SESSION['guestName']) ? $_SESSION['guestName'] : '';
+        $guest_profile = isset($_SESSION['guestProfile']) ? $_SESSION['guestProfile'] : '';
+        $photo_urls = isset($_SESSION['photoUrls']) ? json_decode($_SESSION['photoUrls']) : '';
+
+        $output = '<h2>Guest Information</h2>';
+        $output .= '<p><strong>Name:</strong> ' . $guest_name . '</p>';
+        $output .= '<p><strong>Profile:</strong> ' . $guest_profile . '</p>';
+        if (!empty($photo_urls)) {
+            $output .= '<p><strong>Photo URLs:</strong></p>';
+            $output .= '<ul>';
+            foreach ($photo_urls as $photo_url) {
+                $output .= '<li>' . $photo_url . '</li>';
+            }
+            $output .= '</ul>';
+        }
+        return $output;
+    } else {
+        // If they don't match or guest ID is not set, return empty or some default message
+        return 'Guest ID does not match or session data not available.';
+    }
+}
+
+ 
+add_shortcode('signle_guest', 'custom_shortcodesingle_guest_data_show_function');
