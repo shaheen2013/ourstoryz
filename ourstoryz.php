@@ -1105,6 +1105,9 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 
 
 
+ 
+
+// done
 // function keepsakealbum_data_by_guest($atts)
 // {
 //   $atts = shortcode_atts(
@@ -1135,6 +1138,9 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 
 //       // Initialize guest counter
 //       $guest_count = 0;
+
+//       // Empty div to include the loop data
+//       $output .= '<div class="d-flex">';
        
 //       foreach ($all as $guest) {
 //         // Check if guest counter has reached 3
@@ -1193,6 +1199,8 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 //         $guest_count++;
 //       }
       
+//       $output .= '</div>'; // Close guests-container
+      
 //       return $output;
       
 //     } else {
@@ -1206,108 +1214,118 @@ add_shortcode('keepsakealbum_coverimage_data', 'keepsake_album_cover_image_data'
 // add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
 
 
+
 function keepsakealbum_data_by_guest($atts)
 {
-  $atts = shortcode_atts(
-    array(
-      'display_type' => '' // Default display type is 'Guest'
-    ),
-    $atts
-  );
-  $display_type = $atts['display_type'];
+    $atts = shortcode_atts(
+        array(
+            'display_type' => '' // Default display type is 'Guest'
+        ),
+        $atts
+    );
+    $display_type = $atts['display_type'];
 
-  $data = fetch_api_data();
+    $data = fetch_api_data();
 
-  // Check if the data is not empty and the required keys exist
-  if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
-    // Get the IDs
-    $storyz_id = $data['data']['storyz']['id'];
-    $event_id = $data['data']['id'];
+    // Check if the data is not empty and the required keys exist
+    if (!empty($data) && isset($data['data']['storyz']['id']) && isset($data['data']['id'])) {
+        // Get the IDs
+        $storyz_id = $data['data']['storyz']['id'];
+        $event_id = $data['data']['id'];
 
-    // Fetch related events data
-    $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
+        // Fetch related events data
+        $album_data = fetch_keepsakealbum_data_by_display_type($event_id, $storyz_id, $display_type);
 
-    // Check if album data is available
-    if (!empty($album_data['data']['keepsakeAlbum'])) {
-      $all = $album_data['data']['keepsakeAlbum'];
+        // Check if album data is available
+        if (!empty($album_data['data']['keepsakeAlbum'])) {
+            $all = $album_data['data']['keepsakeAlbum'];
 
-      // Start HTML output
-      $output = '';
+            // Start HTML output
+            $output = '';
 
-      // Initialize guest counter
-      $guest_count = 0;
+            // Initialize guest counter
+            $guest_count = 0;
 
-      // Empty div to include the loop data
-      $output .= '<div class="d-flex">';
-       
-      foreach ($all as $guest) {
-        // Check if guest counter has reached 3
-        if ($guest_count >= 3) {
-          break;
+            // Empty div to include the loop data
+            $output .= '<div class="d-flex">';
+
+            foreach ($all as $guest) {
+                // Check if guest counter has reached 3
+                if ($guest_count >= 3) {
+                    break;
+                }
+
+                $guest_id = $guest['guest_id'];
+                $guest_name = $guest['guest_name'];
+                $guest_profile = $guest['guest_profile'];
+                $guest_images = isset($guest['images']) ? $guest['images'] : array();
+
+                // Extract only the photo_url values
+                $guest_photo_urls = array_map(function($image) {
+                    return $image['photo_url'];
+                }, $guest_images);
+
+                // Start guest HTML with data attributes for JavaScript
+                $output .= '<div class="d-flex justify-content-center align-items-center" onclick="openGuestDetails(this)" ';
+                $output .= 'data-guest-id="' . esc_attr($guest_id) . '" ';
+                $output .= 'data-guest-name="' . esc_attr($guest_name) . '" ';
+                $output .= 'data-guest-profile="' . esc_url($guest_profile) . '" ';
+                $output .= 'data-guest-photos="' . esc_attr(json_encode($guest_photo_urls)) . '">';
+                $output .= '<div class="event-card bg-white">';
+                $output .= '<div class="d-flex align-items-center justify-content-center" style="gap: 16px;">';
+                $output .= '<img src="' . esc_url($guest_profile) . '" class="mb-3 event-img-big" style="border-radius: 10px; height: 150px; width: 150px;" alt="Main Event">';
+                $output .= '<div>';
+                $output .= '<h5>' . esc_html($guest_name) . '</h5>';
+                $output .= '<p>Date</p>'; // Replace "Date" with the actual date
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '<div class="event-img-container">';
+
+                // Initialize media counter
+                $media_count = 0;
+
+                // Loop through guest images
+                foreach ($guest_images as $media) {
+                    // Check if media counter has reached 3
+                    if ($media_count >= 3) {
+                        break;
+                    }
+
+                    $photo_url = $media['photo_url'];
+
+                    if (strpos($photo_url, 'mpr') !== false) {
+                        // If the URL contains "mpr", assume it's a video
+                        $output .= '<video class="event-img-small" controls style="height: 150px; width: 150px;">
+                                            <source src="' . esc_url($photo_url) . '" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>';
+                    } else {
+                        // Otherwise, it's an image
+                        $output .= '<img src="' . esc_url($photo_url) . '" class="event-img-small" style="height: 150px; width: 150px;" alt="Event Image">';
+                    }
+
+                    // Increment media counter
+                    $media_count++;
+                }
+
+                $output .= '</div>'; // Close event-img-container
+                $output .= '</div>'; // Close event-card
+                $output .= '</div>'; // Close main container
+
+                // Increment guest counter
+                $guest_count++;
+            }
+
+            $output .= '</div>'; // Close guests-container
+
+            return $output;
+
+        } else {
+            return 'No Keepsakealum data found.';
         }
-
-        $guest_name = $guest['guest_name'];
-        $guest_profile = $guest['guest_profile'];
-        $guest_images = isset($guest['images']) ? $guest['images'] : array();
-
-        // Start guest HTML
-        $output .= '<div class="d-flex justify-content-center align-items-center">';
-        $output .= '<div class="event-card bg-white">';
-        $output .= '<div class="d-flex align-items-center justify-content-center" style="gap: 16px;">';
-        $output .= '<img src="' . esc_url($guest_profile) . '" class="mb-3 event-img-big" style="border-radius: 10px; height: 150px; width: 150px;" alt="Main Event">';
-        $output .= '<div>';
-        $output .= '<h5>' . esc_html($guest_name) . '</h5>';
-        $output .= '<p>Date</p>'; // Replace "Date" with the actual date
-        $output .= '</div>';
-        $output .= '</div>';
-        $output .= '<div class="event-img-container">';
-
-        // Initialize media counter
-        $media_count = 0;
-
-        // Loop through guest images
-        foreach ($guest_images as $media) {
-          // Check if media counter has reached 3
-          if ($media_count >= 3) {
-            break;
-          }
-
-          $photo_url = $media['photo_url'];
-
-          if (strpos($photo_url, 'mpr') !== false) {
-            // If the URL contains "mpr", assume it's a video
-            $output .= '<video class="event-img-small" controls style="height: 150px; width: 150px;">
-                                        <source src="' . esc_url($photo_url) . '" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>';
-          } else {
-            // Otherwise, it's an image
-            $output .= '<img src="' . esc_url($photo_url) . '" class="event-img-small" style="height: 150px; width: 150px;" alt="Event Image">';
-          }
-
-          // Increment media counter
-          $media_count++;
-        }
-
-        $output .= '</div>'; // Close event-img-container
-        $output .= '</div>'; // Close event-card
-        $output .= '</div>'; // Close main container
-
-        // Increment guest counter
-        $guest_count++;
-      }
-      
-      $output .= '</div>'; // Close guests-container
-      
-      return $output;
-      
     } else {
-      return 'No Keepsakealum data found.';
+        return 'No data available.';
     }
-  } else {
-    return 'No data available.';
-  }
 }
 
 add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
-
