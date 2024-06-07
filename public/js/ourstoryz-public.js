@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-$(document).ready(function() {
+jQuery(document).ready(function() {
     // Event listener for guest name click
     $('.guest-name').click(function() {
         // Extract guest data
