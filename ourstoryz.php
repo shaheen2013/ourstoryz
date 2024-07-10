@@ -93,7 +93,7 @@ run_ourstoryz();
 
 
 add_shortcode('search_result', 'search_result_show');
-
+// All event list endpoint
 function search_result_show()
 {
   // Get and sanitize the value of 'event' from the URL query parameters
@@ -113,6 +113,10 @@ function search_result_show()
   // Fetch data from the API
   $response = file_get_contents($url);
 
+  // var_dump($response);
+
+  // return;
+
   // Check for errors
   if ($response === false) {
     // Get detailed error message
@@ -128,13 +132,17 @@ function search_result_show()
   // Decode the JSON response
   $data = json_decode($response, true);
 
-  function getCityFromLocation($location)
-  {
-    // Split the location string by commas
-    $parts = explode(',', $location);
-    // Return the second part (the city name) if it exists
-    return isset($parts[0]) ? trim($parts[0]) : 'Unknown City';
-  }
+  // var_dump($data);
+
+  // return;
+
+  // function getCityFromLocation($location)
+  // {
+  //   // Split the location string by commas
+  //   $parts = explode(',', $location);
+  //   // Return the second part (the city name) if it exists
+  //   return isset($parts[0]) ? trim($parts[0]) : 'Unknown City';
+  // }
 
   // Check if decoding was successful
   if ($data === null) {
@@ -163,7 +171,11 @@ function search_result_show()
         // Multi-day event
         $formattedDate = $eventStartDate->format('F j') . '-' . $eventEndDate->format('j, Y');
       }
-      $cityName = getCityFromLocation($event['location']['location']);
+
+      $cityName = getCityFromLocation($event['location']);
+
+ 
+
       echo '<div class="container mt-5">
           <div class="card p-3 event-link" data-event-id="' . $event['id'] . '" style="cursor:pointer">
             <div class="row g-0">
@@ -188,8 +200,7 @@ function search_result_show()
                     <p class="date-text">' . htmlspecialchars($formattedDate) . '</p>
                   </div>
                   <div>
-                    <p class="link-text">
-                    ' . htmlspecialchars($cityName) . ' <small class="text-muted arrow">&rarr;</small>
+                    <p class="link-text">' . $cityName . ' <small class="text-muted arrow">&rarr;</small>
                     </p>
                     <div></div>
                   </div>
@@ -198,15 +209,18 @@ function search_result_show()
             </div>
           </div>
         </div>';
-
-
-
-
     }
-
   } else {
     echo "No events found.";
   }
+}
+
+function getCityFromLocation($location)
+{
+  // Split the location string by commas
+  $parts = explode(',', $location);
+  // Return the second part (the city name) if it exists
+  return isset($parts[2]) ? trim($parts[2]) : ' ';
 }
 
 
@@ -709,7 +723,6 @@ function display_date()
 
     $output .= '</ul>';
     return $output;
-
   } else {
     return 'No data available.';
   }
@@ -962,7 +975,6 @@ function keepsakealbum()
           $media_html .= '<source src="' . esc_url($media_url) . '" type="video/mp4">';
           $media_html .= 'Your browser does not support the video tag.';
           $media_html .= '</video>';
-
         } else {
           // If it's not a video, generate HTML for image
           $media_html = '<img src="' . esc_url($media_url) . '" alt="' . esc_attr($data['caption']) . '" class="img-fluid" style="width: 300px; height: 250px;border-radius: 10px;">';
@@ -1136,7 +1148,7 @@ function keepsakealbum_data_by_guest($atts)
 
       // Empty div to include the loop data
       $output .= '<div class="d-flex">';
-       
+
       foreach ($all as $guest) {
         // Check if guest counter has reached 3
         if ($guest_count >= 3) {
@@ -1193,11 +1205,10 @@ function keepsakealbum_data_by_guest($atts)
         // Increment guest counter
         $guest_count++;
       }
-      
+
       $output .= '</div>'; // Close guests-container
-      
+
       return $output;
-      
     } else {
       return 'No Keepsakealum data found.';
     }
@@ -1206,4 +1217,3 @@ function keepsakealbum_data_by_guest($atts)
   }
 }
 add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
-
