@@ -174,7 +174,7 @@ function search_result_show()
 
       $cityName = getCityFromLocation($event['location']);
 
-         var_dump($event);
+         var_dump($event['event_id']);
          die();
 
       echo '<div class="container mt-5">
