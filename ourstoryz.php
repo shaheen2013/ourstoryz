@@ -291,8 +291,7 @@ add_action('wp_ajax_nopriv_fetch_mini_website_template', 'fetch_mini_website_tem
 function fetch_api_data()
 {
   $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : '';
-  var_dump($event_id);
-  die();
+  
   $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/storyz?event_id=" . $event_id);
   
   if (is_wp_error($response)) {
