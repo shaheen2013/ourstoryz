@@ -741,7 +741,7 @@ function fetch_related_guests_data($related_event_id)
 {
 
   $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/guest/list?event_id=" . intval($related_event_id));
-   var_dump($response);
+   var_dump($related_event_id);
    die();
   if (is_wp_error($response)) {
     return null;
