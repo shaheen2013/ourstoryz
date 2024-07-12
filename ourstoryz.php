@@ -741,8 +741,7 @@ function fetch_related_guests_data($related_event_id)
 {
 
   $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/guest/list?event_id=" . intval($related_event_id));
-   var_dump($related_event_id);
-   die();
+  
   if (is_wp_error($response)) {
     return null;
   }
@@ -755,7 +754,8 @@ function display_guests_images_and_names()
 {
 
   $data = fetch_api_data();
-
+  var_dump($data);
+  die();
   // Check if the data is not empty
   if (!empty($data) && isset($data['data']['id'])) {
     // Get the event ID
