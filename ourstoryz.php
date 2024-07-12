@@ -960,7 +960,7 @@ function keepsakealbum()
     $output .= '<div class="row justify-content-center">';
 
     // Counter to keep track of the number of images displayed
-    // $count = 0;
+    $count = 0;
 
     foreach ($images as $data) {
       // Limit the loop to run only four times
