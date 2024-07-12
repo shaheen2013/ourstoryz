@@ -762,8 +762,7 @@ function display_guests_images_and_names()
 
     // Fetch related guests data
     $guests_data = fetch_related_guests_data($event_id);
-    var_dump($guests_data);
-    die();
+ 
 
     if (empty($guests_data) || !isset($guests_data['data'])) {
       return 'No guests found.';
