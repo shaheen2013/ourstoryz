@@ -223,8 +223,6 @@ function getCityFromLocation($location)
   return isset($parts[2]) ? trim($parts[2]) : ' ';
 }
 
-
-
 // Enqueue your script// Enqueue your script
 function enqueue_custom_script()
 {
@@ -293,6 +291,8 @@ add_action('wp_ajax_nopriv_fetch_mini_website_template', 'fetch_mini_website_tem
 function fetch_api_data()
 {
   $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : '';
+  var_dump($event_id);
+  die();
   $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/storyz?event_id=" . $event_id);
   
   if (is_wp_error($response)) {
@@ -308,8 +308,7 @@ function get_event_name()
 {
 
   $data = fetch_api_data();
-  var_dump($data);
-  die();
+ 
   if (!empty($data) && isset($data['data']['event_name'])) {
     return esc_html($data['data']['event_name']);
   }
