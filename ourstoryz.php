@@ -781,13 +781,13 @@ function display_guests_images_and_names()
 
       $full_name = '';
       $image_url = '';
-        var_dump($guest);
-        die();
+      
       // Check if both first_name and last_name are set
       if (isset($guest['first_name']) && isset($guest['last_name'])) {
         $full_name = $guest['first_name'] . ' ' . $guest['last_name'];
       }
-
+      var_dump($full_name);
+      die();
       // Check if imageUrl is set
       if (isset($guest['imageUrl']) && !empty($guest['imageUrl'])) {
         $image_url = $guest['imageUrl'];
