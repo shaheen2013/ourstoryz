@@ -754,8 +754,7 @@ function display_guests_images_and_names()
 {
 
   $data = fetch_api_data();
-  var_dump($data);
-  die();
+ 
   // Check if the data is not empty
   if (!empty($data) && isset($data['data']['id'])) {
     // Get the event ID
@@ -782,7 +781,8 @@ function display_guests_images_and_names()
 
       $full_name = '';
       $image_url = '';
-
+        var_dump($guest);
+        die();
       // Check if both first_name and last_name are set
       if (isset($guest['first_name']) && isset($guest['last_name'])) {
         $full_name = $guest['first_name'] . ' ' . $guest['last_name'];
