@@ -552,7 +552,7 @@ function fetch_related_events_data($storyz_id, $related_event_id)
   $body = wp_remote_retrieve_body($response);
   return json_decode($body, true);
 }
-
+// related event info 
 function display_related_events_info()
 {
   $data = fetch_api_data();
@@ -603,12 +603,15 @@ function display_related_events_info()
         }
 
         // Format location
-        $location = '';
-        if (is_array($event['location'])) {
-          $location .= explode("\n", $event['location']['location'])[0]; // Take only the first portion
-        } else {
-          $location = explode("\n", $event['location'])[0]; // Take only the first portion
-        }
+ 
+        $location = getCityFromLocation($event['location']);
+        // if (is_array($event['location'])) {
+        //   $location .= explode("\n", $event['location']['location'])[0]; // Take only the first portion
+        // } else {
+        //   $location = explode("\n", $event['location'])[0]; // Take only the first portion
+        // }
+
+
 
         // Build the event card
         $output .= '<div class="card p-3 mb-3">';
@@ -627,7 +630,7 @@ function display_related_events_info()
         $output .= '</div>';
         if (!empty($location)) {
           $output .= '<div class="text-end">';
-          $output .= '<p class="link-text">' . esc_html($location) . ' <small class="text-muted arrow">&rarr;</small></p>';
+          $output .= '<p class="link-text">' . $location . '  <small class="text-muted arrow">&rarr;</small></p>';
           $output .= '</div>';
         } else {
           // If location is empty, just display the arrow
