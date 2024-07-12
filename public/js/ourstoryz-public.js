@@ -56,9 +56,11 @@ jQuery(document).ready(function ($) {
                 newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
             } else if (baseUrl.startsWith("https://ourstoryz.com/wpdev/")) {
                 newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
+                console.log(newUrl);
             } else {
                 // Default case, if needed
                 newUrl = baseUrl + 'find-your-event/?event=' + encodeURIComponent(inputValue);
+                console.log(newUrl)
             }
 
 
