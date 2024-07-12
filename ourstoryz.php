@@ -294,7 +294,7 @@ function fetch_api_data()
 {
   $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : '';
   $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/storyz?event_id=" . $event_id);
-   var_dump($event_id,$response);
+   var_dump($event_id);
    die();
   if (is_wp_error($response)) {
     return null;
