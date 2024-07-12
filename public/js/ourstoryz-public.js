@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
             const eventId = this.getAttribute("data-event-id");
 
-             console.log('imran',eventId);
+             
             // AJAX request
             jQuery.ajax({
                 type: 'POST',
