@@ -251,7 +251,7 @@ function fetch_mini_website_template()
   // Get the event ID from the AJAX request
   $event_id = $_POST['event_id'];
 
-
+  wp_send_json("test data",$event_id);
 
 
   // Make the API call
