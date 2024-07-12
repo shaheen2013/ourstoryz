@@ -251,7 +251,7 @@ function fetch_mini_website_template()
   // Get the event ID from the AJAX request
   $event_id = $_POST['event_id'];
 
-  wp_send_json("test data",$event_id);
+ 
 
 
   // Make the API call
@@ -294,7 +294,8 @@ function fetch_api_data()
 {
   $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : '';
   $response = wp_remote_get("https://api.dev.ourstoryz.com/api/templates/event/storyz?event_id=" . $event_id);
-
+   var_dump($event_id,$response);
+   die();
   if (is_wp_error($response)) {
     return null;
   }
