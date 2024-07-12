@@ -307,6 +307,8 @@ function get_event_name()
 {
 
   $data = fetch_api_data();
+  var_dump($data);
+  die();
  
   if (!empty($data) && isset($data['data']['event_name'])) {
     return esc_html($data['data']['event_name']);
