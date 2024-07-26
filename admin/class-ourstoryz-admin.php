@@ -110,6 +110,64 @@ class ourstoryz_Admin
         );
     }
 
+
+
+    // Rsgister custom post type 'Signup'
+  
+    function create_signup_post_type()
+    {
+        $labels = array(
+            'name'                  => 'Signups',
+            'singular_name'         => 'Signup',
+            'menu_name'             => 'Signups',
+            'name_admin_bar'        => 'Signup',
+            'archives'              => 'Signup Archives',
+            'attributes'            => 'Signup Attributes',
+            'parent_item_colon'     => 'Parent Signup:',
+            'all_items'             => 'All Signups',
+            'add_new_item'          => 'Add New Signup',
+            'add_new'               => 'Add New',
+            'new_item'              => 'New Signup',
+            'edit_item'             => 'Edit Signup',
+            'update_item'           => 'Update Signup',
+            'view_item'             => 'View Signup',
+            'view_items'            => 'View Signups',
+            'search_items'          => 'Search Signup',
+            'not_found'             => 'Not found',
+            'not_found_in_trash'    => 'Not found in Trash',
+            'featured_image'        => 'Featured Image',
+            'set_featured_image'    => 'Set featured image',
+            'remove_featured_image' => 'Remove featured image',
+            'use_featured_image'    => 'Use as featured image',
+            'insert_into_item'      => 'Insert into Signup',
+            'uploaded_to_this_item' => 'Uploaded to this Signup',
+            'items_list'            => 'Signups list',
+            'items_list_navigation' => 'Signups list navigation',
+            'filter_items_list'     => 'Filter Signups list',
+        );
+
+        $args = array(
+            'labels'                => $labels,
+            'public'                => true,
+            'show_in_menu'          => true,
+            'menu_position'         => 5,
+            'menu_icon'             => 'dashicons-admin-post', // Customize the menu icon
+            'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'),
+            'taxonomies'            => array('category', 'post_tag'), // Add custom taxonomies
+            'rewrite'               => array('slug' => 'signup'), // Customize the permalink slug
+            'has_archive'           => true,
+            'publicly_queryable'    => true,
+            'capability_type'       => 'post',
+        );
+
+        register_post_type('signup', $args);
+    }
+
+
+
+
+    // End Register custom post type 'Signup'
+
     // Register custom post type 'ourstoryz'
     function custom_ourstoryz_post_type()
     {
@@ -212,7 +270,7 @@ class ourstoryz_Admin
         // Display the content for the 'Our Storyz Events' submenu page here
         $temp_path = plugin_dir_path(__FILE__) . 'partials/ourstoryz-events-template.php';
         if (file_exists($temp_path)) {
-            include ($temp_path);
+            include($temp_path);
         } else {
             echo "File not found";
         }
@@ -237,7 +295,7 @@ class ourstoryz_Admin
     {
         $temp_path = plugin_dir_path(__FILE__) . 'partials/ourstoryz-storyz-setting-template.php';
         if (file_exists($temp_path)) {
-            include ($temp_path);
+            include($temp_path);
         } else {
             echo "File not found";
         }
@@ -615,9 +673,6 @@ class ourstoryz_Admin
 
             return $response;
         }
-
-
-
     }
 
 
@@ -681,12 +736,13 @@ class ourstoryz_Admin
 
 
 
-    function save_custom_data() {
-        if(isset($_POST['value'])) {
+    function save_custom_data()
+    {
+        if (isset($_POST['value'])) {
             $value = $_POST['value'];
             $existing_value = get_option('default_template');
-            
-            if($existing_value !== false) {
+
+            if ($existing_value !== false) {
                 update_option('default_template', $value);
                 echo 'Data updated successfully!';
             } else {
@@ -696,8 +752,4 @@ class ourstoryz_Admin
         }
         wp_die();
     }
-
-
 }
-
-
