@@ -251,10 +251,23 @@ class ourstoryz_Admin
     }
 
 
+    // function custom_ourstoryz_submenu_events()
+    // {
+    //     add_submenu_page(
+    //         'edit.php?post_type=ourstoryz',
+    //         'Our Storyz Events',
+    //         'Our Storyz Events',
+    //         'manage_options',
+    //         'ourstoryz_events',
+    //         array($this, 'custom_ourstoryz_events_page'),
+    //     );
+    // }
+
+
     function custom_ourstoryz_submenu_events()
     {
         add_submenu_page(
-            'edit.php?post_type=ourstoryz',
+            'edit.php?post_type=signup',
             'Our Storyz Events',
             'Our Storyz Events',
             'manage_options',
