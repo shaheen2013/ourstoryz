@@ -155,50 +155,6 @@ jQuery(document).ready(function ($) {
 
 });
 
-
-jQuery(document).ready(function($) {
-    function fetch_data(order_by, order, page) {
-        $.ajax({
-            url: ajax_url,
-            type: 'post',
-            data: {
-                action: 'fetch_signup_data',
-                nonce:nonce,
-                order_by: order_by,
-                order: order,
-                page: page
-            },
-            success: function(response) {
-                if (response.success) {
-                    $('#signup_table tbody').html(response.data.table_rows);
-                    $('#signup_pagination').html(response.data.pagination);
-                } else {
-                    console.log(response.data);
-                }
-            }
-        });
-    }
-
-    // Initial fetch
-    fetch_data('first_name', 'asc', 1);
-
-    // Handle sorting
-    $('.sortable').click(function() {
-        var order_by = $(this).data('orderby');
-        var order = $(this).data('order');
-        fetch_data(order_by, order, 1);
-    });
-
-    // Handle pagination
-    $(document).on('click', '.page-link', function(e) {
-        e.preventDefault();
-        var page = $(this).data('page');
-        var order_by = $('.sortable.active').data('orderby');
-        var order = $('.sortable.active').data('order');
-        fetch_data(order_by, order, page);
-    });
-});
-
  
 
 
