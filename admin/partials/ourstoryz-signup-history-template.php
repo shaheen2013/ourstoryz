@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Provide a admin area view for the plugin
+ * Provide an admin area view for the plugin
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
@@ -14,22 +14,32 @@
 
 global $wpdb;
 $tbl_name = $wpdb->prefix . 'signup_history';
-$results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
- 
+
+// Default sorting
+$sort_column = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'id';
+$sort_order = isset($_GET['order']) && strtolower($_GET['order']) == 'desc' ? 'DESC' : 'ASC';
+
+$results = $wpdb->get_results("SELECT * FROM $tbl_name ORDER BY $sort_column $sort_order", ARRAY_A);
+
+function sort_link($column, $label) {
+    $current_order = (isset($_GET['sort_by']) && $_GET['sort_by'] == $column && $_GET['order'] == 'asc') ? 'desc' : 'asc';
+    $url = add_query_arg(array('sort_by' => $column, 'order' => $current_order));
+    return '<a href="' . esc_url($url) . '">' . $label . '</a>';
+}
 
 ?>
 
 <table class="wp-list-table widefat fixed striped table-view-list pages">
     <thead>
         <tr>
-            <th><b>ID </b></th>
-            <th><b>First Name </b></th>
-            <th><b>Event Type</b></th>
-            <th><b>Organization Name</b></th>
+            <th><b><?php echo sort_link('id', 'ID'); ?></b></th>
+            <th><b><?php echo sort_link('first_name', 'First Name'); ?></b></th>
+            <th><b><?php echo sort_link('event_type', 'Event Type'); ?></b></th>
+            <th><b><?php echo sort_link('organization_name', 'Organization Name'); ?></b></th>
             <th><b>Brand Logo</b></th>
-            <th><b>Event Name</b></th>
-            <th><b>Created At</b></th>
-            <th><b>Location</b></th>
+            <th><b><?php echo sort_link('event_name', 'Event Name'); ?></b></th>
+            <th><b><?php echo sort_link('created_at', 'Created At'); ?></b></th>
+            <th><b><?php echo sort_link('location', 'Location'); ?></b></th>
         </tr>
     </thead>
     <?php
@@ -37,18 +47,18 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
     if ($results) {
         foreach ($results as $row) {
             echo '<tr>';
-            echo '<td>' . $row['id'] . '</td>';
-            echo '<td>' . $row['first_name'] . '</td>';
-            echo '<td>' . renderValue("event_type", $row['event_type']) . '</td>';
-            echo '<td>' . $row['organization_name'] . '</td>';
-            echo '<td>' . $row['brand_logo'] . '</td>';
-            echo '<td>' . $row['end_date_time'] . '</td>';
-            echo '<td>' . $row['created_at'] . '</td>';
-            echo '<td><a href="/wp-admin/admin.php?page=ourstoryz_event_details&record_id=' . $row['record_id'] . '">View</a></td>';
+            echo '<td>' . esc_html($row['id']) . '</td>';
+            echo '<td>' . esc_html($row['first_name']) . '</td>';
+            echo '<td>' . esc_html($row['event_type']) . '</td>';
+            echo '<td>' . esc_html($row['organization_name']) . '</td>';
+            echo '<td>' . esc_html($row['brand_logo']) . '</td>';
+            echo '<td>' . esc_html($row['event_name']) . '</td>';
+            echo '<td>' . esc_html($row['created_at']) . '</td>';
+            echo '<td><a href="/wp-admin/admin.php?page=ourstoryz_event_details&record_id=' . esc_html($row['record_id']) . '">View</a></td>';
             echo '</tr>';
         }
     } else {
-        echo '<p>No data found</p>';
+        echo '<tr><td colspan="8">No data found</td></tr>';
     }
 
     ?>
