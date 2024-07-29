@@ -282,8 +282,7 @@ class ourstoryz_Admin
     {
         // Display the content for the 'Our Storyz Events' submenu page here
         $temp_path = plugin_dir_path(__FILE__) . 'partials/ourstoryz-signup-history-template.php';
-        var_dump($temp_path);
-        die();
+        
         if (file_exists($temp_path)) {
             include($temp_path);
         } else {
