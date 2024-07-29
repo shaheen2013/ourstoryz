@@ -15,8 +15,7 @@
 global $wpdb;
 $tbl_name = $wpdb->prefix . 'signup_history';
 $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
-var_dump($results);
-die();
+ 
 
 ?>
 
