@@ -41,6 +41,8 @@ function ourstoryz_enqueue_styles()
 {
   // Enqueue Bootstrap CSS from CDN
   wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', array(), '4.5.2');
+  wp_enqueue_style('datatables-css', 'https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css');
+    wp_enqueue_script('datatables-js', 'https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js', array('jquery'), null, true);
 }
 add_action('wp_enqueue_scripts', 'ourstoryz_enqueue_styles');
 
