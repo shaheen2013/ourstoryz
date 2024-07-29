@@ -54,40 +54,8 @@ function activate_ourstoryz()
   ourstoryz_Activator::activate();
 }
 
-function create_signup_history_table() {
-  global $wpdb;
+ 
 
-  $table_name = $wpdb->prefix . 'signup_history';
-  $charset_collate = $wpdb->get_charset_collate();
-
-  if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
-      $sql = "CREATE TABLE $table_name (
-          id mediumint(9) NOT NULL AUTO_INCREMENT,
-          first_name varchar(255) NOT NULL,
-          last_name varchar(255) NOT NULL,
-          email varchar(255) NOT NULL,
-          profile_image varchar(255) DEFAULT '' NOT NULL,
-          storyz_name varchar(255) DEFAULT '' NOT NULL,
-          storyz_image varchar(255) DEFAULT '' NOT NULL,
-          organization_name varchar(255) DEFAULT '' NOT NULL,
-          tagline varchar(255) DEFAULT '' NOT NULL,
-          brand_logo varchar(255) DEFAULT '' NOT NULL,
-          event_name varchar(255) DEFAULT '' NOT NULL,
-          event_start_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-          event_end_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-          event_image varchar(255) DEFAULT '' NOT NULL,
-          location varchar(255) DEFAULT '' NOT NULL,
-          event_greeting varchar(255) DEFAULT '' NOT NULL,
-          event_type varchar(255) DEFAULT '' NOT NULL,
-          PRIMARY KEY  (id)
-      ) $charset_collate;";
-
-      require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-      dbDelta($sql);
-  }
-}
-
-register_activation_hook(__FILE__, 'create_signup_history_table');
 
 /**
  * The code that runs during plugin deactivation.
@@ -1258,7 +1226,39 @@ function keepsakealbum_data_by_guest($atts)
 }
 add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
 
+function create_signup_history_table() {
+  global $wpdb;
 
+  $table_name = $wpdb->prefix . 'signup_history';
+  $charset_collate = $wpdb->get_charset_collate();
 
+  if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+      $sql = "CREATE TABLE $table_name (
+          id mediumint(9) NOT NULL AUTO_INCREMENT,
+          first_name varchar(255) NOT NULL,
+          last_name varchar(255) NOT NULL,
+          email varchar(255) NOT NULL,
+          profile_image varchar(255) DEFAULT '' NOT NULL,
+          storyz_name varchar(255) DEFAULT '' NOT NULL,
+          storyz_image varchar(255) DEFAULT '' NOT NULL,
+          organization_name varchar(255) DEFAULT '' NOT NULL,
+          tagline varchar(255) DEFAULT '' NOT NULL,
+          brand_logo varchar(255) DEFAULT '' NOT NULL,
+          event_name varchar(255) DEFAULT '' NOT NULL,
+          event_start_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+          event_end_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+          event_image varchar(255) DEFAULT '' NOT NULL,
+          location varchar(255) DEFAULT '' NOT NULL,
+          event_greeting varchar(255) DEFAULT '' NOT NULL,
+          event_type varchar(255) DEFAULT '' NOT NULL,
+          PRIMARY KEY  (id)
+      ) $charset_collate;";
+
+      require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+      dbDelta($sql);
+  }
+}
+
+register_activation_hook(__FILE__, 'create_signup_history_table');
  
  
