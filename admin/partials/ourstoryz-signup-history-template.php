@@ -138,6 +138,7 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
     }
 
     #popup-content {
+        margin-top: 100px;
         background-color: white;
         padding: 20px;
         border-radius: 5px;
