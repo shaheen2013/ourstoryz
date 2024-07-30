@@ -113,38 +113,24 @@ class ourstoryz_Admin
 
 
     // Rsgister custom post type 'Signup'
-  
+
     function create_signup_post_type()
     {
         $labels = array(
             'name'                  => 'Signups',
             'singular_name'         => 'Signup',
             'menu_name'             => 'Signups',
-            'name_admin_bar'        => 'Signup',
-            'archives'              => 'Signup Archives',
-            'attributes'            => 'Signup Attributes',
-            'parent_item_colon'     => 'Parent Signup:',
-            'all_items'             => 'All Signups',
-            'add_new_item'          => 'Add New Signup',
-            'add_new'               => 'Add New',
-            'new_item'              => 'New Signup',
-            'edit_item'             => 'Edit Signup',
-            'update_item'           => 'Update Signup',
-            'view_item'             => 'View Signup',
-            'view_items'            => 'View Signups',
-            'search_items'          => 'Search Signup',
-            'not_found'             => 'Not found',
-            'not_found_in_trash'    => 'Not found in Trash',
-            'featured_image'        => 'Featured Image',
-            'set_featured_image'    => 'Set featured image',
-            'remove_featured_image' => 'Remove featured image',
-            'use_featured_image'    => 'Use as featured image',
-            'insert_into_item'      => 'Insert into Signup',
-            'uploaded_to_this_item' => 'Uploaded to this Signup',
-            'items_list'            => 'Signups list',
-            'items_list_navigation' => 'Signups list navigation',
-            'filter_items_list'     => 'Filter Signups list',
+            'add_new' => 'Add New',
+            'add_new_item' => 'Add New Signup',
+            'edit_item' => 'Edit Our Signup',
+            'new_item' => 'New Signup',
+            'view_item' => 'View Signup',
+            'search_items' => 'Search Signup',
+            'not_found' => 'No Signup found',
+            'not_found_in_trash' => 'No Signup found in Trash',
+
         );
+
 
         $args = array(
             'labels'                => $labels,
@@ -153,16 +139,45 @@ class ourstoryz_Admin
             'menu_position'         => 5,
             'menu_icon'             => 'dashicons-admin-post', // Customize the menu icon
             'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'),
-            'taxonomies'            => array('category', 'post_tag'), // Add custom taxonomies
+            'taxonomies'            => array('signup_category', 'signup_tag'), // Add custom taxonomies
             'rewrite'               => array('slug' => 'signup'), // Customize the permalink slug
             'has_archive'           => true,
             'publicly_queryable'    => true,
             'capability_type'       => 'post',
+ 
         );
 
         register_post_type('signup', $args);
     }
 
+    function custom_signup_taxonomies()
+    {
+        // Custom category taxonomy
+        register_taxonomy(
+            'signup_category',
+            'signup',
+            array(
+                'label' => 'Signup Categories',
+                'hierarchical' => true,
+                'show_admin_column' => true,
+                'sortable' => true, // Enable sorting
+                'rewrite' => array('slug' => 'signup-category'),
+            )
+        );
+
+        // Custom tag taxonomy
+        register_taxonomy(
+            'signup_tag',
+            'signup',
+            array(
+                'label' => 'Signup Tags',
+                'hierarchical' => false,
+                'show_admin_column' => true,
+                'sortable' => true, // Enable sorting
+                'rewrite' => array('slug' => 'signup-tag'),
+            )
+        );
+    }
 
 
 

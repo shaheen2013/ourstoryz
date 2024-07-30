@@ -164,6 +164,7 @@ class ourstoryz
 		$this->loader->add_action('init', $plugin_admin, 'create_signup_post_type');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'custom_ourstoryz_submenu_names');
 		$this->loader->add_action('init', $plugin_admin, 'custom_ourstoryz_taxonomies');
+		$this->loader->add_action('init',$plugin_admin,'custom_signup_taxonomies');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'custom_ourstoryz_submenu_events');
 		$this->loader->add_action('admin_menu', $plugin_admin, 'custom_ourstoryz_setting_page');
 		$this->loader->add_action('wp_ajax_save_screenshot', $plugin_admin, 'save_post_screenshot');
