@@ -124,48 +124,51 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
     }
 </script>
 <style>
-/* Popup styling */
-#popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    /* Popup styling */
+    #popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-#popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 50%;
-    max-width: 600px;
-    text-align: left;
-}
+    #popup-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        width: 50%;
+        max-width: 600px;
+        text-align: left;
+    }
 
-#popup-close {
-    float: right;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-}
+    #popup-close {
+        float: right;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: bold;
+    }
 </style>
 
-<?php 
+<?php
 
 add_action('wp_ajax_get_event_details', 'get_event_details');
 add_action('wp_ajax_nopriv_get_event_details', 'get_event_details');
 
-function get_event_details() {
+function get_event_details()
+{
     global $wpdb;
 
     $record_id = intval($_GET['id']);
-    $table_name = $wpdb->prefix . 'your_table_name'; // replace with your actual table name
+    $table_name = $wpdb->prefix . 'signup_history'; // replace with your actual table name
 
     $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $record_id), ARRAY_A);
+    var_dump($row);
+    die();
 
     if ($row) {
         echo json_encode($row);
