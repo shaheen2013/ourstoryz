@@ -31,35 +31,35 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
         </tr>
     </thead>
     <tbody>
-        <?php
-        if ($results) {
-            foreach ($results as $row) {
-                echo '<tr>';
-                echo '<td>' . $row['id'] . '</td>';
-                echo '<td>' . $row['first_name'] . '</td>';
-                echo '<td>' . renderValue("event_type", $row['event_type']) . '</td>';
-                echo '<td>' . $row['organization_name'] . '</td>';
-                echo '<td>' . $row['brand_logo'] . '</td>';
-                echo '<td>' . $row['event_name'] . '</td>';
-                echo '<td>' . $row['created_at'] . '</td>';
-                echo '<td><button class="view-button" data-record-id="' . $row['record_id'] . '">View</button></td>';
-                echo '</tr>';
-            }
-        } else {
-            echo '<tr><td colspan="8">No data found</td></tr>';
-        }
-        ?>
-    </tbody>
+<?php
+if ($results) {
+    foreach ($results as $row) {
+        echo '<tr>';
+        echo '<td>' . $row['id'] . '</td>';
+        echo '<td>' . $row['first_name'] . '</td>';
+        echo '<td>' . renderValue("event_type", $row['event_type']) . '</td>';
+        echo '<td>' . $row['organization_name'] . '</td>';
+        echo '<td>' . $row['brand_logo'] . '</td>';
+        echo '<td>' . $row['event_name'] . '</td>';
+        echo '<td>' . $row['created_at'] . '</td>';
+        echo '<td><button class="view-button" data-record-id="' . $row['record_id'] . '">View</button></td>';
+        echo '</tr>';
+    }
+} else {
+    echo '<tr><td colspan="8">No data found</td></tr>';
+}
+?>
+</tbody>
+
 
 </table>
 <?php
 add_action('wp_ajax_get_signup_details', 'get_signup_details');
 add_action('wp_ajax_nopriv_get_signup_details', 'get_signup_details');
 
-function get_signup_details()
-{
+function get_signup_details() {
     global $wpdb;
-    $record_id = intval($_GET['record_id']);
+    $record_id = intval($_POST['record_id']);
     $table_name = $wpdb->prefix . 'signup_history';
     $data = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $record_id), ARRAY_A);
 
@@ -87,30 +87,35 @@ function get_signup_details()
     jQuery(document).ready(function($) {
         $('#signup_history_table').DataTable();
     });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+
+
+    jQuery(document).ready(function($) {
         const modal = document.getElementById("signupHistoryModal");
         const span = document.getElementsByClassName("close")[0];
 
-        document.querySelectorAll('.view-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const recordId = this.getAttribute('data-record-id');
-                fetch(`/wp-admin/admin-ajax.php?action=get_signup_details&record_id=${recordId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('modal-body').innerHTML = `
-                        <p>ID: ${data.id}</p>
-                        <p>First Name: ${data.first_name}</p>
-                        <p>Event Type: ${data.event_type}</p>
-                        <p>Organization Name: ${data.organization_name}</p>
-                        <p>Brand Logo: ${data.brand_logo}</p>
-                        <p>Event Name: ${data.event_name}</p>
-                        <p>Created At: ${data.created_at}</p>
-                        <p>Location: ${data.location}</p>
-                    `;
-                        modal.style.display = "block";
-                    });
+        $('.view-button').on('click', function() {
+            const recordId = $(this).data('record-id');
+            $.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: {
+                    action: 'get_signup_details',
+                    record_id: recordId
+                },
+                success: function(response) {
+                    const data = JSON.parse(response);
+                    $('#modal-body').html(`
+                    <p>ID: ${data.id}</p>
+                    <p>First Name: ${data.first_name}</p>
+                    <p>Event Type: ${data.event_type}</p>
+                    <p>Organization Name: ${data.organization_name}</p>
+                    <p>Brand Logo: ${data.brand_logo}</p>
+                    <p>Event Name: ${data.event_name}</p>
+                    <p>Created At: ${data.created_at}</p>
+                    <p>Location: ${data.location}</p>
+                `);
+                    modal.style.display = "block";
+                }
             });
         });
 
@@ -125,39 +130,40 @@ function get_signup_details()
         }
     });
 </script>
+
 <style>
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgb(0, 0, 0);
-        background-color: rgba(0, 0, 0, 0.4);
-    }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
 
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-    }
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
 
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
 
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 </style>
