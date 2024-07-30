@@ -53,26 +53,7 @@ if ($results) {
 
 
 </table>
-<?php
-add_action('wp_ajax_get_signup_details', 'get_signup_details');
-add_action('wp_ajax_nopriv_get_signup_details', 'get_signup_details');
 
-function get_signup_details() {
-    global $wpdb;
-    $record_id = intval($_POST['record_id']);
-    $table_name = $wpdb->prefix . 'signup_history';
-    $data = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $record_id), ARRAY_A);
-
-    if ($data) {
-        echo json_encode($data);
-    } else {
-        echo json_encode([]);
-    }
-    wp_die();
-}
-
-
-?>
 
 <div id="signupHistoryModal" class="modal">
     <div class="modal-content">
