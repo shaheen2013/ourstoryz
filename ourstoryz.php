@@ -1228,6 +1228,42 @@ function keepsakealbum_data_by_guest($atts)
 }
 add_shortcode('keepsakealbum_guest_data', 'keepsakealbum_data_by_guest');
 
+// function create_signup_history_table() {
+//   global $wpdb;
+
+//   $table_name = $wpdb->prefix . 'signup_history';
+//   $charset_collate = $wpdb->get_charset_collate();
+
+//   if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+//       $sql = "CREATE TABLE $table_name (
+//           id mediumint(9) NOT NULL AUTO_INCREMENT,
+//           first_name varchar(255) NOT NULL,
+//           last_name varchar(255) NOT NULL,
+//           email varchar(255) NOT NULL,
+//           profile_image varchar(255) DEFAULT '' NOT NULL,
+//           storyz_name varchar(255) DEFAULT '' NOT NULL,
+//           storyz_image varchar(255) DEFAULT '' NOT NULL,
+//           organization_name varchar(255) DEFAULT '' NOT NULL,
+//           tagline varchar(255) DEFAULT '' NOT NULL,
+//           brand_logo varchar(255) DEFAULT '' NOT NULL,
+//           event_name varchar(255) DEFAULT '' NOT NULL,
+//           event_start_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+//           event_end_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+//           event_image varchar(255) DEFAULT '' NOT NULL,
+//           location varchar(255) DEFAULT '' NOT NULL,
+//           event_greeting varchar(255) DEFAULT '' NOT NULL,
+//           event_type varchar(255) DEFAULT '' NOT NULL,
+//           PRIMARY KEY  (id)
+//       ) $charset_collate;";
+
+//       require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+//       dbDelta($sql);
+//   }
+// }
+
+// register_activation_hook(__FILE__, 'create_signup_history_table');
+ 
+ 
 function create_signup_history_table() {
   global $wpdb;
 
@@ -1258,9 +1294,99 @@ function create_signup_history_table() {
 
       require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
       dbDelta($sql);
+
+      // Insert dummy data
+      $wpdb->insert($table_name, array(
+          'first_name' => 'John',
+          'last_name' => 'Doe',
+          'email' => 'john.doe@example.com',
+          'profile_image' => 'path/to/image.jpg',
+          'storyz_name' => 'John Story',
+          'storyz_image' => 'path/to/story_image.jpg',
+          'organization_name' => 'Example Org',
+          'tagline' => 'Example Tagline',
+          'brand_logo' => 'path/to/logo.jpg',
+          'event_name' => 'Event One',
+          'event_start_date' => '2024-01-01 00:00:00',
+          'event_end_date' => '2024-01-02 00:00:00',
+          'event_image' => 'path/to/event_image.jpg',
+          'location' => 'Location One',
+          'event_greeting' => 'Welcome to Event One',
+          'event_type' => 'Type One',
+      ));
+      $wpdb->insert($table_name, array(
+          'first_name' => 'Jane',
+          'last_name' => 'Smith',
+          'email' => 'jane.smith@example.com',
+          'profile_image' => 'path/to/image2.jpg',
+          'storyz_name' => 'Jane Story',
+          'storyz_image' => 'path/to/story_image2.jpg',
+          'organization_name' => 'Another Org',
+          'tagline' => 'Another Tagline',
+          'brand_logo' => 'path/to/logo2.jpg',
+          'event_name' => 'Event Two',
+          'event_start_date' => '2024-02-01 00:00:00',
+          'event_end_date' => '2024-02-02 00:00:00',
+          'event_image' => 'path/to/event_image2.jpg',
+          'location' => 'Location Two',
+          'event_greeting' => 'Welcome to Event Two',
+          'event_type' => 'Type Two',
+      ));
+      $wpdb->insert($table_name, array(
+          'first_name' => 'Alice',
+          'last_name' => 'Johnson',
+          'email' => 'alice.johnson@example.com',
+          'profile_image' => 'path/to/image3.jpg',
+          'storyz_name' => 'Alice Story',
+          'storyz_image' => 'path/to/story_image3.jpg',
+          'organization_name' => 'Third Org',
+          'tagline' => 'Third Tagline',
+          'brand_logo' => 'path/to/logo3.jpg',
+          'event_name' => 'Event Three',
+          'event_start_date' => '2024-03-01 00:00:00',
+          'event_end_date' => '2024-03-02 00:00:00',
+          'event_image' => 'path/to/event_image3.jpg',
+          'location' => 'Location Three',
+          'event_greeting' => 'Welcome to Event Three',
+          'event_type' => 'Type Three',
+      ));
+      $wpdb->insert($table_name, array(
+          'first_name' => 'Bob',
+          'last_name' => 'Brown',
+          'email' => 'bob.brown@example.com',
+          'profile_image' => 'path/to/image4.jpg',
+          'storyz_name' => 'Bob Story',
+          'storyz_image' => 'path/to/story_image4.jpg',
+          'organization_name' => 'Fourth Org',
+          'tagline' => 'Fourth Tagline',
+          'brand_logo' => 'path/to/logo4.jpg',
+          'event_name' => 'Event Four',
+          'event_start_date' => '2024-04-01 00:00:00',
+          'event_end_date' => '2024-04-02 00:00:00',
+          'event_image' => 'path/to/event_image4.jpg',
+          'location' => 'Location Four',
+          'event_greeting' => 'Welcome to Event Four',
+          'event_type' => 'Type Four',
+      ));
+      $wpdb->insert($table_name, array(
+          'first_name' => 'Charlie',
+          'last_name' => 'Davis',
+          'email' => 'charlie.davis@example.com',
+          'profile_image' => 'path/to/image5.jpg',
+          'storyz_name' => 'Charlie Story',
+          'storyz_image' => 'path/to/story_image5.jpg',
+          'organization_name' => 'Fifth Org',
+          'tagline' => 'Fifth Tagline',
+          'brand_logo' => 'path/to/logo5.jpg',
+          'event_name' => 'Event Five',
+          'event_start_date' => '2024-05-01 00:00:00',
+          'event_end_date' => '2024-05-02 00:00:00',
+          'event_image' => 'path/to/event_image5.jpg',
+          'location' => 'Location Five',
+          'event_greeting' => 'Welcome to Event Five',
+          'event_type' => 'Type Five',
+      ));
   }
 }
 
 register_activation_hook(__FILE__, 'create_signup_history_table');
- 
- 
