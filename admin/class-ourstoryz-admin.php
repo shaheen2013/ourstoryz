@@ -293,16 +293,16 @@ class ourstoryz_Admin
 
 
     // Custom page callback for 'Our Storyz Events' submenu
-    // function custom_ourstoryz_events_page()
-    // {
-    //     // Display the content for the 'Our Storyz Events' submenu page here
-    //     $temp_path = plugin_dir_path(__FILE__) . 'partials/ourstoryz-signup-history-template.php';
-    //     if (file_exists($temp_path)) {
-    //         include($temp_path);
-    //     } else {
-    //         echo "File not found";
-    //     }
-    // }
+    function custom_ourstoryz_events_page()
+    {
+        // Display the content for the 'Our Storyz Events' submenu page here
+        $temp_path = plugin_dir_path(__FILE__) . 'partials/ourstoryz-signup-history-template.php';
+        if (file_exists($temp_path)) {
+            include($temp_path);
+        } else {
+            echo "File not found";
+        }
+    }
 
 
 
