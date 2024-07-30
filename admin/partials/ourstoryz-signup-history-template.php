@@ -42,7 +42,7 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
                 echo '<td>' . $row['brand_logo'] . '</td>';
                 echo '<td>' . $row['event_name'] . '</td>';
                 echo '<td>' . $row['created_at'] . '</td>';
-                echo '<td><button class="view-button" data-record-id="' . $row['id'] . '">View</button></td>';
+                echo '<td><button class="view-button" data-record-id="' . $row['record_id'] . '">View</button></td>';
                 echo '</tr>';
             }
         } else {
@@ -50,51 +50,10 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
         }
         ?>
     </tbody>
+
 </table>
+ 
+ 
+ 
 
-<?php
-add_action('wp_ajax_get_signup_details', 'get_signup_details');
-add_action('wp_ajax_nopriv_get_signup_details', 'get_signup_details');
-
-function get_signup_details()
-{
-    global $wpdb;
-    $record_id = intval($_GET['record_id']);
-    $table_name = $wpdb->prefix . 'signup_history';
-    $data = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $record_id), ARRAY_A);
-
-    if ($data) {
-        echo json_encode($data);
-    } else {
-        echo json_encode([]);
-    }
-    wp_die();
-}
-?>
-
-<script type="text/javascript">
-    jQuery(document).ready(function($) {
-        $('#signup_history_table').DataTable();
-
-        $(document).on('click', '.view-button', function() {
-            var recordId = $(this).data('record-id');
-            $.ajax({
-                url: ajaxurl,
-                type: 'GET',
-                data: {
-                    action: 'get_signup_details',
-                    record_id: recordId
-                },
-                success: function(response) {
-                    var data = JSON.parse(response);
-                    if (data && Object.keys(data).length) {
-                        // Handle displaying the details
-                        console.log(data);
-                    } else {
-                        alert('No data found for this record.');
-                    }
-                }
-            });
-        });
-    });
-</script>
+ 
