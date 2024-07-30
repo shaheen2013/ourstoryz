@@ -43,7 +43,7 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
             echo '<td>' . $row['start_date_time'] . '</td>';
             echo '<td>' . $row['end_date_time'] . '</td>';
             echo '<td>' . $row['created_at'] . '</td>';
-            echo '<td><a href="/wp-admin/admin.php?page=ourstoryz_event_details&record_id=' . $row['record_id'] . '">View</a></td>';
+            echo '<td><a href="/wpdev/wp-admin/admin.php?page=ourstoryz_event_details&record_id=' . $row['record_id'] . '">View</a></td>';
             echo '</tr>';
         }
     } else {
