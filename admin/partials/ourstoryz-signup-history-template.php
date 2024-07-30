@@ -61,49 +61,49 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
                 <label for="cb-select-all-1"><span class="screen-reader-text">Select All</span></label>
             </td>
             <th scope="col" id="id" class="manage-column column-id sorted asc" aria-sort="ascending" abbr="ID">
-                <a href="#"><span>ID</span><span class="sorting-indicators">
+                <a href="?orderby=id&order=asc"><span>ID</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span></a>
             </th>
             <th scope="col" id="first-name" class="manage-column column-first-name sortable desc" abbr="First Name">
-                <a href="#"><span>First Name</span><span class="sorting-indicators">
+                <a href="?orderby=first_name&order=asc"><span>First Name</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" id="event-type" class="manage-column column-event-type sortable desc" abbr="Event Type">
-                <a href="#"><span>Event Type</span><span class="sorting-indicators">
+                <a href="?orderby=event_type&order=asc"><span>Event Type</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" id="organization-name" class="manage-column column-organization-name sortable desc" abbr="Organization Name">
-                <a href="#"><span>Organization Name</span><span class="sorting-indicators">
+                <a href="?orderby=organization_name&order=asc"><span>Organization Name</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" id="brand-logo" class="manage-column column-brand-logo sortable desc" abbr="Brand Logo">
-                <a href="#"><span>Brand Logo</span><span class="sorting-indicators">
+                <a href="?orderby=brand_logo&order=asc"><span>Brand Logo</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" id="event-name" class="manage-column column-event-name sortable desc" abbr="Event Name">
-                <a href="#"><span>Event Name</span><span class="sorting-indicators">
+                <a href="?orderby=event_name&order=asc"><span>Event Name</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" id="created-at" class="manage-column column-created-at sortable desc" abbr="Created At">
-                <a href="#"><span>Created At</span><span class="sorting-indicators">
+                <a href="?orderby=created_at&order=asc"><span>Created At</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" id="location" class="manage-column column-location sortable desc" abbr="Location">
-                <a href="#"><span>Location</span><span class="sorting-indicators">
+                <a href="?orderby=location&order=asc"><span>Location</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
@@ -137,49 +137,49 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
                 <label for="cb-select-all-2"><span class="screen-reader-text">Select All</span></label>
             </td>
             <th scope="col" class="manage-column column-id sorted asc" aria-sort="ascending" abbr="ID">
-                <a href="#"><span>ID</span><span class="sorting-indicators">
+                <a href="?orderby=id&order=asc"><span>ID</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span></a>
             </th>
             <th scope="col" class="manage-column column-first-name sortable desc" abbr="First Name">
-                <a href="#"><span>First Name</span><span class="sorting-indicators">
+                <a href="?orderby=first_name&order=asc"><span>First Name</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" class="manage-column column-event-type sortable desc" abbr="Event Type">
-                <a href="#"><span>Event Type</span><span class="sorting-indicators">
+                <a href="?orderby=event_type&order=asc"><span>Event Type</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" class="manage-column column-organization-name sortable desc" abbr="Organization Name">
-                <a href="#"><span>Organization Name</span><span class="sorting-indicators">
+                <a href="?orderby=organization_name&order=asc"><span>Organization Name</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" class="manage-column column-brand-logo sortable desc" abbr="Brand Logo">
-                <a href="#"><span>Brand Logo</span><span class="sorting-indicators">
+                <a href="?orderby=brand_logo&order=asc"><span>Brand Logo</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" class="manage-column column-event-name sortable desc" abbr="Event Name">
-                <a href="#"><span>Event Name</span><span class="sorting-indicators">
+                <a href="?orderby=event_name&order=asc"><span>Event Name</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" class="manage-column column-created-at sortable desc" abbr="Created At">
-                <a href="#"><span>Created At</span><span class="sorting-indicators">
+                <a href="?orderby=created_at&order=asc"><span>Created At</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
             </th>
             <th scope="col" class="manage-column column-location sortable desc" abbr="Location">
-                <a href="#"><span>Location</span><span class="sorting-indicators">
+                <a href="?orderby=location&order=asc"><span>Location</span><span class="sorting-indicators">
                     <span class="sorting-indicator asc" aria-hidden="true"></span>
                     <span class="sorting-indicator desc" aria-hidden="true"></span>
                 </span><span class="screen-reader-text">Sort ascending.</span></a>
@@ -187,6 +187,84 @@ $results = $wpdb->get_results("SELECT * FROM $tbl_name", ARRAY_A);
         </tr>
     </tfoot>
 </table>
+
+<?php 
+$order = isset($_GET['order']) ? $_GET['order'] : 'asc';
+$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
+
+// Assuming you have a function to get your results
+$results = get_custom_data($orderby, $order);
+
+// Your function to fetch data should handle the sorting
+function get_custom_data($orderby, $order) {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'your_table_name';
+    
+    $query = "SELECT * FROM $table_name ORDER BY $orderby $order";
+    return $wpdb->get_results($query, ARRAY_A);
+}
+
+?>
+
+$current_order = isset($_GET['order']) && $_GET['order'] === 'asc' ? 'desc' : 'asc';
+$base_url = admin_url('admin.php?page=your_page_slug'); // Update with your page slug
+
+?>
+<table class="wp-list-table widefat fixed striped table-view-list tags">
+    <caption class="screen-reader-text">Table ordered hierarchically. Ascending.</caption>
+    <thead>
+        <tr>
+            <td id="cb" class="manage-column column-cb check-column"><input id="cb-select-all-1" type="checkbox">
+                <label for="cb-select-all-1"><span class="screen-reader-text">Select All</span></label>
+            </td>
+            <th scope="col" id="id" class="manage-column column-id sorted asc" aria-sort="ascending" abbr="ID">
+                <a href="<?php echo esc_url(add_query_arg(['orderby' => 'id', 'order' => $current_order], $base_url)); ?>">
+                    <span>ID</span><span class="sorting-indicators">
+                        <span class="sorting-indicator asc" aria-hidden="true"></span>
+                        <span class="sorting-indicator desc" aria-hidden="true"></span>
+                    </span>
+                </a>
+            </th>
+            <th scope="col" id="first-name" class="manage-column column-first-name sortable desc" abbr="First Name">
+                <a href="<?php echo esc_url(add_query_arg(['orderby' => 'first_name', 'order' => $current_order], $base_url)); ?>">
+                    <span>First Name</span><span class="sorting-indicators">
+                        <span class="sorting-indicator asc" aria-hidden="true"></span>
+                        <span class="sorting-indicator desc" aria-hidden="true"></span>
+                    </span>
+                </a>
+            </th>
+            <!-- Repeat for other columns -->
+        </tr>
+    </thead>
+    <tbody id="the-list" data-wp-lists="list:tag">
+        <!-- Your PHP loop to display rows -->
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="manage-column column-cb check-column"><input id="cb-select-all-2" type="checkbox">
+                <label for="cb-select-all-2"><span class="screen-reader-text">Select All</span></label>
+            </td>
+            <th scope="col" class="manage-column column-id sorted asc" aria-sort="ascending" abbr="ID">
+                <a href="<?php echo esc_url(add_query_arg(['orderby' => 'id', 'order' => $current_order], $base_url)); ?>">
+                    <span>ID</span><span class="sorting-indicators">
+                        <span class="sorting-indicator asc" aria-hidden="true"></span>
+                        <span class="sorting-indicator desc" aria-hidden="true"></span>
+                    </span>
+                </a>
+            </th>
+            <th scope="col" class="manage-column column-first-name sortable desc" abbr="First Name">
+                <a href="<?php echo esc_url(add_query_arg(['orderby' => 'first_name', 'order' => $current_order], $base_url)); ?>">
+                    <span>First Name</span><span class="sorting-indicators">
+                        <span class="sorting-indicator asc" aria-hidden="true"></span>
+                        <span class="sorting-indicator desc" aria-hidden="true"></span>
+                    </span>
+                </a>
+            </th>
+            <!-- Repeat for other columns -->
+        </tr>
+    </tfoot>
+</table>
+<?php
 
  
 
