@@ -168,8 +168,7 @@ function get_event_details()
     $table_name = $wpdb->prefix . 'signup_history'; // replace with your actual table name
 
     $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $record_id), ARRAY_A);
-    var_dump($row);
-    die();
+  
 
     if ($row) {
         echo json_encode($row);
