@@ -16,7 +16,7 @@
  * @return string Content to display
  */
 
- require plugin_dir_path(__FILE__) . 'includes/class-signup-postdata.php';
+ require_once plugin_dir_path(__FILE__) . 'class-signup-postdata.php';
 
 
 function ourstoryz_shortcode_function()
