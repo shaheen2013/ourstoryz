@@ -17,10 +17,6 @@
  */
 
 require_once plugin_dir_path(__FILE__) . 'class-signup-postdata.php';
-function asset_url($path)
-{
-    return plugin_dir_path(__FILE__)  . 'assets' . $path;
-}
 
 function ourstoryz_shortcode_function()
 {
@@ -61,10 +57,8 @@ function ourstoryz_shortcode_function()
                 <div class="col-lg-6 order-0 order-lg-1">
                     <div class="row g-3 ar-hero-img">
                         <div class="col-6">
-                            <?php
-                            $image_url = asset_url('img1.png');
-                            ?>
-                            <img src="<?php echo esc_url($image_url); ?>" alt="">
+
+                            <img src="/assets/images/img1.png" alt="">
                         </div>
                         <div class="col-6">
                             <img src="./assets/images/img2.png" alt="">
@@ -94,11 +88,7 @@ function ourstoryz_shortcode_function()
                     <!--GOOGLE-CAPTCHA-SECTION-->
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
-                            <?php
-                            $image_url = asset_url('images/logo.png');
-                            var_dump($image_url);
 
-                            ?>
                             <?php
                             echo '<img src="' . plugins_url('assets/images/logo.png', __FILE__) . '" alt="logo" class="w-100">';
                             ?>
@@ -110,10 +100,11 @@ function ourstoryz_shortcode_function()
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
                         <div class="captcha-img">
+
                             <?php
-                            $image_url = asset_url('images/captcha.png');
+                            echo '<img src="' . plugins_url('assets/images/captcha.png', __FILE__) . '" alt="captcha" class="w-100">';
                             ?>
-                            <img src=" <?php echo esc_url($image_url); ?>" alt="captcha" class="w-100">
+
                             <button onclick="handleSetModal('want-to-test-section')" type="button" class="btn btn-sm btn-primary mt-20">NEXT
                             </button>
                         </div>
