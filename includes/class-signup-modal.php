@@ -97,7 +97,7 @@ function ourstoryz_shortcode_function()
                             <?php 
                                $image_url = asset_url('images/logo.png');
                                var_dump($image_url);
-                               die();
+                                
                             ?>
                             <img src="<?php echo esc_url($image_url);?>" alt="logo" width="w-100">
                             <div>
