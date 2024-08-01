@@ -16,8 +16,11 @@
  * @return string Content to display
  */
 
- require_once plugin_dir_path(__FILE__) . 'class-signup-postdata.php';
-
+require_once plugin_dir_path(__FILE__) . 'class-signup-postdata.php';
+function asset_url($path = '')
+{
+    return get_template_directory_uri() . '/assets/' . ltrim($path, '/');
+}
 
 function ourstoryz_shortcode_function()
 {
@@ -37,16 +40,16 @@ function ourstoryz_shortcode_function()
                         <div class="my-20 pb-20 check-list-section divider">
 
 
-                           
-                            <?php 
-                             $signup_info = new Signup_Modal_Info();
-                             $signup_info->signup_post();
+
+                            <?php
+                            $signup_info = new Signup_Modal_Info();
+                            $signup_info->signup_post();
 
                             ?>
 
-                             
 
-                            
+
+
                         </div>
                         <div class="btn-border">
                             <div id="continue-btn" class="continue-btn btn disabled" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="handleSetModal('google-captcha-section')">
@@ -58,7 +61,10 @@ function ourstoryz_shortcode_function()
                 <div class="col-lg-6 order-0 order-lg-1">
                     <div class="row g-3 ar-hero-img">
                         <div class="col-6">
-                            <img src="./assets/images/img1.png" alt="">
+                            <?php
+                            $image_url = asset_url('images/img1.png');
+                            ?>
+                            <img src="<?php echo esc_url($image_url); ?>" alt="">
                         </div>
                         <div class="col-6">
                             <img src="./assets/images/img2.png" alt="">
@@ -88,7 +94,10 @@ function ourstoryz_shortcode_function()
                     <!--GOOGLE-CAPTCHA-SECTION-->
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
-                            <img src="./assets/images/logo.png" alt="logo" width="w-100">
+                            <?php 
+                               $image_url = asset_url('images/logo.png');
+                            ?>
+                            <img src="<?php echo esc_url($image_url);?>" alt="logo" width="w-100">
                             <div>
                                 <div class="fs-24 fw-semibold">OurStoryz</div>
                                 <div class="fs-16 fw-500">Login</div>
@@ -96,7 +105,10 @@ function ourstoryz_shortcode_function()
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
                         <div class="captcha-img">
-                            <img src="./assets/images/captcha.png" alt="captcha" class="w-100">
+                        <?php 
+                               $image_url = asset_url('images/captcha.png');
+                            ?>
+                            <img src=" <?php echo esc_url($image_url); ?>" alt="captcha" class="w-100">
                             <button onclick="handleSetModal('want-to-test-section')" type="button" class="btn btn-sm btn-primary mt-20">NEXT
                             </button>
                         </div>
