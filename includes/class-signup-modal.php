@@ -96,6 +96,8 @@ function ourstoryz_shortcode_function()
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <?php 
                                $image_url = asset_url('images/logo.png');
+                               var_dump($image_url);
+                               die();
                             ?>
                             <img src="<?php echo esc_url($image_url);?>" alt="logo" width="w-100">
                             <div>
