@@ -62,7 +62,7 @@ function ourstoryz_shortcode_function()
                     <div class="row g-3 ar-hero-img">
                         <div class="col-6">
                             <?php
-                            $image_url = asset_url('images/img1.png');
+                            $image_url = asset_url('img1.png');
                             ?>
                             <img src="<?php echo esc_url($image_url); ?>" alt="">
                         </div>
@@ -95,7 +95,7 @@ function ourstoryz_shortcode_function()
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <?php 
-                               $image_url = asset_url('images/logo.png');
+                               $image_url = asset_url('logo.png');
                                var_dump($image_url);
                                 
                             ?>
