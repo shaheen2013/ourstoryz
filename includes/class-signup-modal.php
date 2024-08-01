@@ -17,9 +17,9 @@
  */
 
 require_once plugin_dir_path(__FILE__) . 'class-signup-postdata.php';
-function asset_url($path = '')
+function asset_url($path)
 {
-    return get_template_directory_uri() . '/assets/' . ltrim($path, '/');
+    return get_template_directory_uri() . '/assets/images' . $path;
 }
 
 function ourstoryz_shortcode_function()
