@@ -40,9 +40,8 @@ define('OURSTORYZ_VERSION', '1.1.1');
 function ourstoryz_enqueue_styles()
 {
   // Enqueue Bootstrap CSS from CDN
-  wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', array(), '4.5.2');
-  wp_enqueue_style('signup-style',plugin_dir_url(__FILE__) . 'assets/style.css', array(),'1.0.0');
- 
+  wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css', array(), '5.2.3');
+  wp_enqueue_style('signup-style', plugin_dir_url(__FILE__) . 'assets/style.css', array(), '1.0.0');
 }
 add_action('wp_enqueue_scripts', 'ourstoryz_enqueue_styles');
 
@@ -56,7 +55,7 @@ function activate_ourstoryz()
   ourstoryz_Activator::activate();
 }
 
- 
+
 
 
 /**
@@ -92,26 +91,26 @@ require plugin_dir_path(__FILE__) . 'includes/class-ourstoryz.php';
  */
 
 // event data 
-require plugin_dir_path(__FILE__).'includes/class-event-data.php';
+require plugin_dir_path(__FILE__) . 'includes/class-event-data.php';
 
 // end event data
 //  include signup_history table
 
-require plugin_dir_path(__FILE__).'includes/class-signup-history-table.php';
+require plugin_dir_path(__FILE__) . 'includes/class-signup-history-table.php';
 // end include signup_history table
 
 // Keepsakealbum data 
 
-require plugin_dir_path(__FILE__). 'includes/class-keepsakealbum-data.php';
+require plugin_dir_path(__FILE__) . 'includes/class-keepsakealbum-data.php';
 
 // end keepsakealbum data
 
 // guest data
-require plugin_dir_path(__FILE__).'includes/class-guest-data.php';
+require plugin_dir_path(__FILE__) . 'includes/class-guest-data.php';
 // end guest data
 // Signup modal 
 
-require plugin_dir_path(__FILE__).'includes/class-signup-modal.php';
+require plugin_dir_path(__FILE__) . 'includes/class-signup-modal.php';
 // End Signup modal
 function run_ourstoryz()
 {
@@ -139,16 +138,3 @@ function enqueue_custom_script()
   );
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_script');
-
-
- 
-
-
-
-
-
-
- 
- 
-
- 
