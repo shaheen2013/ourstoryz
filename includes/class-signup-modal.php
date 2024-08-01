@@ -15,6 +15,10 @@
  *
  * @return string Content to display
  */
+
+ require plugin_dir_path(__FILE__) . 'includes/class-signup-postdata.php';
+
+
 function ourstoryz_shortcode_function()
 {
     ob_start(); // Start output buffering
@@ -31,56 +35,18 @@ function ourstoryz_shortcode_function()
                             the option of creating a Professional account supporting multiple clients.
                         </div>
                         <div class="my-20 pb-20 check-list-section divider">
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check1" onclick="checkCheckboxes()">
-                                <label class="form-check-label" for="check1">Planning our wedding</label>
-                            </div>
 
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check2" onclick="checkCheckboxes()">
-                                <label class="form-check-label" for="check2">Professional event planner</label>
-                            </div>
 
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check3" onclick="checkCheckboxes()">
-                                <label class="form-check-label" for="check3">Just testing for my organization</label>
-                            </div>
+                           
+                            <?php 
+                             $signup_info = new Signup_Modal_Info();
+                             $signup_info->signup_post();
 
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check4" onclick="checkCheckboxes()">
-                                <label class="form-check-label" for="check4">Recurring event (anniversaries, birthdays,
-                                    etc.)</label>
-                            </div>
+                            ?>
 
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check5" onclick="checkCheckboxes()">
-                                <label class="form-check-label" for="check5">Other event (reunions, get-togethers)</label>
-                            </div>
+                             
 
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check6" onclick="checkCheckboxes()">
-                                <label class="form-check-label" for="check6">Business/corporate events</label>
-                            </div>
-
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check7" onclick="checkCheckboxes()" disabled>
-                                <label class="form-check-label" for="check7">Speed dating</label>
-                            </div>
-
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check8" onclick="checkCheckboxes()">
-                                <label class="form-check-label" for="check8">Neighboorhood/block party, yard sales</label>
-                            </div>
-
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check9" onclick="checkCheckboxes()">
-                                <label class="form-check-label" for="check9">Outdoors/sports, hiking</label>
-                            </div>
-
-                            <div class="form-check mb-10">
-                                <input type="checkbox" class="form-check-input" id="check10" onclick="checkCheckboxes()">
-                                <label class="form-check-label" for="check10">Secure Geospace/Geosensitive events</label>
-                            </div>
+                            
                         </div>
                         <div class="btn-border">
                             <div id="continue-btn" class="continue-btn btn disabled" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="handleSetModal('google-captcha-section')">
