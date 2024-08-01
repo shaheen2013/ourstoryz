@@ -41,8 +41,8 @@
                 $signup_query->the_post();
                 ?>
                 <div class="form-check mb-10">
-                    <input type="checkbox" class="form-check-input" id="check-<?php echo $count; ?>" onclick="checkCheckboxes()">
-                    <label class="form-check-label" for="check-<?php echo $count; ?>"><?php the_title(); ?></label>
+                    <input type="checkbox" class="form-check-input" id="check<?php echo $count; ?>" onclick="checkCheckboxes()">
+                    <label class="form-check-label" for="check<?php echo $count; ?>"><?php the_title(); ?></label>
                 </div>
                 <?php
                 $count++; // Increment count after each post
