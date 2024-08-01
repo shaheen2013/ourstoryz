@@ -89,9 +89,8 @@ function ourstoryz_shortcode_function()
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
 
-                            <?php
-                            echo '<img src="' . plugins_url('assets/images/logo.png', __FILE__) . '" alt="logo" class="w-100">';
-                            ?>
+                          
+                             <img src="<?php echo plugins_url('assets/images/logo.png', __FILE__); ?>" alt="logo" class="w-100">
 
                             <div>
                                 <div class="fs-24 fw-semibold">OurStoryz</div>
@@ -100,10 +99,9 @@ function ourstoryz_shortcode_function()
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
                         <div class="captcha-img">
+ 
+                        <img src="<?php echo plugins_url('assets/images/captcha.png', __FILE__); ?>" alt="captcha" class="w-100">
 
-                            <?php
-                            echo '<img src="' . plugins_url('assets/images/captcha.png', __FILE__) . '" alt="captcha" class="w-100">';
-                            ?>
 
                             <button onclick="handleSetModal('want-to-test-section')" type="button" class="btn btn-sm btn-primary mt-20">NEXT
                             </button>
