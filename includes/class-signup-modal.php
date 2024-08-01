@@ -19,7 +19,7 @@
 require_once plugin_dir_path(__FILE__) . 'class-signup-postdata.php';
 function asset_url($path)
 {
-    return plugin_dir_path(__FILE__)  . '/assets/images' . $path;
+    return plugin_dir_path(__FILE__)  . 'assets' . $path;
 }
 
 function ourstoryz_shortcode_function()
