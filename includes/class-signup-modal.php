@@ -89,8 +89,8 @@ function ourstoryz_shortcode_function()
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
 
-                          
-                             <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo"  >
+
+                            <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
 
                             <div>
                                 <div class="fs-24 fw-semibold">OurStoryz</div>
@@ -99,8 +99,8 @@ function ourstoryz_shortcode_function()
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
                         <div class="captcha-img">
- 
-                        <img src="<?php echo plugins_url('../assets/images/captcha.png', __FILE__); ?>" alt="captcha"  >
+
+                            <img src="<?php echo plugins_url('../assets/images/captcha.png', __FILE__); ?>" alt="captcha">
 
 
                             <button onclick="handleSetModal('want-to-test-section')" type="button" class="btn btn-sm btn-primary mt-20">NEXT
@@ -109,36 +109,10 @@ function ourstoryz_shortcode_function()
                     </div>
 
                     <!--WANT-TO-TEXT-SECTION-->
-                    <div id="want-to-test-section" class="want-to-test-section d-none">
-                        <div class="fs-20">What do you want to test?</div>
-                        <div class="mt-20 d-flex flex-column flex-sm-row gap-2">
-                            <div class="geospaced-event w-360 d-flex flex-column">
-                                <img src="assets/images/geospaced-event.png" alt="geospaced" class="w-100">
-                                <div class="p-3">
-                                    <div class="fs-16 fw-semibold mb-10">Free Trial with one geospaced event</div>
-                                    <div class="fs-14 text-center">
-                                        If you just want to explore geospaced events with a free account, choose the Locator
-                                        option. You can upgrade to full event management later.
-                                    </div>
-                                </div>
-                                <div onclick="handleSetModal('welcome-to-location-section')" class="btn btn-dark w-100 mt-auto">Select Locator for free (1 year)
-                                </div>
-                            </div>
-                            <div class="geospaced-event w-360 d-flex flex-column">
-                                <img src="assets/images/multiple-event.png" alt="multiple-event" class="w-100">
-                                <div class="p-3">
-                                    <div class="fs-16 fw-semibold mb-10">Multiple events</div>
-                                    <div class="fs-14 text-center">
-                                        If you are setting up an event that has sub-events, you need DIY or Professional
-                                        service. You will create a event (“Storyz”) which in turn can have many events.
-                                    </div>
-                                </div>
-                                <div class="btn btn-dark w-100 mt-auto">See options with multiple events</div>
-                            </div>
-                        </div>
-                        <div class="fs-16 text-end mt-4 text-black" type="button" onclick="handleSetModal('sorry-to-see-section')">cancel
-                        </div>
-                    </div>
+                   <?php 
+                       $signup_info->displayWantToTestSection();
+
+                        ?>
 
                     <!--WELCOME-TO-LOCATION-SECTION-->
                     <div id="welcome-to-location-section" class="welcome-to-location d-none">
@@ -284,7 +258,7 @@ function ourstoryz_shortcode_function()
 
                     </div>
 
-                    <!--ADD-DATES-SECTION-->
+                    <!--ADD-DATES-SECTION big event-->
                     <div id="add-dates-section" class="w-600 d-none">
                         <div class="fs-20 divider pb-4 ">Add dates</div>
                         <div class="fs-16 mt-20 divider mb-20 pb-20">Provide the date and location of your event. You can
@@ -595,8 +569,7 @@ function ourstoryz_shortcode_function()
                                             </div>
                                         </div>
                                         <div class="col-sm-7">
-                                            <div class="h-100 d-flex flex-column justify-content-center
-">
+                                            <div class="h-100 d-flex flex-column justify-content-center">
                                                 <div class="mt-20 fs-16 mb-10 fw-semibold text-center text-dark">Storyz
                                                     image
                                                 </div>
@@ -932,6 +905,7 @@ function ourstoryz_shortcode_function()
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
