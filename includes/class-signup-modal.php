@@ -169,13 +169,23 @@ function ourstoryz_shortcode_function()
                     </div>
 
 
+                    <!-- Modal for reCAPTCHA -->
+                    <div id="recaptcha-modal" class="recaptcha-modal d-none">
+                        <div class="recaptcha-content">
+                            <div class="fs-24 my-20">Please verify you’re human:</div>
+                            <div id="recaptcha-container"></div>
+                            <button id="recaptcha-close" type="button" class="btn btn-sm btn-secondary mt-20">CLOSE</button>
+                        </div>
+                    </div>
+
+
                     <script>
                         document.getElementById('recaptcha-button').addEventListener('click', function() {
                             // Show the modal
                             document.getElementById('recaptcha-modal').classList.remove('d-none');
 
-                            grecaptcha.ready(function() {
-                                grecaptcha.render('recaptcha-container', {
+                            grecaptcha.enterprise.ready(function() {
+                                grecaptcha.enterprise.render('recaptcha-container', {
                                     sitekey: '6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8',
                                     callback: function(token) {
                                         jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
@@ -200,6 +210,7 @@ function ourstoryz_shortcode_function()
                             document.getElementById('recaptcha-modal').classList.add('d-none');
                         });
                     </script>
+
 
 
 
@@ -291,6 +302,24 @@ function ourstoryz_register_shortcodes()
 // Hook into the 'init' action to register the shortcode
 add_action('init', 'ourstoryz_register_shortcodes');
 
+// function verify_recaptcha()
+// {
+//     $recaptcha_secret = '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q';
+//     $response = sanitize_text_field($_POST['token']);
+
+//     $verify_response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret}&response={$response}");
+//     $response_body = wp_remote_retrieve_body($verify_response);
+//     $result = json_decode($response_body, true);
+
+//     if ($result['success']) {
+//         wp_send_json_success();
+//     } else {
+//         wp_send_json_error();
+//     }
+// }
+// add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
+// add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
+
 function verify_recaptcha()
 {
     $recaptcha_secret = '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q';
@@ -309,6 +338,7 @@ function verify_recaptcha()
 add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
+
 ?>
 
 <style>
@@ -322,6 +352,8 @@ add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
         border: 1px solid #ccc;
         padding: 20px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        max-width: 500px;
     }
 
     .recaptcha-content {
