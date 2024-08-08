@@ -107,7 +107,8 @@ function ourstoryz_shortcode_function()
                             </button>
                         </div>
                     </div> -->
-                    <div id="google-captcha-section" class="google-captcha-section d-none">
+                    <!-- finial  -->
+                    <!-- <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
                             <div>
@@ -144,7 +145,52 @@ function ourstoryz_shortcode_function()
                                 });
                             });
                         });
+                    </script> -->
+                    <!-- end finial -->
+
+                    <div id="google-captcha-section" class="google-captcha-section d-none">
+                        <div class="divider pb-3 d-flex align-items-center gap-2">
+                            <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
+                            <div>
+                                <div class="fs-24 fw-semibold">OurStoryz</div>
+                                <div class="fs-16 fw-500">Login</div>
+                            </div>
+                        </div>
+                        <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
+                        <div class="captcha-container">
+                            <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.getElementById('recaptcha-button').addEventListener('click', function() {
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute();
+                            });
+                        });
+
+                        // Add a listener for reCAPTCHA completion
+                        function handleReCAPTCHAResponse(token) {
+                            jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
+                                action: 'verify_recaptcha',
+                                token: token
+                            }, function(response) {
+                                if (response.success) {
+                                    // If human, proceed to the next step
+                                    handleSetModal('want-to-test-section');
+                                } else {
+                                    // If bot, show an error message
+                                    alert('Please complete the reCAPTCHA verification.');
+                                }
+                            });
+                        }
+
+                        // Handle reCAPTCHA success event
+                        grecaptcha.addEventListener('onSuccess', function(event) {
+                            handleReCAPTCHAResponse(event.token);
+                        });
                     </script>
+
 
 
                     <!--WANT-TO-TEXT-SECTION-->
@@ -253,3 +299,25 @@ add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
 ?>
+
+<style>
+    .google-captcha-section {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        /* Ensure it's above other content */
+        background: white;
+        /* Background color for better visibility */
+        padding: 20px;
+        border-radius: 8px;
+        /* Optional: for rounded corners */
+    }
+
+    .captcha-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
