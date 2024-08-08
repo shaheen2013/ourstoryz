@@ -146,8 +146,6 @@ function ourstoryz_shortcode_function()
                             });
                         });
                     </script>
-                  
-
 
 
                     <!--WANT-TO-TEXT-SECTION-->
@@ -256,9 +254,3 @@ add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
 ?>
-
-<style>
-    .grecaptcha-badge {
-        visibility: visible !important;
-    }
-</style>
