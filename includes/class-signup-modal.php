@@ -108,65 +108,68 @@ function ourstoryz_shortcode_function()
                         </div>
                     </div> -->
                     <div id="google-captcha-section" class="google-captcha-section d-none">
-    <div class="divider pb-3 d-flex align-items-center gap-2">
-        <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
-        <div>
-            <div class="fs-24 fw-semibold">OurStoryz</div>
-            <div class="fs-16 fw-500">Login</div>
-        </div>
-    </div>
-    <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-    <div class="captcha-img">
-        <img src="<?php echo plugins_url('../assets/images/captcha.png', __FILE__); ?>" alt="captcha">
-        <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
-    </div>
-</div>
+                        <div class="divider pb-3 d-flex align-items-center gap-2">
+                            <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
+                            <div>
+                                <div class="fs-24 fw-semibold">OurStoryz</div>
+                                <div class="fs-16 fw-500">Login</div>
+                            </div>
+                        </div>
+                        <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
+                        <!-- No static captcha image here, just the reCAPTCHA logic -->
+                        <div class="captcha-img">
+                            <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                        </div>
+                    </div>
 
-<script>
-    document.getElementById('recaptcha-button').addEventListener('click', function() {
-        grecaptcha.ready(function() {
-            grecaptcha.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {action: 'submit'}).then(function(token) {
-                // Send the token to the server for verification
-                jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
-                    action: 'verify_recaptcha',
-                    token: token
-                }, function(response) {
-                    if (response.success) {
-                        // If human, proceed to the next step
-                        handleSetModal('want-to-test-section');
-                    } else {
-                        // If bot, show an error message
-                        alert('Please complete the reCAPTCHA verification.');
-                    }
-                });
-            });
-        });
-    });
-</script>
+                    <script>
+                        document.getElementById('recaptcha-button').addEventListener('click', function() {
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('YOUR_SITE_KEY', {
+                                    action: 'submit'
+                                }).then(function(token) {
+                                    // Send the token to the server for verification
+                                    jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
+                                        action: 'verify_recaptcha',
+                                        token: token
+                                    }, function(response) {
+                                        if (response.success) {
+                                            // If human, proceed to the next step
+                                            handleSetModal('want-to-test-section');
+                                        } else {
+                                            // If bot, show an error message
+                                            alert('Please complete the reCAPTCHA verification.');
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                    </script>
+
 
 
                     <!--WANT-TO-TEXT-SECTION-->
-                   <?php 
-                       $signup_info->displayWantToTestSection();
+                    <?php
+                    $signup_info->displayWantToTestSection();
 
-                        ?>
+                    ?>
 
                     <!--WELCOME-TO-LOCATION-SECTION-->
-                     <?php $signup_info->displayWelcomeToLocationSection();  ?>
+                    <?php $signup_info->displayWelcomeToLocationSection();  ?>
 
                     <!--GIVE-YOUR-EVENT-NAME-SECTION-->
-                     <?php 
-                     $signup_info->displayGiveYourEventNameSection();
-                     ?>
+                    <?php
+                    $signup_info->displayGiveYourEventNameSection();
+                    ?>
 
                     <!--ADD-LOCATION-SECTION-->
-                  <?php $signup_info->displayAddLocationSection(); ?>
+                    <?php $signup_info->displayAddLocationSection(); ?>
 
                     <!--WHY-LIST-LOCATION-ALERT-->
-                    <?php $signup_info->displayWhyListLocation() ;?>
+                    <?php $signup_info->displayWhyListLocation(); ?>
 
                     <!--ADD-DATES-SECTION big event-->
-                     <?php  $signup_info->displayAddDatesSection() ;?>
+                    <?php $signup_info->displayAddDatesSection(); ?>
 
                     <!--WHY-LIST-DATES-ALERT-->
                     <?php $signup_info->displayWhyListDatesSection(); ?>
@@ -178,32 +181,32 @@ function ourstoryz_shortcode_function()
                     <?php $signup_info->displayAddImageEventSection(); ?>
 
                     <!--CHOOSE-LEVEL-SERVICE-SECTION-->
-                     <?php $signup_info->displayChooseLevelServiceSection();?>
+                    <?php $signup_info->displayChooseLevelServiceSection(); ?>
 
                     <!--EVENTS-LARGER-WEDDING-SECTION-->
                     <?php $signup_info->displayEventsLargerWeddingSection(); ?>
 
                     <!--ADD-IMAGE-STORYZ-SECTION-->
-                   <?php $signup_info->displayAddImageStoryzSection();?>
+                    <?php $signup_info->displayAddImageStoryzSection(); ?>
 
                     <!--TELL-ORGANIZATION-SECTION-->
                     <?php $signup_info->displayTellOrganizationSection();  ?>
 
                     <!--ADD-IMAGE-STORYZ-SECTION-->
-                   <?php $signup_info->displayCreateStoryzSection(); ?>
+                    <?php $signup_info->displayCreateStoryzSection(); ?>
 
                     <!--INVITE-TEAM-MEMBER-SECTION-->
-                     <?php $signup_info->displayInviteTeamMemberSection();?>
+                    <?php $signup_info->displayInviteTeamMemberSection(); ?>
 
                     <!--SETUP-OFFER-SECTION-->
-                      <?php $signup_info->displaySetupOfferSection(); ?>
+                    <?php $signup_info->displaySetupOfferSection(); ?>
 
                     <!--SORRY-TO-SEE-SECTION-->
                     <?php $signup_info->displaySorryToSeeSection(); ?>
 
                     <!--NEWSLETTER-SET-SECTION-->
-                   <?php  $signup_info->displayNewsletterSetSection();?>
-                    
+                    <?php $signup_info->displayNewsletterSetSection(); ?>
+
                 </div>
             </div>
         </div>
@@ -232,10 +235,11 @@ function ourstoryz_register_shortcodes()
 // Hook into the 'init' action to register the shortcode
 add_action('init', 'ourstoryz_register_shortcodes');
 
-function verify_recaptcha() {
+function verify_recaptcha()
+{
     $recaptcha_secret = '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q';
     $response = sanitize_text_field($_POST['token']);
-    
+
     $verify_response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret}&response={$response}");
     $response_body = wp_remote_retrieve_body($verify_response);
     $result = json_decode($response_body, true);
@@ -250,3 +254,10 @@ add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
 ?>
+
+<style>
+    .grecaptcha-badge {
+    visibility: hidden;
+}
+
+</style>
