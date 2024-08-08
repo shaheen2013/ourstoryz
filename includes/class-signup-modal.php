@@ -108,7 +108,7 @@ function ourstoryz_shortcode_function()
                         </div>
                     </div> -->
 
-                    <div id="google-captcha-section" class="google-captcha-section d-none">
+                    <!-- <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
                             <div>
@@ -145,7 +145,60 @@ function ourstoryz_shortcode_function()
                                 });
                             });
                         });
+                    </script> -->
+                    <div id="google-captcha-section" class="google-captcha-section d-none">
+                        <div class="divider pb-3 d-flex align-items-center gap-2">
+                            <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
+                            <div>
+                                <div class="fs-24 fw-semibold">OurStoryz</div>
+                                <div class="fs-16 fw-500">Login</div>
+                            </div>
+                        </div>
+                        <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
+                        <div class="captcha-img">
+                            <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                        </div>
+                    </div>
+
+
+                    <script>
+                        document.getElementById('recaptcha-button').addEventListener('click', function() {
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
+                                    action: 'submit'
+                                }).then(function(token) {
+                                    // Send the token to the server for verification
+                                    jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
+                                        action: 'verify_recaptcha',
+                                        token: token
+                                    }, function(response) {
+                                        if (response.success) {
+                                            // If human, open the modal and ensure reCAPTCHA badge is visible
+                                            openModalAndEnsureBadgeVisible('want-to-test-section');
+                                        } else {
+                                            // If bot, show an error message
+                                            alert('Please complete the reCAPTCHA verification.');
+                                        }
+                                    });
+                                });
+                            });
+                        });
+
+                        function openModalAndEnsureBadgeVisible(modalId) {
+                            // Open your modal
+                            handleSetModal(modalId);
+
+                            // Ensure reCAPTCHA badge is visible
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
+                                    action: 'modal_open'
+                                }).then(function(token) {
+                                    // Optional: handle token if needed
+                                });
+                            });
+                        }
                     </script>
+
 
 
                     <!--WANT-TO-TEXT-SECTION-->
@@ -254,3 +307,9 @@ add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
 ?>
+
+<style>
+    .grecaptcha-badge {
+        visibility: visible !important;
+    }
+</style>
