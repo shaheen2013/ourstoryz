@@ -117,63 +117,35 @@ function ourstoryz_shortcode_function()
                             </div>
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-                        <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
-                    </div>
-
-                    <!-- Modal for reCAPTCHA -->
-                    <div id="recaptcha-modal" class="recaptcha-modal d-none">
-                        <div class="recaptcha-content">
-                            <div class="fs-24 my-20">Please verify you’re human:</div>
-                            <div id="recaptcha-container"></div>
-                            <button id="recaptcha-close" type="button" class="btn btn-sm btn-secondary mt-20">CLOSE</button>
+                        <div class="captcha-img">
+                            <img src="<?php echo plugins_url('../assets/images/captcha.png', __FILE__); ?>" alt="captcha">
+                            <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
                     </div>
-
-
-                    <!-- Modal for reCAPTCHA -->
-                    <div id="recaptcha-modal" class="recaptcha-modal d-none">
-                        <div class="recaptcha-content">
-                            <div class="fs-24 my-20">Please verify you’re human:</div>
-                            <div id="recaptcha-container"></div>
-                            <button id="recaptcha-close" type="button" class="btn btn-sm btn-secondary mt-20">CLOSE</button>
-                        </div>
-                    </div>
-
 
                     <script>
                         document.getElementById('recaptcha-button').addEventListener('click', function() {
-                            // Show the modal
-                            document.getElementById('recaptcha-modal').classList.remove('d-none');
-
-                            grecaptcha.enterprise.ready(function() {
-                                grecaptcha.enterprise.render('recaptcha-container', {
-                                    sitekey: '6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8',
-                                    callback: function(token) {
-                                        jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
-                                            action: 'verify_recaptcha',
-                                            token: token
-                                        }, function(response) {
-                                            if (response.success) {
-                                                handleSetModal('want-to-test-section');
-                                            } else {
-                                                alert('Please complete the reCAPTCHA verification.');
-                                            }
-                                            // Hide the modal
-                                            document.getElementById('recaptcha-modal').classList.add('d-none');
-                                        });
-                                    }
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
+                                    action: 'submit'
+                                }).then(function(token) {
+                                    // Send the token to the server for verification
+                                    jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
+                                        action: 'verify_recaptcha',
+                                        token: token
+                                    }, function(response) {
+                                        if (response.success) {
+                                            // If human, proceed to the next step
+                                            handleSetModal('want-to-test-section');
+                                        } else {
+                                            // If bot, show an error message
+                                            alert('Please complete the reCAPTCHA verification.');
+                                        }
+                                    });
                                 });
                             });
                         });
-
-                        document.getElementById('recaptcha-close').addEventListener('click', function() {
-                            // Hide the modal
-                            document.getElementById('recaptcha-modal').classList.add('d-none');
-                        });
                     </script>
-
-
-
 
 
                     <!--WANT-TO-TEXT-SECTION-->
@@ -263,24 +235,6 @@ function ourstoryz_register_shortcodes()
 // Hook into the 'init' action to register the shortcode
 add_action('init', 'ourstoryz_register_shortcodes');
 
-// function verify_recaptcha()
-// {
-//     $recaptcha_secret = '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q';
-//     $response = sanitize_text_field($_POST['token']);
-
-//     $verify_response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret}&response={$response}");
-//     $response_body = wp_remote_retrieve_body($verify_response);
-//     $result = json_decode($response_body, true);
-
-//     if ($result['success']) {
-//         wp_send_json_success();
-//     } else {
-//         wp_send_json_error();
-//     }
-// }
-// add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
-// add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
-
 function verify_recaptcha()
 {
     $recaptcha_secret = '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q';
@@ -299,33 +253,4 @@ function verify_recaptcha()
 add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
-
 ?>
-
-<style>
-    .recaptcha-modal {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        background: white;
-        border: 1px solid #ccc;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        width: 80%;
-        max-width: 500px;
-    }
-
-    .recaptcha-content {
-        text-align: center;
-    }
-
-    .d-none {
-        display: none;
-    }
-
-    .recaptcha-modal .btn-secondary {
-        margin-top: 20px;
-    }
-</style>
