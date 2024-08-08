@@ -126,7 +126,7 @@ function enqueue_custom_script()
   // wp_enqueue_script('recaptcha', 'https://www.google.com/recaptcha/api.js?render=6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', array(), null, true);
   wp_enqueue_script(
     'recaptcha-enterprise',
-    'https://www.google.com/recaptcha/enterprise.js',
+    'https://www.google.com/recaptcha/enterprise.js?render=6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8',
     array(),
     null,
     true // Load in the footer

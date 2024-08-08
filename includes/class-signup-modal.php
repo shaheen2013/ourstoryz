@@ -105,39 +105,39 @@ function ourstoryz_shortcode_function()
                         </div>
                     </div>
 
+                    
                     <script>
                         document.getElementById('recaptcha-button').addEventListener('click', function() {
-                            grecaptcha.ready(function() {
-                                grecaptcha.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
-                                    action: 'submit'
-                                }).then(function(token) {
-                                    // Send the token to the server using AJAX
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open('POST', '<?php echo admin_url('admin-ajax.php'); ?>', true);
-                                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                            grecaptcha.enterprise.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
+                                action: 'submit'
+                            }).then(function(token) {
+                                // Send the token to the server using AJAX
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('POST', '<?php echo admin_url('admin-ajax.php'); ?>', true);
+                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-                                    xhr.onload = function() {
-                                        var response = JSON.parse(xhr.responseText);
+                                xhr.onload = function() {
+                                    var response = JSON.parse(xhr.responseText);
 
-                                        if (response.success) {
-                                            // ReCAPTCHA verified, show reCAPTCHA widget
-                                            document.getElementById('captcha-static').classList.add('d-none');
-                                            document.getElementById('recaptcha-container').classList.remove('d-none');
-                                            // Render the reCAPTCHA widget
-                                            grecaptcha.render('recaptcha-widget', {
-                                                'sitekey': '6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8' // Replace with your reCAPTCHA site key
-                                            });
-                                        } else {
-                                            // Verification failed, do not proceed
-                                            alert('Verification failed! Please try again.');
-                                        }
-                                    };
+                                    if (response.success) {
+                                        // ReCAPTCHA verified, show reCAPTCHA widget
+                                        document.getElementById('captcha-static').classList.add('d-none');
+                                        document.getElementById('recaptcha-container').classList.remove('d-none');
+                                        // Render the reCAPTCHA widget
+                                        grecaptcha.enterprise.render('recaptcha-widget', {
+                                            'sitekey': '6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8' // Replace with your reCAPTCHA site key
+                                        });
+                                    } else {
+                                        // Verification failed, do not proceed
+                                        alert('Verification failed! Please try again.');
+                                    }
+                                };
 
-                                    xhr.send('action=verify_recaptcha&nonce=<?php echo wp_create_nonce('recaptcha_nonce'); ?>&recaptcha_response=' + token);
-                                });
+                                xhr.send('action=verify_recaptcha&nonce=<?php echo wp_create_nonce('recaptcha_nonce'); ?>&recaptcha_response=' + token);
                             });
                         });
                     </script>
+
 
 
 
@@ -248,8 +248,7 @@ add_action('init', 'ourstoryz_register_shortcodes');
 // add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 // add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
-function verify_recaptcha_ajax()
-{
+function verify_recaptcha_ajax() {
     // Verify the nonce for security
     check_ajax_referer('recaptcha_nonce', 'nonce');
 
