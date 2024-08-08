@@ -216,7 +216,7 @@ add_action('init', 'ourstoryz_register_shortcodes');
 
 function verify_recaptcha()
 {
-    $recaptcha_secret = 'YOUR_SECRET_KEY'; // Your reCAPTCHA secret key
+    $recaptcha_secret = '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q'; // Your reCAPTCHA secret key
     $response = sanitize_text_field($_POST['token']); // Sanitize the received token
 
     // Send a request to Google to verify the token
