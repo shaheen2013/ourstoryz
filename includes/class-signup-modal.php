@@ -96,9 +96,12 @@ function ourstoryz_shortcode_function()
                             </div>
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-                        <div class="captcha-img">
+                        <div class="captcha-img" id="captcha-static">
                             <img src="<?php echo plugins_url('../assets/images/captcha.png', __FILE__); ?>" alt="captcha">
                             <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                        </div>
+                        <div class="captcha-img d-none" id="recaptcha-container">
+                            <div id="recaptcha-widget"></div>
                         </div>
                     </div>
 
@@ -108,23 +111,34 @@ function ourstoryz_shortcode_function()
                                 grecaptcha.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
                                     action: 'submit'
                                 }).then(function(token) {
-                                    // Send the token to the server for verification
-                                    jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
-                                        action: 'verify_recaptcha',
-                                        token: token
-                                    }, function(response) {
+                                    // Send the token to the server using AJAX
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open('POST', '<?php echo admin_url('admin-ajax.php'); ?>', true);
+                                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                                    xhr.onload = function() {
+                                        var response = JSON.parse(xhr.responseText);
+
                                         if (response.success) {
-                                            // If human, proceed to the next step
-                                            handleSetModal('want-to-test-section');
+                                            // ReCAPTCHA verified, show reCAPTCHA widget
+                                            document.getElementById('captcha-static').classList.add('d-none');
+                                            document.getElementById('recaptcha-container').classList.remove('d-none');
+                                            // Render the reCAPTCHA widget
+                                            grecaptcha.render('recaptcha-widget', {
+                                                'sitekey': '6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8' // Replace with your reCAPTCHA site key
+                                            });
                                         } else {
-                                            // If bot, show an error message
-                                            alert('Please complete the reCAPTCHA verification.');
+                                            // Verification failed, do not proceed
+                                            alert('Verification failed! Please try again.');
                                         }
-                                    });
+                                    };
+
+                                    xhr.send('action=verify_recaptcha&nonce=<?php echo wp_create_nonce('recaptcha_nonce'); ?>&recaptcha_response=' + token);
                                 });
                             });
                         });
                     </script>
+
 
 
                     <!--WANT-TO-TEXT-SECTION-->
@@ -214,24 +228,53 @@ function ourstoryz_register_shortcodes()
 // Hook into the 'init' action to register the shortcode
 add_action('init', 'ourstoryz_register_shortcodes');
 
-function verify_recaptcha()
+// function verify_recaptcha()
+// {
+//     $recaptcha_secret = '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q'; // Your reCAPTCHA secret key
+//     $response = sanitize_text_field($_POST['token']); // Sanitize the received token
+
+//     // Send a request to Google to verify the token
+//     $verify_response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret}&response={$response}");
+//     $response_body = wp_remote_retrieve_body($verify_response); // Retrieve the response body
+//     $result = json_decode($response_body, true); // Decode the JSON response
+
+//     // Check if the verification was successful
+//     if ($result['success']) {
+//         wp_send_json_success(); // Send a JSON success response
+//     } else {
+//         wp_send_json_error(); // Send a JSON error response
+//     }
+// }
+// add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
+// add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
+
+function verify_recaptcha_ajax()
 {
-    $recaptcha_secret = '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q'; // Your reCAPTCHA secret key
-    $response = sanitize_text_field($_POST['token']); // Sanitize the received token
+    // Verify the nonce for security
+    check_ajax_referer('recaptcha_nonce', 'nonce');
 
-    // Send a request to Google to verify the token
-    $verify_response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha_secret}&response={$response}");
-    $response_body = wp_remote_retrieve_body($verify_response); // Retrieve the response body
-    $result = json_decode($response_body, true); // Decode the JSON response
+    $recaptcha_response = sanitize_text_field($_POST['recaptcha_response']);
 
-    // Check if the verification was successful
-    if ($result['success']) {
-        wp_send_json_success(); // Send a JSON success response
+    // Send a request to Google to verify the reCAPTCHA response
+    $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
+        'body' => array(
+            'secret' => '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q', // Replace with your secret key
+            'response' => $recaptcha_response
+        )
+    ));
+
+    $response_body = wp_remote_retrieve_body($response);
+    $result = json_decode($response_body, true);
+
+    if (isset($result['success']) && $result['success'] == true) {
+        // Success: The user is verified
+        wp_send_json_success('Verified');
     } else {
-        wp_send_json_error(); // Send a JSON error response
+        // Failure: The user is not verified
+        wp_send_json_error('Verification failed');
     }
 }
-add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
-add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
+add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha_ajax');
+add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha_ajax');
 
 ?>
