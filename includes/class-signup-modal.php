@@ -116,8 +116,8 @@ function ourstoryz_shortcode_function()
                             </div>
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-                        <!-- No static captcha image here, just the reCAPTCHA logic -->
                         <div class="captcha-img">
+                            <img src="<?php echo plugins_url('../assets/images/captcha.png', __FILE__); ?>" alt="captcha">
                             <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
                     </div>
@@ -125,7 +125,7 @@ function ourstoryz_shortcode_function()
                     <script>
                         document.getElementById('recaptcha-button').addEventListener('click', function() {
                             grecaptcha.ready(function() {
-                                grecaptcha.execute('YOUR_SITE_KEY', {
+                                grecaptcha.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
                                     action: 'submit'
                                 }).then(function(token) {
                                     // Send the token to the server for verification
@@ -145,7 +145,6 @@ function ourstoryz_shortcode_function()
                             });
                         });
                     </script>
-
 
 
                     <!--WANT-TO-TEXT-SECTION-->
@@ -254,10 +253,3 @@ add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
 ?>
-
-<style>
-    .grecaptcha-badge {
-    visibility: hidden;
-}
-
-</style>
