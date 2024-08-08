@@ -107,7 +107,7 @@ function ourstoryz_shortcode_function()
                             </button>
                         </div>
                     </div> -->
-                    <!-- finial  -->
+                    
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
@@ -146,9 +146,6 @@ function ourstoryz_shortcode_function()
                             });
                         });
                     </script>
-                    <!-- end finial -->
- 
-
 
 
                     <!--WANT-TO-TEXT-SECTION-->
@@ -257,5 +254,3 @@ add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
 ?>
-
- 
