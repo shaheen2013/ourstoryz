@@ -86,12 +86,10 @@ function ourstoryz_shortcode_function()
                 <div class="modal-content" id="signin-modal">
 
                     <!--GOOGLE-CAPTCHA-SECTION-->
-                    <!-- <div id="google-captcha-section" class="google-captcha-section d-none">
+
+                    <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
-
-
                             <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
-
                             <div>
                                 <div class="fs-24 fw-semibold">OurStoryz</div>
                                 <div class="fs-16 fw-500">Login</div>
@@ -99,36 +97,12 @@ function ourstoryz_shortcode_function()
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
                         <div class="captcha-img">
-
                             <img src="<?php echo plugins_url('../assets/images/captcha.png', __FILE__); ?>" alt="captcha">
-
-
-                            <button onclick="handleSetModal('want-to-test-section')" type="button" class="btn btn-sm btn-primary mt-20">NEXT
-                            </button>
+                            <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
-                    </div> -->
-
-
-                    <div class="captcha-img">
-                        <!-- Google reCAPTCHA widget -->
-                        <div id="recaptcha-container" class="g-recaptcha"
-                            data-sitekey="6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8"
-                            data-callback="recaptchaCallback"></div>
-
-                        <!-- Existing NEXT button -->
-                        <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                     </div>
 
                     <script>
-                        // Callback function that gets called after successful reCAPTCHA completion
-                        function recaptchaCallback(response) {
-                            document.getElementById('recaptcha-button').disabled = false; // Enable the NEXT button
-                        }
-
-                        // Initially disable the NEXT button until reCAPTCHA is completed
-                        document.getElementById('recaptcha-button').disabled = true;
-
-                        // When the NEXT button is clicked
                         document.getElementById('recaptcha-button').addEventListener('click', function() {
                             grecaptcha.ready(function() {
                                 grecaptcha.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
@@ -151,7 +125,6 @@ function ourstoryz_shortcode_function()
                             });
                         });
                     </script>
-
 
 
                     <!--WANT-TO-TEXT-SECTION-->
@@ -241,8 +214,9 @@ function ourstoryz_register_shortcodes()
 // Hook into the 'init' action to register the shortcode
 add_action('init', 'ourstoryz_register_shortcodes');
 
-function verify_recaptcha() {
-    $recaptcha_secret = '6LfZ0BwqAAAAAFjPUyQaCOG8gDbK4bI9qqsQXH4Q'; // Your reCAPTCHA secret key
+function verify_recaptcha()
+{
+    $recaptcha_secret = 'YOUR_SECRET_KEY'; // Your reCAPTCHA secret key
     $response = sanitize_text_field($_POST['token']); // Sanitize the received token
 
     // Send a request to Google to verify the token
@@ -259,6 +233,5 @@ function verify_recaptcha() {
 }
 add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
-
 
 ?>
