@@ -107,8 +107,8 @@ function ourstoryz_shortcode_function()
                             </button>
                         </div>
                     </div> -->
-                    
-                    <div id="google-captcha-section" class="google-captcha-section d-none">
+                    <!-- finial -->
+                    <!-- <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
                             <div>
@@ -145,8 +145,79 @@ function ourstoryz_shortcode_function()
                                 });
                             });
                         });
+                    </script> -->
+                    <!-- end -->
+
+
+                    <!-- test -->
+                    <div id="google-captcha-modal" class="modal d-none">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Verify Human</h5>
+                                    <button type="button" class="btn-close" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="captcha-container" class="text-center">
+                                        <div id="static-captcha" class="d-block">
+                                            <img src="<?php echo plugins_url('../assets/images/captcha.png', __FILE__); ?>" alt="captcha">
+                                        </div>
+                                        <div id="recaptcha-container" class="d-none">
+                                            <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="recaptcha-button" type="button" class="btn btn-primary">Verify</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.getElementById('recaptcha-button').addEventListener('click', function() {
+                            // Show reCAPTCHA and hide static captcha
+                            document.getElementById('static-captcha').classList.add('d-none');
+                            document.getElementById('recaptcha-container').classList.remove('d-none');
+
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
+                                    action: 'submit'
+                                }).then(function(token) {
+                                    // Send the token to the server for verification
+                                    jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {
+                                        action: 'verify_recaptcha',
+                                        token: token
+                                    }, function(response) {
+                                        if (response.success) {
+                                            // If human, proceed
+                                            handleSetModal('want-to-test-section');
+                                        } else {
+                                            // If bot, show an error message
+                                            alert('Please complete the reCAPTCHA verification.');
+                                        }
+                                    });
+                                });
+                            });
+                        });
+
+                        function handleSetModal(modalId) {
+                            // Logic to show the next section or modal
+                            document.getElementById(modalId).classList.remove('d-none');
+                        }
+
+                        // Show the modal when needed
+                        function showCaptchaModal() {
+                            document.getElementById('google-captcha-modal').classList.remove('d-none');
+                        }
+
+                        // Example usage
+                        document.addEventListener('DOMContentLoaded', function() {
+                            showCaptchaModal(); // Call this function where you want to show the modal
+                        });
                     </script>
 
+                    <!-- end test -->
 
                     <!--WANT-TO-TEXT-SECTION-->
                     <?php
