@@ -781,8 +781,7 @@ class ourstoryz_Admin
         wp_die();
     }
 
-    function update_google_maps_api_key_callback()
-    {
+    function update_google_maps_api_key_callback() {
         if (!isset($_POST['google_maps_api_key']) || empty($_POST['google_maps_api_key'])) {
             wp_send_json_error(['message' => 'API key cannot be empty.']);
         } else {
@@ -791,4 +790,5 @@ class ourstoryz_Admin
             wp_send_json_success(['message' => 'API key updated successfully!']);
         }
     }
+    
 }
