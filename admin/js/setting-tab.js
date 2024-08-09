@@ -4,16 +4,18 @@ jQuery(document).ready(function ($) {
     $('#tab1').show();
 
     // Handle tab click events
-    $('.ourstoryz-tab-link').on('click', function (e) {
+    var tabs = $('.ourstoryz-tab-link');
+    var contents = $('.ourstoryz-tab-content');
+
+    tabs.on('click', function (e) {
         e.preventDefault();
 
-        // Remove 'active' class from all tab links and hide all tab content
-        $('.ourstoryz-tab-link').removeClass('active');
-        $(this).addClass('active');
+        tabs.removeClass('active');
+        contents.hide();
 
-        var tab = $(this).attr('href');
-        $('.ourstoryz-tab-content').hide();
-        $(tab).show();
+        $(this).addClass('active');
+        var activeTabContent = $($(this).attr('href'));
+        activeTabContent.show();
 
         // If clicking on the second tab button
         if ($(this).attr('href') === '#tab2') {
@@ -57,37 +59,8 @@ jQuery(document).ready(function ($) {
             });
         }
     });
-    $('#copy-icon').on('click', function () {
-        var tokenInput = document.getElementById('auth-token-display');
-        tokenInput.select();
-        tokenInput.setSelectionRange(0, 99999); // For mobile devices
 
-        try {
-            var successful = document.execCommand('copy');
-
-
-        } catch (err) {
-            console.error('Failed to copy token:', err);
-            alert('Failed to copy token');
-        }
-    });
-});
-
-jQuery(document).ready(function($) {
-    var tabs = $('.ourstoryz-tab-link');
-    var contents = $('.ourstoryz-tab-content');
-
-    tabs.on('click', function(e) {
-        e.preventDefault();
-
-        tabs.removeClass('active');
-        contents.hide();
-
-        $(this).addClass('active');
-        var activeTabContent = $($(this).attr('href'));
-        activeTabContent.show();
-    });
-
+    // Handle API key form submission
     $('#google-maps-api-key-form').on('submit', function(e) {
         e.preventDefault();
 
@@ -123,5 +96,18 @@ jQuery(document).ready(function($) {
             }
         });
     });
-});
 
+    // Handle copy token event
+    $('#copy-icon').on('click', function () {
+        var tokenInput = document.getElementById('auth-token-display');
+        tokenInput.select();
+        tokenInput.setSelectionRange(0, 99999); // For mobile devices
+
+        try {
+            var successful = document.execCommand('copy');
+        } catch (err) {
+            console.error('Failed to copy token:', err);
+            alert('Failed to copy token');
+        }
+    });
+});
