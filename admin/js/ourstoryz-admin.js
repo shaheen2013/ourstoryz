@@ -133,7 +133,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    $('#submitBtn').on('click', function() {
+    $('#submitBtn').on('click', function () {
         var value = $('#options').val();
         console.log(value);
         $.ajax({
@@ -143,25 +143,26 @@ jQuery(document).ready(function ($) {
                 action: 'save_custom_data',
                 value: value
             },
-            success: function(response) {
+            success: function (response) {
                 $('#result').html(response);
             },
-            error: function(errorThrown) {
+            error: function (errorThrown) {
                 console.log(errorThrown);
             }
         });
     });
 
-    $('#google-maps-api-key-form').on('submit', function(e) {
+    $('#google-maps-api-key-form').on('submit', function (e) {
         e.preventDefault();
 
         var apiKey = $('#google_maps_api_key').val();
-        $('#error-message').text('');
-        $('#success-message').hide();
+        $('#error-message').text('');  // Clear any previous error messages
+        $('#success-message').hide();  // Hide the success message
 
+        // Check if the API key is empty
         if (!apiKey) {
             $('#error-message').text('API key cannot be empty.');
-            return;
+            return; // Stop the form submission
         }
 
         $.ajax({
@@ -171,26 +172,25 @@ jQuery(document).ready(function ($) {
                 action: 'update_google_maps_api_key',
                 google_maps_api_key: apiKey
             },
-            success: function(response) {
+            success: function (response) {
                 if (response.success) {
                     $('#success-message').text(response.data.message).fadeIn();
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $('#success-message').fadeOut();
                     }, 5000);
                 } else {
                     $('#error-message').text(response.data.message);
                 }
             },
-            error: function() {
+            error: function () {
                 $('#error-message').text('An error occurred. Please try again.');
             }
         });
     });
 
-
 });
 
- 
+
 
 
