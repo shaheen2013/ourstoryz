@@ -180,6 +180,8 @@ class ourstoryz
 		$this->loader->add_action('rest_api_init', $plugin_admin,  'register_custom_endpoints');
 		$this->loader->add_action('rest_api_init',$plugin_admin,'is_updated_check');
 		$this->loader->add_action('wp_ajax_save_custom_data',$plugin_admin, 'save_custom_data');
+
+		$this->loader->add_action('wp_ajax_update_google_maps_api_key', $plugin_admin,'update_google_maps_api_key_callback');
 		 
 	}
 

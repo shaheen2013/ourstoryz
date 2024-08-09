@@ -129,7 +129,7 @@ if (isset($_POST['submit'])) {
     echo 'URLs updated successfully!';
 }
 
-add_action('wp_ajax_update_google_maps_api_key', 'update_google_maps_api_key_callback');
+
 
 function update_google_maps_api_key_callback()
 {
