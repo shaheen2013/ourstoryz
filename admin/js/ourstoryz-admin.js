@@ -152,6 +152,42 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    $('#google-maps-api-key-form').on('submit', function(e) {
+        e.preventDefault();
+
+        var apiKey = $('#google_maps_api_key').val();
+        $('#error-message').text('');
+        $('#success-message').hide();
+
+        if (!apiKey) {
+            $('#error-message').text('API key cannot be empty.');
+            return;
+        }
+
+        $.ajax({
+            url: ajaxurl, // WordPress provides the 'ajaxurl' variable for AJAX calls
+            method: 'POST',
+            data: {
+                action: 'update_google_maps_api_key',
+                google_maps_api_key: apiKey
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#success-message').text(response.data.message).fadeIn();
+
+                    setTimeout(function() {
+                        $('#success-message').fadeOut();
+                    }, 5000);
+                } else {
+                    $('#error-message').text(response.data.message);
+                }
+            },
+            error: function() {
+                $('#error-message').text('An error occurred. Please try again.');
+            }
+        });
+    });
+
 
 });
 

@@ -144,7 +144,7 @@ class ourstoryz_Admin
             'has_archive'           => true,
             'publicly_queryable'    => true,
             'capability_type'       => 'post',
- 
+
         );
 
         register_post_type('signup', $args);
@@ -779,5 +779,16 @@ class ourstoryz_Admin
             }
         }
         wp_die();
+    }
+
+    function update_google_maps_api_key_callback()
+    {
+        if (!isset($_POST['google_maps_api_key']) || empty($_POST['google_maps_api_key'])) {
+            wp_send_json_error(['message' => 'API key cannot be empty.']);
+        } else {
+            $google_maps_api_key = sanitize_text_field($_POST['google_maps_api_key']);
+            update_option('google_maps_api_key', $google_maps_api_key);
+            wp_send_json_success(['message' => 'API key updated successfully!']);
+        }
     }
 }
