@@ -71,4 +71,30 @@ jQuery(document).ready(function ($) {
             alert('Failed to copy token');
         }
     });
+
+    var tabs = $('.ourstoryz-tab-link');
+    var contents = $('.ourstoryz-tab-content');
+
+    tabs.on('click', function (e) {
+        e.preventDefault();
+
+        tabs.removeClass('active');
+        contents.hide();
+
+        $(this).addClass('active');
+        var activeTabContent = $($(this).attr('href'));
+        activeTabContent.show();
+    });
+
+    // Show success message and hide after 5 seconds
+    if ($('#success-message').length) {
+        $('#success-message').fadeIn();
+
+        setTimeout(function () {
+            $('#success-message').fadeOut();
+        }, 5000);
+    }
 });
+
+
+

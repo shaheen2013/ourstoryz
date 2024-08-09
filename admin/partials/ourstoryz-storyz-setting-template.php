@@ -27,7 +27,7 @@
         <a href="#tab1" class="nav-tab ourstoryz-tab-link active">Find & Replace</a>
         <a href="#tab2" class="nav-tab ourstoryz-tab-link">Auth Token</a>
         <a href="#tab3" class="nav-tab ourstoryz-tab-link">Default Template select</a>
-
+        <a href="#tab4" class="nav-tab ourstoryz-tab-link">Google Maps API Key</a>
     </h2>
 
     <div id="tab1" class="ourstoryz-tab-content" style="display:block;">
@@ -77,6 +77,23 @@
             </div>
         </div>
     </div>
+    <div id="tab4" class="ourstoryz-tab-content" style="display:none;">
+        <h3>Google Maps API Key</h3>
+
+        <?php if (isset($message)): ?>
+            <div id="success-message" style="display:none;" class="updated notice notice-success is-dismissible">
+                <p><?php echo $message; ?></p>
+            </div>
+        <?php endif; ?>
+
+        <form method="post" action="">
+            <div class="mb-3">
+                <label for="google_maps_api_key" class="form-label">Google Maps API Key:</label>
+                <input type="text" class="form-control" name="google_maps_api_key" id="google_maps_api_key" value="<?php echo esc_attr($stored_api_key); ?>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save API Key</button>
+        </form>
+    </div>
 </div>
 
 
@@ -115,6 +132,14 @@ if (isset($_POST['submit'])) {
 
     echo 'URLs updated successfully!';
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['google_maps_api_key'])) {
+    $google_maps_api_key = sanitize_text_field($_POST['google_maps_api_key']);
+    update_option('google_maps_api_key', $google_maps_api_key);
+    $message = 'API key updated successfully!';
+}
+$stored_api_key = get_option('google_maps_api_key', '');
+
 
 
 ?>
