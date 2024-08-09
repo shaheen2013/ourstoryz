@@ -161,7 +161,7 @@ jQuery(document).ready(function ($) {
     
         // Check if the API key is empty
         if (!apiKey) {
-            $('#error-message').text('API key cannot be empty.');
+            alert('API key cannot be empty.'); // Show alert for empty API key
             return; // Stop the form submission
         }
     
@@ -188,6 +188,7 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+    
     
 
 });
