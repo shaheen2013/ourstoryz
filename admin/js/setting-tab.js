@@ -71,11 +71,13 @@ jQuery(document).ready(function ($) {
             alert('Failed to copy token');
         }
     });
+});
 
+jQuery(document).ready(function($) {
     var tabs = $('.ourstoryz-tab-link');
     var contents = $('.ourstoryz-tab-content');
 
-    tabs.on('click', function (e) {
+    tabs.on('click', function(e) {
         e.preventDefault();
 
         tabs.removeClass('active');
@@ -86,15 +88,41 @@ jQuery(document).ready(function ($) {
         activeTabContent.show();
     });
 
-    // Show success message and hide after 5 seconds
-    if ($('#success-message').length) {
-        $('#success-message').fadeIn();
+    $('#google-maps-api-key-form').on('submit', function(e) {
+        e.preventDefault();
 
-        setTimeout(function () {
-            $('#success-message').fadeOut();
-        }, 5000);
-    }
+        var apiKey = $('#google_maps_api_key').val();
+        $('#error-message').text('');
+        $('#success-message').hide();
+
+        if (!apiKey) {
+            $('#error-message').text('API key cannot be empty.');
+            return;
+        }
+
+        $.ajax({
+            url: ajaxurl, // WordPress provides the 'ajaxurl' variable for AJAX calls
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: 'update_google_maps_api_key',
+                google_maps_api_key: apiKey
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#success-message').text(response.data.message).fadeIn();
+
+                    setTimeout(function() {
+                        $('#success-message').fadeOut();
+                    }, 5000);
+                } else {
+                    $('#error-message').text(response.data.message);
+                }
+            },
+            error: function() {
+                $('#error-message').text('An error occurred. Please try again.');
+            }
+        });
+    });
 });
-
-
 

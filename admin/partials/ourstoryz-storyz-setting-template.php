@@ -80,19 +80,15 @@
     <div id="tab4" class="ourstoryz-tab-content" style="display:none;">
         <h3>Google Maps API Key</h3>
 
-        <?php if (isset($message)): ?>
-            <div id="success-message" style="display:none;" class="updated notice notice-success is-dismissible">
-                <p><?php echo $message; ?></p>
-            </div>
-        <?php endif; ?>
-
-        <form method="post" action="">
+        <form id="google-maps-api-key-form">
             <div class="mb-3">
                 <label for="google_maps_api_key" class="form-label">Google Maps API Key:</label>
-                <input type="text" class="form-control" name="google_maps_api_key" id="google_maps_api_key" value="<?php echo esc_attr($stored_api_key); ?>" required>
+                <input type="text" class="form-control w-25 m-auto" name="google_maps_api_key" id="google_maps_api_key" value="<?php echo esc_attr($stored_api_key); ?>" required>
+                <div id="error-message" style="color: red; margin-top: 5px;"></div>
             </div>
             <button type="submit" class="btn btn-primary">Save API Key</button>
         </form>
+        <div id="success-message" style="color: green; margin-top: 10px; display: none;"></div>
     </div>
 </div>
 
@@ -133,12 +129,18 @@ if (isset($_POST['submit'])) {
     echo 'URLs updated successfully!';
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['google_maps_api_key'])) {
-    $google_maps_api_key = sanitize_text_field($_POST['google_maps_api_key']);
-    update_option('google_maps_api_key', $google_maps_api_key);
-    $message = 'API key updated successfully!';
+add_action('wp_ajax_update_google_maps_api_key', 'update_google_maps_api_key_callback');
+
+function update_google_maps_api_key_callback()
+{
+    if (!isset($_POST['google_maps_api_key']) || empty($_POST['google_maps_api_key'])) {
+        wp_send_json_error(['message' => 'API key cannot be empty.']);
+    } else {
+        $google_maps_api_key = sanitize_text_field($_POST['google_maps_api_key']);
+        update_option('google_maps_api_key', $google_maps_api_key);
+        wp_send_json_success(['message' => 'API key updated successfully!']);
+    }
 }
-$stored_api_key = get_option('google_maps_api_key', '');
 
 
 
