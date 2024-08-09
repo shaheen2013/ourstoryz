@@ -77,7 +77,7 @@
             </div>
         </div>
     </div>
-    <div id="tab4" class="ourstoryz-tab-content" style="display:none;">
+    <div id="tab4" class="ourstoryz-tab-content w-25 m-auto" style="display:none;">
         <h3>Google Maps API Key</h3>
 
         <form id="google-maps-api-key-form">
