@@ -83,7 +83,7 @@
         <form id="google-maps-api-key-form">
             <div class="mb-3">
                 <label for="google_maps_api_key" class="form-label">Google Maps API Key:</label>
-                <input type="text" class="form-control w-25 m-auto" name="google_maps_api_key" id="google_maps_api_key" value="<?php echo esc_attr($stored_api_key); ?>" required>
+                <input type="text" class="form-control  " name="google_maps_api_key" id="google_maps_api_key" value="<?php echo esc_attr($stored_api_key); ?>" required>
                 <div id="error-message" style="color: red; margin-top: 5px;"></div>
             </div>
             <button type="submit" class="btn btn-primary">Save API Key</button>
