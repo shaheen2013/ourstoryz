@@ -153,18 +153,19 @@ jQuery(document).ready(function ($) {
     });
 
     $('#google-maps-api-key-form').on('submit', function (e) {
-        e.preventDefault();
-
-        var apiKey = $('#google_maps_api_key').val();
+        e.preventDefault(); // Prevent default form submission
+    
+        var apiKey = $('#google_maps_api_key').val().trim(); // Get and trim the API key value
         $('#error-message').text('');  // Clear any previous error messages
         $('#success-message').hide();  // Hide the success message
-
+    
         // Check if the API key is empty
         if (!apiKey) {
             $('#error-message').text('API key cannot be empty.');
             return; // Stop the form submission
         }
-
+    
+        // Make AJAX request
         $.ajax({
             url: ajaxurl, // WordPress provides the 'ajaxurl' variable for AJAX calls
             method: 'POST',
@@ -175,7 +176,6 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 if (response.success) {
                     $('#success-message').text(response.data.message).fadeIn();
-
                     setTimeout(function () {
                         $('#success-message').fadeOut();
                     }, 5000);
@@ -188,6 +188,7 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+    
 
 });
 
