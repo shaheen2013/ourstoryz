@@ -102,8 +102,7 @@ jQuery(document).ready(function($) {
 
         $.ajax({
             url: ajaxurl, // WordPress provides the 'ajaxurl' variable for AJAX calls
-            type: 'POST',
-            dataType: 'json',
+            method: 'POST',
             data: {
                 action: 'update_google_maps_api_key',
                 google_maps_api_key: apiKey
