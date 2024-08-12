@@ -24,7 +24,7 @@
 
 class Signup_Modal_Info
 {
-   
+
     public function signup_post()
     {
         $args = array(
@@ -41,12 +41,12 @@ class Signup_Modal_Info
         if ($signup_query->have_posts()) {
             while ($signup_query->have_posts()) {
                 $signup_query->the_post();
-                       ?>
+?>
                 <div class="form-check mb-10">
                     <input type="radio" name="eventOption" class="form-check-input" id="check<?php echo $count; ?>" onclick="checkCheckboxes()">
                     <label class="form-check-label" for="check<?php echo $count; ?>"><?php the_title(); ?></label>
                 </div>
-                 <?php
+<?php
                 $count++; // Increment count after each post
             }
         } else {
@@ -56,7 +56,8 @@ class Signup_Modal_Info
         wp_reset_postdata(); // Reset post data
     }
 
-    public function displayWantToTestSection() {
+    public function displayWantToTestSection()
+    {
         echo '
         <div id="want-to-test-section" class="want-to-test-section d-none">
             <div class="fs-20">What do you want to test?</div>
@@ -88,7 +89,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displayWelcomeToLocationSection() {
+    public function displayWelcomeToLocationSection()
+    {
         echo '
         <div id="welcome-to-location-section" class="welcome-to-location d-none">
             <div class="fs-20">Welcome to Locator</div>
@@ -118,9 +120,10 @@ class Signup_Modal_Info
             </div>
         </div>';
     }
-    
 
-    public function displayGiveYourEventNameSection() {
+
+    public function displayGiveYourEventNameSection()
+    {
         echo '
         <div id="give-your-event-name-section" class="w-600 d-none">
             <div class="fs-20 divider pb-4">Give your event a name</div>
@@ -152,7 +155,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displayAddLocationSection() {
+    public function displayAddLocationSection()
+    {
         echo '
         <div id="add-location-section" class="w-600 d-none">
             <div class="fs-20 divider pb-4">Add a location</div>
@@ -163,16 +167,19 @@ class Signup_Modal_Info
             <div class="my-20">
                 <div class="row">
                     <div class="col-6">
-                        <div id="add-location-change-section" class="h-100 d-flex flex-column justify-content-center">
-                            <div class="fs-18 text-end mb-2">Your event location</div>
-                             <p id="locationDisplay"></p>
-                            <div onclick="changeTheLocation()" id="add-location-change-btn" class="btn-location-change ourstoryz__location_button">Change
-                            </div>
-                        </div>
-                        <div id="add-location-change-input" class="h-100 flex-column justify-content-center d-none">
-                            <div class="fs-18 mb-2">Your event location</div>
-                            <textarea name="location" id="locationInput" class="form-control flex-grow-1"></textarea>
-                        </div>
+                       <div style="width: 50%;">
+                <div id="locationInputSection">
+                    <textarea id="locationInput" class="ourstoryz__textarea pac-target-input" placeholder="Enter a location" autocomplete="off"></textarea>
+                    <small id="locationError" class="text-danger">Location is required</small>
+                    <button onclick="setTheLocation()" class="ourstoryz__location_button">Set the location</button>
+                </div>
+                <div id="locationDisplaySection" style="display: none;">
+                    <p id="locationDisplay"></p>
+                    <div class="d-flex justify-content-end">
+                        <button onclick="changeTheLocation()" class="ourstoryz__location_button">Change</button>
+                    </div>
+                </div>
+            </div>
                     </div>
                     <div class="col-6">
                         <div id="map" class="map-area"></div>
@@ -203,8 +210,9 @@ class Signup_Modal_Info
             </div>
         </div>';
     }
-    
-    public function displayWhyListLocation() {
+
+    public function displayWhyListLocation()
+    {
         echo '
         <div id="why-list-location" class="w-600 d-none">
             <div class="d-flex justify-content-center mb-3">
@@ -226,8 +234,9 @@ class Signup_Modal_Info
             </div>
         </div>';
     }
-    
-    public function displayAddDatesSection() {
+
+    public function displayAddDatesSection()
+    {
         echo '
         <div id="add-dates-section" class="w-600 d-none">
             <div class="fs-20 divider pb-4">Add dates</div>
@@ -272,8 +281,9 @@ class Signup_Modal_Info
             </div>
         </div>';
     }
-    
-    public function displayWhyListDatesSection() {
+
+    public function displayWhyListDatesSection()
+    {
         echo '
         <div id="why-list-dates" class="w-600 d-none">
             <div class="d-flex justify-content-center mb-3">
@@ -294,8 +304,9 @@ class Signup_Modal_Info
             <div onclick="handleSetModal(\'add-dates-section\')" class="btn btn-dark rounded-pill w-100">Continue</div>
         </div>';
     }
-    
-    public function displayAboutYourselfSection() {
+
+    public function displayAboutYourselfSection()
+    {
         echo '
         <div id="about-yourself-section" class="w-600 d-none">
             <div class="fs-20 divider pb-3">About yourself</div>
@@ -364,8 +375,9 @@ class Signup_Modal_Info
             </div>
         </div>';
     }
-    
-    public function displayAddImageEventSection() {
+
+    public function displayAddImageEventSection()
+    {
         echo '
         <div id="add-image-event-section" class="w-390 d-none">
             <div class="fs-20 divider pb-4">Add an image for your event</div>
@@ -422,7 +434,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displayChooseLevelServiceSection() {
+    public function displayChooseLevelServiceSection()
+    {
         echo '
         <div id="choose-level-service-section" class="d-none">
             <div class="fs-20 text-center divider pb-3">Choose a level of service</div>
@@ -458,7 +471,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displayEventsLargerWeddingSection() {
+    public function displayEventsLargerWeddingSection()
+    {
         echo '
         <div id="events-larger-wedding-section" class="w-600 d-none">
             <div class="fs-20 divider pb-3 mb-20">Add events within your larger wedding</div>
@@ -503,9 +517,10 @@ class Signup_Modal_Info
             </div>
         </div>';
     }
-    
 
-    public function displayAddImageStoryzSection() {
+
+    public function displayAddImageStoryzSection()
+    {
         echo '
         <div id="add-image-storyz-section" class="w-390 d-none">
             <div class="fs-20 divider pb-4">Add an image for your Storyz</div>
@@ -557,7 +572,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displayTellOrganizationSection() {
+    public function displayTellOrganizationSection()
+    {
         echo '
         <div id="tell-organization-section" class="w-600 d-none">
             <div class="fs-20 divider pb-3 mb-20">Tell us about your organization</div>
@@ -611,7 +627,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displayCreateStoryzSection() {
+    public function displayCreateStoryzSection()
+    {
         echo '
         <div id="create-storyz-section" class="w-420 d-none">
             <div class="fs-20 divider pb-3">Create a Storyz</div>
@@ -685,7 +702,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displayInviteTeamMemberSection() {
+    public function displayInviteTeamMemberSection()
+    {
         echo '
         <div id="invite-team-member-section" class="w-600 d-none">
             <div class="fs-20 divider pb-3 mb-20">Invite a team member</div>
@@ -726,7 +744,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displaySetupOfferSection() {
+    public function displaySetupOfferSection()
+    {
         echo '
         <div id="setup-offer-section" class="w-600 d-none">
             <div class="row align-items-center">
@@ -777,7 +796,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displaySorryToSeeSection() {
+    public function displaySorryToSeeSection()
+    {
         echo '
         <div id="sorry-to-see-section" class="w-600 d-none">
             <div class="row align-items-center">
@@ -814,7 +834,8 @@ class Signup_Modal_Info
         </div>';
     }
 
-    public function displayNewsletterSetSection() {
+    public function displayNewsletterSetSection()
+    {
         echo '
         <div id="newsletter-set-section" class="w-420 d-none">
             <div class="row">
@@ -838,19 +859,4 @@ class Signup_Modal_Info
             </div>
         </div>';
     }
-    
-    
-    
-    
-    
-    
-    
-
-
-    
-    
-
-    
-    
-
 }
