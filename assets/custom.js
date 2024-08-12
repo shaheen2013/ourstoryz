@@ -225,6 +225,7 @@ let locationDisplay = document.getElementById('locationDisplay');
 let lat = '';
 let lng = '';
 
+// Initialize the map with autocomplete
 function initMap() {
     const g_location_options = {
         componentRestrictions: { country: "bd" },
@@ -232,18 +233,25 @@ function initMap() {
         types: ["establishment"]
     };
 
-    console.log('test')
-
     const autoComplete = new google.maps.places.Autocomplete(locationInput, g_location_options);
+    
     autoComplete.addListener("place_changed", function () {
         locationError.style.display = 'none';
         const place = autoComplete.getPlace();
+
+        if (!place.geometry) {
+            // User did not select a valid place
+            locationError.style.display = 'block';
+            return;
+        }
+
         lat = place.geometry.location.lat();
         lng = place.geometry.location.lng();
         renderMap(place);
     });
 }
 
+// Render the map based on selected location
 function renderMap(place) {
     const map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: lat, lng: lng },
@@ -257,6 +265,7 @@ function renderMap(place) {
     });
 }
 
+// Set the location display
 function setTheLocation() {
     if (!locationInput.value) {
         locationError.style.display = 'block';
@@ -267,17 +276,19 @@ function setTheLocation() {
     }
 }
 
+// Allow changing the location
 function changeTheLocation() {
-    console.log('imrant');
     locationInput.value = '';
     locationDisplay.textContent = '';
     locationInputSection.style.display = 'block';
     locationDisplaySection.style.display = 'none';
 }
 
-locationInput.addEventListener('input', function() {
+// Initialize the map when the input field is focused
+locationInput.addEventListener('focus', function() {
     initMap();
-});
+}, { once: true });
+
 
 
 // end map
