@@ -216,79 +216,71 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // for map
-document.addEventListener('DOMContentLoaded', function () {
-    let locationError = document.getElementById('locationError');
-    let locationInput = document.getElementById('locationInput');
-    let locationInputSection = document.getElementById('locationInputSection');
-    let locationDisplaySection = document.getElementById('locationDisplaySection');
-    let locationDisplay = document.getElementById('locationDisplay');
-    let lat = '';
-    let lng = '';
+let locationError = document.getElementById('locationError');
+let locationInput = document.getElementById('locationInput');
+let locationInputSection = document.getElementById('locationInputSection');
+let locationDisplaySection = document.getElementById('locationDisplaySection');
+let locationDisplay = document.getElementById('locationDisplay');
+let lat = '';
+let lng = '';
 
-    // Initialize the map with autocomplete
-    function initMap() {
-        const g_location_options = {
-            componentRestrictions: { country: "bd" },
-            fields: ["address_components", "geometry", "name"],
-            types: ["establishment"]
-        };
+// Initialize the map and Autocomplete
+function initMap() {
+    const g_location_options = {
+        componentRestrictions: { country: "bd" },
+        fields: ["address_components", "geometry", "name"],
+        types: ["establishment"]
+    };
 
-        const autoComplete = new google.maps.places.Autocomplete(locationInput, g_location_options);
-
-        autoComplete.addListener("place_changed", function () {
-            locationError.style.display = 'none';
-            const place = autoComplete.getPlace();
-
-            if (!place.geometry) {
-                // User did not select a valid place
-                locationError.style.display = 'block';
-                return;
-            }
-
-            lat = place.geometry.location.lat();
-            lng = place.geometry.location.lng();
-            renderMap(place);
-        });
-    }
-
-    // Render the map based on selected location
-    function renderMap(place) {
-        const map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: lat, lng: lng },
-            zoom: 15,
-            mapTypeControl: false
-        });
-        new google.maps.Marker({
-            map: map,
-            position: { lat: lat, lng: lng },
-            visible: true
-        });
-    }
-
-    // Set the location display
-    window.setTheLocation = function () {
-        if (!locationInput.value) {
-            locationError.style.display = 'block';
-        } else {
-            locationDisplay.textContent = locationInput.value;
-            locationInputSection.style.display = 'none';
-            locationDisplaySection.style.display = 'block';
-        }
-    }
-
-    // Allow changing the location
-    window.changeTheLocation = function () {
-        locationInput.value = '';
-        locationDisplay.textContent = '';
-        locationInputSection.style.display = 'block';
-        locationDisplaySection.style.display = 'none';
-    }
-
-    // Initialize the map when the textarea content changes
-    locationInput.addEventListener('input', function () {
-        initMap();
+    const autoComplete = new google.maps.places.Autocomplete(locationInput, g_location_options);
+    autoComplete.addListener("place_changed", function () {
+        locationError.style.display = 'none';
+        const place = autoComplete.getPlace();
+        lat = place.geometry.location.lat();
+        lng = place.geometry.location.lng();
+        renderMap(place);
     });
-});
+}
+
+// Render the map with a marker
+function renderMap(place) {
+    const map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: lat, lng: lng },
+        zoom: 15,
+        mapTypeControl: false
+    });
+    new google.maps.Marker({
+        map: map,
+        position: { lat: lat, lng: lng },
+        visible: true
+    });
+}
+
+// Set the location and update UI
+function setTheLocation() {
+    if (!locationInput.value) {
+        locationError.style.display = 'block';
+    } else {
+        locationDisplay.textContent = locationInput.value;
+        locationInputSection.style.display = 'none';
+        locationDisplaySection.style.display = 'block';
+    }
+}
+
+// Change the location and update UI
+function changeTheLocation() {
+    locationInput.value = '';
+    locationDisplay.textContent = '';
+    locationInputSection.style.display = 'block';
+    locationDisplaySection.style.display = 'none';
+}
+
+// Set up event listeners
+document.getElementById('setLocationButton').onclick = setTheLocation;
+document.getElementById('changeLocationButton').onclick = changeTheLocation;
+
+// Initialize map when the window loads
+window.onload = initMap;
 
 
 
