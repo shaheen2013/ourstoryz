@@ -167,24 +167,24 @@ class Signup_Modal_Info
     <div class="my-20">
         <div class="row">
             <div class="col-6">
-                <div class="ourstoryz__map_section d-flex">
-                    <div>
-                        <div id="locationInputSection">
-                            <textarea id="locationInput" class="ourstoryz__textarea pac-target-input"
-                                placeholder="Enter a location" autocomplete="off"></textarea>
-                            <small id="locationError" class="text-danger">Location is required</small>
-                            <button onclick="setTheLocation()" class="ourstoryz__location_button">Set the
-                                location</button>
-                        </div>
-                        <div id="locationDisplaySection" style="display: none;">
-                            <p id="locationDisplay"></p>
-                            <div class="d-flex justify-content-end">
-                                <button onclick="changeTheLocation()" class="ourstoryz__location_button">Change</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="map" class="ourstoryz__rounded_10"></div>
+
+
+                <div id="locationInputSection">
+                    <textarea id="locationInput" class="ourstoryz__textarea pac-target-input"
+                        placeholder="Enter a location" autocomplete="off"></textarea>
+                    <small id="locationError" class="text-danger">Location is required</small>
+                    <button onclick="setTheLocation()" class="ourstoryz__location_button">Set the
+                        location</button>
                 </div>
+                <div id="locationDisplaySection" style="display: none;">
+                    <p id="locationDisplay"></p>
+                    <div class="d-flex justify-content-end">
+                        <button onclick="changeTheLocation()" class="ourstoryz__location_button">Change</button>
+                    </div>
+                </div>
+
+
+
             </div>
             <div class="col-6">
                 <div id="map" class="map-area"></div>
