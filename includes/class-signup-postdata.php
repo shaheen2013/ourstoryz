@@ -165,7 +165,8 @@ class Signup_Modal_Info
                     <div class="col-6">
                         <div id="add-location-change-section" class="h-100 d-flex flex-column justify-content-center">
                             <div class="fs-18 text-end mb-2">Your event location</div>
-                            <div onclick="handleChangeLocation()" id="add-location-change-btn" class="btn-location-change">Change
+                             <p id="locationDisplay"></p>
+                            <div onclick="changeTheLocation()" id="add-location-change-btn" class="btn-location-change ourstoryz__location_button">Change
                             </div>
                         </div>
                         <div id="add-location-change-input" class="h-100 flex-column justify-content-center d-none">
@@ -174,7 +175,7 @@ class Signup_Modal_Info
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="map-area"></div>
+                        <div id="map" class="map-area"></div>
                     </div>
                 </div>
             </div>
