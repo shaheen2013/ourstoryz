@@ -266,6 +266,7 @@ function setTheLocation() {
 }
 
 function changeTheLocation() {
+    console.log('imrant');
     locationInput.value = '';
     locationDisplay.textContent = '';
     locationInputSection.style.display = 'block';
