@@ -232,9 +232,10 @@ function initMap() {
         types: ["establishment"]
     };
 
+    console.log('test')
+
     const autoComplete = new google.maps.places.Autocomplete(locationInput, g_location_options);
     autoComplete.addListener("place_changed", function () {
-        console.log('test')
         locationError.style.display = 'none';
         const place = autoComplete.getPlace();
         lat = place.geometry.location.lat();
