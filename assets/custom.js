@@ -216,12 +216,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // for map
-$(document).ready(function () {
-    let locationError = $('#locationError');
-    let locationInput = $('#locationInput');
-    let locationInputSection = $('#locationInputSection');
-    let locationDisplaySection = $('#locationDisplaySection');
-    let locationDisplay = $('#locationDisplay');
+document.addEventListener('DOMContentLoaded', function () {
+    let locationError = document.getElementById('locationError');
+    let locationInput = document.getElementById('locationInput');
+    let locationInputSection = document.getElementById('locationInputSection');
+    let locationDisplaySection = document.getElementById('locationDisplaySection');
+    let locationDisplay = document.getElementById('locationDisplay');
     let lat = '';
     let lng = '';
 
@@ -233,15 +233,15 @@ $(document).ready(function () {
             types: ["establishment"]
         };
 
-        const autoComplete = new google.maps.places.Autocomplete(locationInput[0], g_location_options);
+        const autoComplete = new google.maps.places.Autocomplete(locationInput, g_location_options);
 
         autoComplete.addListener("place_changed", function () {
-            locationError.hide();
+            locationError.style.display = 'none';
             const place = autoComplete.getPlace();
 
             if (!place.geometry) {
                 // User did not select a valid place
-                locationError.show();
+                locationError.style.display = 'block';
                 return;
             }
 
@@ -267,28 +267,29 @@ $(document).ready(function () {
 
     // Set the location display
     window.setTheLocation = function () {
-        if (!locationInput.val()) {
-            locationError.show();
+        if (!locationInput.value) {
+            locationError.style.display = 'block';
         } else {
-            locationDisplay.text(locationInput.val());
-            locationInputSection.hide();
-            locationDisplaySection.show();
+            locationDisplay.textContent = locationInput.value;
+            locationInputSection.style.display = 'none';
+            locationDisplaySection.style.display = 'block';
         }
     }
 
     // Allow changing the location
     window.changeTheLocation = function () {
-        locationInput.val('');
-        locationDisplay.text('');
-        locationInputSection.show();
-        locationDisplaySection.hide();
+        locationInput.value = '';
+        locationDisplay.textContent = '';
+        locationInputSection.style.display = 'block';
+        locationDisplaySection.style.display = 'none';
     }
 
     // Initialize the map when the textarea content changes
-    locationInput.on('input', function () {
+    locationInput.addEventListener('input', function () {
         initMap();
     });
 });
+
 
 
 // end map
