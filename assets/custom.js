@@ -216,76 +216,78 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // for map
-let locationError = document.getElementById('locationError');
-let locationInput = document.getElementById('locationInput');
-let locationInputSection = document.getElementById('locationInputSection');
-let locationDisplaySection = document.getElementById('locationDisplaySection');
-let locationDisplay = document.getElementById('locationDisplay');
-let lat = '';
-let lng = '';
+$(document).ready(function () {
+    let locationError = $('#locationError');
+    let locationInput = $('#locationInput');
+    let locationInputSection = $('#locationInputSection');
+    let locationDisplaySection = $('#locationDisplaySection');
+    let locationDisplay = $('#locationDisplay');
+    let lat = '';
+    let lng = '';
 
-// Initialize the map with autocomplete
-function initMap() {
-    const g_location_options = {
-        componentRestrictions: { country: "bd" },
-        fields: ["address_components", "geometry", "name"],
-        types: ["establishment"]
-    };
+    // Initialize the map with autocomplete
+    function initMap() {
+        const g_location_options = {
+            componentRestrictions: { country: "bd" },
+            fields: ["address_components", "geometry", "name"],
+            types: ["establishment"]
+        };
 
-    const autoComplete = new google.maps.places.Autocomplete(locationInput, g_location_options);
-    
-    autoComplete.addListener("place_changed", function () {
-        locationError.style.display = 'none';
-        const place = autoComplete.getPlace();
+        const autoComplete = new google.maps.places.Autocomplete(locationInput[0], g_location_options);
 
-        if (!place.geometry) {
-            // User did not select a valid place
-            locationError.style.display = 'block';
-            return;
-        }
+        autoComplete.addListener("place_changed", function () {
+            locationError.hide();
+            const place = autoComplete.getPlace();
 
-        lat = place.geometry.location.lat();
-        lng = place.geometry.location.lng();
-        renderMap(place);
-    });
-}
+            if (!place.geometry) {
+                // User did not select a valid place
+                locationError.show();
+                return;
+            }
 
-// Render the map based on selected location
-function renderMap(place) {
-    const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: lat, lng: lng },
-        zoom: 15,
-        mapTypeControl: false
-    });
-    new google.maps.Marker({
-        map: map,
-        position: { lat: lat, lng: lng },
-        visible: true
-    });
-}
-
-// Set the location display
-function setTheLocation() {
-    if (!locationInput.value) {
-        locationError.style.display = 'block';
-    } else {
-        locationDisplay.textContent = locationInput.value;
-        locationInputSection.style.display = 'none';
-        locationDisplaySection.style.display = 'block';
+            lat = place.geometry.location.lat();
+            lng = place.geometry.location.lng();
+            renderMap(place);
+        });
     }
-}
 
-// Allow changing the location
-function changeTheLocation() {
-    locationInput.value = '';
-    locationDisplay.textContent = '';
-    locationInputSection.style.display = 'block';
-    locationDisplaySection.style.display = 'none';
-}
+    // Render the map based on selected location
+    function renderMap(place) {
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: lat, lng: lng },
+            zoom: 15,
+            mapTypeControl: false
+        });
+        new google.maps.Marker({
+            map: map,
+            position: { lat: lat, lng: lng },
+            visible: true
+        });
+    }
 
-// Initialize the map when the textarea content changes
-locationInput.addEventListener('input', function() {
-    initMap();
+    // Set the location display
+    window.setTheLocation = function () {
+        if (!locationInput.val()) {
+            locationError.show();
+        } else {
+            locationDisplay.text(locationInput.val());
+            locationInputSection.hide();
+            locationDisplaySection.show();
+        }
+    }
+
+    // Allow changing the location
+    window.changeTheLocation = function () {
+        locationInput.val('');
+        locationDisplay.text('');
+        locationInputSection.show();
+        locationDisplaySection.hide();
+    }
+
+    // Initialize the map when the textarea content changes
+    locationInput.on('input', function () {
+        initMap();
+    });
 });
 
 
