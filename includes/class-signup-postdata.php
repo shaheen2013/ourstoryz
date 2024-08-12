@@ -158,57 +158,67 @@ class Signup_Modal_Info
     public function displayAddLocationSection()
     {
         echo '
-        <div id="add-location-section" class="w-600 d-none">
-            <div class="fs-20 divider pb-4">Add a location</div>
-            <div class="fs-16 mt-20 divider mb-20 pb-20">Provide the location of your event (approximate is OK).
-                You’ll need it to test the OurStoryz Geospace features. You can always add this later
-            </div>
-            <img src="./assets/images/add-location.png" alt="event" class="w-100 rounded-4 mb-20">
-            <div class="my-20">
-                <div class="row">
-                    <div class="col-6">
-                       <div style="width: 50%;">
-                    <div id="locationInputSection">
-                    <textarea id="locationInput" class="ourstoryz__textarea pac-target-input" placeholder="Enter a location" autocomplete="off"></textarea>
-                    <small id="locationError" class="text-danger">Location is required</small>
-                    <button onclick="setTheLocation()" class="ourstoryz__location_button">Set the location</button>
-                   </div>
-                   <div id="locationDisplaySection" style="display: none;">
-                      <p id="locationDisplay"></p>
-                        <div class="d-flex justify-content-end">
-                        <button onclick="changeTheLocation()" class="ourstoryz__location_button">Change</button>
-                      </div>
-                </div>
-                </div>
+       <div id="add-location-section" class="w-600 d-none">
+    <div class="fs-20 divider pb-4">Add a location</div>
+    <div class="fs-16 mt-20 divider mb-20 pb-20">Provide the location of your event (approximate is OK).
+        You’ll need it to test the OurStoryz Geospace features. You can always add this later
+    </div>
+    <img src="./assets/images/add-location.png" alt="event" class="w-100 rounded-4 mb-20">
+    <div class="my-20">
+        <div class="row">
+            <div class="col-6">
+                <div class="ourstoryz__map_section d-flex">
+                    <div>
+                        <div id="locationInputSection">
+                            <textarea id="locationInput" class="ourstoryz__textarea pac-target-input"
+                                placeholder="Enter a location" autocomplete="off"></textarea>
+                            <small id="locationError" class="text-danger">Location is required</small>
+                            <button onclick="setTheLocation()" class="ourstoryz__location_button">Set the
+                                location</button>
+                        </div>
+                        <div id="locationDisplaySection" style="display: none;">
+                            <p id="locationDisplay"></p>
+                            <div class="d-flex justify-content-end">
+                                <button onclick="changeTheLocation()" class="ourstoryz__location_button">Change</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <div id="map" class="map-area"></div>
-                    </div>
+                    <div id="map" class="ourstoryz__rounded_10"></div>
                 </div>
             </div>
-            <div class="divider mb-20 pb-20"></div>
-            <div class="d-flex justify-content-between gap-2">
-                <div onclick="handleSetModal(\'add-dates-section\')" class="btn btn-dark rounded-pill w-100">
-                    Continue
-                </div>
-                <div onclick="handleSetModal(\'add-dates-section\')" class="btn w-100 btn-dark rounded-pill border-dark border fw-semibold bg-transparent text-dark">
-                    Don’t know (skip)
-                </div>
+            <div class="col-6">
+                <div id="map" class="map-area"></div>
             </div>
-            <div onclick="handleSetModal(\'why-list-location\')" class="text-center text-decoration-underline fs-14 fw-semibold mt-2" type="button">Why do I
-                need to list a location?
-            </div>
-            <div class="d-flex justify-content-between">
-                <div class="fs-16 text-end mt-4 text-black" type="button" onclick="handleSetModal(\'give-your-event-name-section\')">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14.25 9H3.75M3.75 9L9 14.25M3.75 9L9 3.75" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    Back
-                </div>
-                <div class="fs-16 text-end mt-4 text-black" type="button" onclick="handleSetModal(\'sorry-to-see-section\')">cancel
-                </div>
-            </div>
-        </div>';
+        </div>
+    </div>
+    <div class="divider mb-20 pb-20"></div>
+    <div class="d-flex justify-content-between gap-2">
+        <div onclick="handleSetModal(\'add-dates-section\')" class="btn btn-dark rounded-pill w-100">
+            Continue
+        </div>
+        <div onclick="handleSetModal(\'add-dates-section\')"
+            class="btn w-100 btn-dark rounded-pill border-dark border fw-semibold bg-transparent text-dark">
+            Don’t know (skip)
+        </div>
+    </div>
+    <div onclick="handleSetModal(\'why-list-location\')"
+        class="text-center text-decoration-underline fs-14 fw-semibold mt-2" type="button">Why do I
+        need to list a location?
+    </div>
+    <div class="d-flex justify-content-between">
+        <div class="fs-16 text-end mt-4 text-black" type="button"
+            onclick="handleSetModal(\'give-your-event-name-section\')">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.25 9H3.75M3.75 9L9 14.25M3.75 9L9 3.75" stroke="black" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Back
+        </div>
+        <div class="fs-16 text-end mt-4 text-black" type="button" onclick="handleSetModal(\'sorry-to-see-section\')">
+            cancel
+        </div>
+    </div>
+</div>';
     }
 
     public function displayWhyListLocation()
