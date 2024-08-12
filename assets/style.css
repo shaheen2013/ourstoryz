@@ -390,3 +390,83 @@ body {
     }
 
 }
+/* For map */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.justify-content-end {
+    justify-content: flex-end;
+}
+
+.ourstoryz__map_section {
+    gap: 16px;
+    align-items: center;
+}
+
+.ourstoryz__location_button {
+    margin-top: 10px;
+    padding: 12px 16px;
+    background-color: #019587;
+    color: white;
+    border: 1px solid #019587;
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.border-danger {
+    border-color: #EA2027 !important;
+}
+
+.ourstoryz__rounded_10 {
+    border-radius: 10px;
+    background: #EDEDED;
+    height: 300px;
+    width: 100%;
+}
+
+.ourstoryz_text-gray {
+    color: #666666;
+}
+
+.ourstoryz__cs_button {
+    background-color: #000;
+    color: white;
+    border-radius: 50px;
+    width: 100%;
+    padding: 12px;
+}
+
+.ourstoryz__outline_btn {
+    background-color: transparent;
+    border: 1px solid #000;
+    color: #000;
+}
+
+.ourstoryz__border_divider {
+    border-bottom: 1px solid #E7E7E7;
+    margin: 16px 0;
+}
+
+.ourstoryz__textarea {
+    height: 135px;
+    padding: 10px;
+    border: 2px solid #DDDDDD;
+    border-radius: 10px;
+    background: #EDEDED;
+}
+
+.text-danger {
+    color: #EA2027;
+    display: none;
+}
+
+.ourstoryz__map {
+    width: 50%;
+    background: #EDEDED;
+}
+
+/* end map */

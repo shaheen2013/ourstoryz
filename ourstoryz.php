@@ -124,14 +124,19 @@ run_ourstoryz();
 function enqueue_custom_script()
 {
   // wp_enqueue_script('recaptcha', 'https://www.google.com/recaptcha/api.js?render=6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', array(), null, true);
-  wp_enqueue_script(
-    'recaptcha-enterprise',
-    'https://www.google.com/recaptcha/enterprise.js?render=6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8',
-    array(),
-    null,
-    true // Load in the footer
-);
-  wp_enqueue_script('bootstrap-script','https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js','5.2.3',true);
+  $api_key = get_option('google_map_api_key');
+
+  // Enqueue the Google Maps API script with the dynamic API key
+  if ($api_key) {
+    wp_enqueue_script(
+      'google-maps-api',
+      'https://maps.googleapis.com/maps/api/js?key=' . esc_attr($api_key) . '&libraries=places',
+      array(),
+      null,
+      true
+    );
+  }
+  wp_enqueue_script('bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', '5.2.3', true);
   wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/custom-script.js', array('jquery'), '1.0', true);
 
 

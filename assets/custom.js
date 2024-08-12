@@ -1,8 +1,8 @@
 /*ACTIVE CONTINUE BUTTON*/
 function checkCheckboxes() {
-    const checkboxes  = document.querySelectorAll('.form-check-input');
+    const checkboxes = document.querySelectorAll('.form-check-input');
     const continueBtn = document.getElementById('continue-btn');
-    let checked       = false;
+    let checked = false;
 
     checkboxes.forEach((checkbox) => {
         if (checkbox.checked) {
@@ -21,7 +21,7 @@ function checkCheckboxes() {
 
 /*MODAL SHOW HIDE CONTENT */
 function handleSetModal(id) {
-    const show       = document.getElementById(id);
+    const show = document.getElementById(id);
     const allSection = document.querySelectorAll('#signin-modal>div');
     allSection.forEach((item) => {
         item.classList.add('d-none');
@@ -33,7 +33,7 @@ function handleSetModal(id) {
 // ADD-LOCATION-CONTINUE-BUTTON
 function handleChangeLocation() {
     const changeSection = document.getElementById('add-location-change-section');
-    const changeInput   = document.getElementById('add-location-change-input');
+    const changeInput = document.getElementById('add-location-change-input');
 
     changeSection.classList.add('d-none');
     changeInput.classList.remove('d-none');
@@ -214,3 +214,65 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// for map
+
+let locationError = document.getElementById('locationError');
+let locationInput = document.getElementById('locationInput');
+let locationInputSection = document.getElementById('locationInputSection');
+let locationDisplaySection = document.getElementById('locationDisplaySection');
+let locationDisplay = document.getElementById('locationDisplay');
+let lat = '';
+let lng = '';
+
+function initMap() {
+    const g_location_options = {
+        componentRestrictions: { country: "bd" },
+        fields: ["address_components", "geometry", "name"],
+        types: ["establishment"]
+    };
+
+    const autoComplete = new google.maps.places.Autocomplete(locationInput, g_location_options);
+    autoComplete.addListener("place_changed", function () {
+        locationError.style.display = 'none';
+        const place = autoComplete.getPlace();
+        lat = place.geometry.location.lat();
+        lng = place.geometry.location.lng();
+        renderMap(place);
+    });
+}
+
+function renderMap(place) {
+    const map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: lat, lng: lng },
+        zoom: 15,
+        mapTypeControl: false
+    });
+    new google.maps.Marker({
+        map: map,
+        position: { lat: lat, lng: lng },
+        visible: true
+    });
+}
+
+function setTheLocation() {
+    if (!locationInput.value) {
+        locationError.style.display = 'block';
+    } else {
+        locationDisplay.textContent = locationInput.value;
+        locationInputSection.style.display = 'none';
+        locationDisplaySection.style.display = 'block';
+    }
+}
+
+function changeTheLocation() {
+    locationInput.value = '';
+    locationDisplay.textContent = '';
+    locationInputSection.style.display = 'block';
+    locationDisplaySection.style.display = 'none';
+}
+
+window.onload = initMap;
+
+
+// end map

@@ -106,7 +106,7 @@ function ourstoryz_shortcode_function()
                     </div>
 
                     
-                    <script>
+                    <!-- <script>
                         document.getElementById('recaptcha-button').addEventListener('click', function() {
                             grecaptcha.enterprise.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
                                 action: 'submit'
@@ -136,7 +136,7 @@ function ourstoryz_shortcode_function()
                                 xhr.send('action=verify_recaptcha&nonce=<?php echo wp_create_nonce('recaptcha_nonce'); ?>&recaptcha_response=' + token);
                             });
                         });
-                    </script>
+                    </script> -->
 
 
 
