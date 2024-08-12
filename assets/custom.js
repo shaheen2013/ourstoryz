@@ -216,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // for map
-
 let locationError = document.getElementById('locationError');
 let locationInput = document.getElementById('locationInput');
 let locationInputSection = document.getElementById('locationInputSection');
@@ -284,11 +283,10 @@ function changeTheLocation() {
     locationDisplaySection.style.display = 'none';
 }
 
-// Initialize the map when the input field is focused
-locationInput.addEventListener('focus', function() {
+// Initialize the map when the textarea content changes
+locationInput.addEventListener('input', function() {
     initMap();
-}, { once: true });
-
+});
 
 
 // end map

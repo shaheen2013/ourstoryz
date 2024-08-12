@@ -168,14 +168,13 @@ class Signup_Modal_Info
         <div class="row">
             <div class="col-6">
 
-
+ 
                 <div id="locationInputSection">
-                    <textarea id="locationInput" class="ourstoryz__textarea pac-target-input"
-                        placeholder="Enter a location" autocomplete="off"></textarea>
-                    <small id="locationError" class="text-danger">Location is required</small>
-                    <button onclick="setTheLocation()" class="ourstoryz__location_button">Set the
-                        location</button>
-                </div>
+    <textarea id="locationInput" class="ourstoryz__textarea pac-target-input"
+        placeholder="Enter a location" autocomplete="off"></textarea>
+    <small id="locationError" class="text-danger">Location is required</small>
+    <button onclick="setTheLocation()" class="ourstoryz__location_button">Set the location</button>
+</div>
                 <div id="locationDisplaySection" style="display: none;">
                     <p id="locationDisplay"></p>
                     <div class="d-flex justify-content-end">
