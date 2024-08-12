@@ -126,7 +126,7 @@ function enqueue_custom_script()
   // wp_enqueue_script('recaptcha', 'https://www.google.com/recaptcha/api.js?render=6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', array(), null, true);
   $api_key = get_option('google_map_api_key');
 
-  var_dump($api_key);
+  var_dump("test key ");
   die();
 
   // Enqueue the Google Maps API script with the dynamic API key
