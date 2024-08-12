@@ -275,7 +275,9 @@ function changeTheLocation() {
     locationDisplaySection.style.display = 'none';
 }
 
-window.onload = initMap;
+locationInput.addEventListener('input', function() {
+    initMap();
+});
 
 
 // end map
