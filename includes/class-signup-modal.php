@@ -88,22 +88,21 @@ function ourstoryz_shortcode_function()
                     <!--GOOGLE-CAPTCHA-SECTION-->
 
                     <div id="google-captcha-section" class="google-captcha-section d-none">
-                        <div class="divider pb-3 d-flex align-items-center gap-2">
-                            <img src="<?php echo plugins_url('../assets/images/logo.png', __FILE__); ?>" alt="logo">
-                            <div>
-                                <div class="fs-24 fw-semibold">OurStoryz</div>
-                                <div class="fs-16 fw-500">Login</div>
-                            </div>
-                        </div>
-                        <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-                        <div class="captcha-img" id="captcha-static">
-                            <img src="<?php echo plugins_url('../assets/images/captcha.png', __FILE__); ?>" alt="captcha">
-                            <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
-                        </div>
-                        <div class="captcha-img d-none" id="recaptcha-container">
-                            <div id="recaptcha-widget"></div>
+                    <div class="divider pb-3 d-flex align-items-center gap-2">
+                        <img src="./assets/images/logo.png" alt="logo" width="w-100">
+                        <div>
+                            <div class="fs-24 fw-semibold">OurStoryz</div>
+                            <div class="fs-16 fw-500">Login</div>
                         </div>
                     </div>
+                    <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
+                    <div class="captcha-img">
+                        <img src="./assets/images/captcha.png" alt="captcha" class="w-100">
+                        <button onclick="handleSetModal('want-to-test-section')" type="button"
+                                class="btn btn-sm btn-primary mt-20">NEXT
+                        </button>
+                    </div>
+                </div>
 
                     
                     <!-- <script>
