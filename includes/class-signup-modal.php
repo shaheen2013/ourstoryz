@@ -86,56 +86,53 @@ function ourstoryz_shortcode_function()
                 <div class="modal-content" id="signin-modal">
 
                     <!--GOOGLE-CAPTCHA-SECTION-->
+                    <!-- old  -->
+                    <!-- <div id="google-captcha-section" class="google-captcha-section d-none">
+                        <div class="divider pb-3 d-flex align-items-center gap-2">
+                            <img src="./assets/images/logo.png" alt="logo" width="w-100">
+                            <div>
+                                <div class="fs-24 fw-semibold">OurStoryz</div>
+                                <div class="fs-16 fw-500">Login</div>
+                            </div>
+                        </div>
+                        <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
+                        <div class="captcha-img">
+                            <img src="./assets/images/captcha.png" alt="captcha" class="w-100">
+                            <button onclick="handleSetModal('want-to-test-section')" type="button"
+                                class="btn btn-sm btn-primary mt-20">NEXT
+                            </button>
+                        </div>
+                    </div> -->
 
+                    <!-- end old -->
+                    <!-- working  -->
+                    <!-- Add this script in the <head> section of your HTML -->
+                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+                    <!-- Your HTML structure -->
                     <div id="google-captcha-section" class="google-captcha-section d-none">
-                    <div class="divider pb-3 d-flex align-items-center gap-2">
-                        <img src="./assets/images/logo.png" alt="logo" width="w-100">
-                        <div>
-                            <div class="fs-24 fw-semibold">OurStoryz</div>
-                            <div class="fs-16 fw-500">Login</div>
+                        <div class="divider pb-3 d-flex align-items-center gap-2">
+                            <img src="./assets/images/logo.png" alt="logo" width="w-100">
+                            <div>
+                                <div class="fs-24 fw-semibold">OurStoryz</div>
+                                <div class="fs-16 fw-500">Login</div>
+                            </div>
+                        </div>
+                        <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
+                        <div class="captcha-img">
+                            <!-- Replace the static image with Google reCAPTCHA widget -->
+                            <div class="g-recaptcha" data-sitekey="6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph"></div>
+                            <button onclick="handleSetModal('want-to-test-section')" type="button" class="btn btn-sm btn-primary mt-20">
+                                NEXT
+                            </button>
                         </div>
                     </div>
-                    <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-                    <div class="captcha-img">
-                        <img src="./assets/images/captcha.png" alt="captcha" class="w-100">
-                        <button onclick="handleSetModal('want-to-test-section')" type="button"
-                                class="btn btn-sm btn-primary mt-20">NEXT
-                        </button>
-                    </div>
-                </div>
 
-                    
-                    <!-- <script>
-                        document.getElementById('recaptcha-button').addEventListener('click', function() {
-                            grecaptcha.enterprise.execute('6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8', {
-                                action: 'submit'
-                            }).then(function(token) {
-                                // Send the token to the server using AJAX
-                                var xhr = new XMLHttpRequest();
-                                xhr.open('POST', '<?php echo admin_url('admin-ajax.php'); ?>', true);
-                                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-                                xhr.onload = function() {
-                                    var response = JSON.parse(xhr.responseText);
+                    <!-- end working -->
 
-                                    if (response.success) {
-                                        // ReCAPTCHA verified, show reCAPTCHA widget
-                                        document.getElementById('captcha-static').classList.add('d-none');
-                                        document.getElementById('recaptcha-container').classList.remove('d-none');
-                                        // Render the reCAPTCHA widget
-                                        grecaptcha.enterprise.render('recaptcha-widget', {
-                                            'sitekey': '6LfZ0BwqAAAAABEwsFNQLEUDAPxB5kN1mIvxhaA8' // Replace with your reCAPTCHA site key
-                                        });
-                                    } else {
-                                        // Verification failed, do not proceed
-                                        alert('Verification failed! Please try again.');
-                                    }
-                                };
 
-                                xhr.send('action=verify_recaptcha&nonce=<?php echo wp_create_nonce('recaptcha_nonce'); ?>&recaptcha_response=' + token);
-                            });
-                        });
-                    </script> -->
+
 
 
 
@@ -247,7 +244,8 @@ add_action('init', 'ourstoryz_register_shortcodes');
 // add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 // add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
 
-function verify_recaptcha_ajax() {
+function verify_recaptcha_ajax()
+{
     // Verify the nonce for security
     check_ajax_referer('recaptcha_nonce', 'nonce');
 
