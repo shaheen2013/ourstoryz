@@ -110,9 +110,9 @@ function ourstoryz_shortcode_function()
                     <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
 
                     <!-- Your HTML structure -->
-                    <div id="google-captcha-section" class="google-captcha-section">
+                    <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png" alt="logo" width="w-100">
+                            <img src="./assets/images/logo.png" alt="logo" width="w-100">
                             <div>
                                 <div class="fs-24 fw-semibold">OurStoryz</div>
                                 <div class="fs-16 fw-500">Login</div>
@@ -120,97 +120,28 @@ function ourstoryz_shortcode_function()
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
                         <div class="captcha-img">
-                            <!-- This is where reCAPTCHA executes on page load -->
-                            <div id="recaptcha-loader">Loading reCAPTCHA...</div>
-                            <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20 d-none">
-                                NEXT
+                            <!-- Removed the static image and added a div for reCAPTCHA -->
+                            <div id="recaptcha-container"></div>
+                            <button onclick="handleSetModal('want-to-test-section')" type="button"
+                                class="btn btn-sm btn-primary mt-20">NEXT
                             </button>
                         </div>
                     </div>
-
-                    <script type="text/javascript">
+                    <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             grecaptcha.ready(function() {
-                                // Execute reCAPTCHA v3 as soon as the page loads
                                 grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
-                                    action: 'submit'
+                                    action: 'homepage'
                                 }).then(function(token) {
-                                    // Handle the token, possibly send it to your backend
-                                    console.log('reCAPTCHA token:', token);
-
-                                    // Hide the loading message and show the button
-                                    document.getElementById('recaptcha-loader').style.display = 'none';
-                                    document.getElementById('recaptcha-button').classList.remove('d-none');
+                                    // Append the reCAPTCHA widget
+                                    document.getElementById('recaptcha-container').innerHTML = `
+                <input type="hidden" name="g-recaptcha-response" value="${token}">
+                <img src="https://www.google.com/recaptcha/api2/anchor?ar=1&k=6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph&co=aHR0cHM6Ly93d3cueW91cnNpdGUuY29tOjQ0Mw..&hl=en&v=7mDXayJIHwUkqYmEUtnF9WZ5&size=invisible&cb=2rgw59ndfg39">
+            `;
                                 });
                             });
                         });
-
-                        // Example function to handle the modal change after reCAPTCHA verification
-                        function handleSetModal(sectionId) {
-                            console.log('CAPTCHA verified and moving to section:', sectionId);
-                            document.getElementById('google-captcha-section').classList.add('d-none');
-                            // Add your custom actions here
-                        }
                     </script>
-
-                    <style>
-                        /* Example styles for your modal and other elements */
-                        .d-none {
-                            display: none;
-                        }
-
-                        .google-captcha-section {
-                            padding: 20px;
-                            background-color: #f9f9f9;
-                            border-radius: 10px;
-                            max-width: 400px;
-                            margin: auto; 
-                        }
-
-                        .divider {
-                            border-bottom: 1px solid #ccc;
-                            padding-bottom: 10px;
-                            margin-bottom: 10px;
-                        }
-
-                        .fs-24 {
-                            font-size: 24px;
-                        }
-
-                        .fs-16 {
-                            font-size: 16px;
-                        }
-
-                        .fw-semibold {
-                            font-weight: 600;
-                        }
-
-                        .fw-500 {
-                            font-weight: 500;
-                        }
-
-                        .my-20 {
-                            margin: 20px 0;
-                        }
-
-                        .mt-20 {
-                            margin-top: 20px;
-                        }
-
-                        .btn {
-                            display: inline-block;
-                            padding: 10px 20px;
-                            background-color: #007bff;
-                            color: white;
-                            border: none;
-                            border-radius: 5px;
-                            cursor: pointer;
-                        }
-
-                        .btn-primary {
-                            background-color: #007bff;
-                        }
-                    </style>
 
 
                     <!-- end working -->
