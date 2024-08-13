@@ -164,7 +164,7 @@ function ourstoryz_shortcode_function()
                             background-color: #f9f9f9;
                             border-radius: 10px;
                             max-width: 400px;
-                            margin: auto;
+                            margin: auto; 
                         }
 
                         .divider {
