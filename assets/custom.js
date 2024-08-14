@@ -313,6 +313,7 @@ function verifyRecaptchaToken(token) {
         type: 'POST',
         data: data,
         success: function (response) {
+            console.log(response)
             if (response.success) {
                 // reCAPTCHA verified, proceed to the next step
                 handleSetModal('want-to-test-section');
