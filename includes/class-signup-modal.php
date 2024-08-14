@@ -132,8 +132,9 @@ function ourstoryz_shortcode_function()
                         </div>
                     </div>
 
-                  
 
+
+                    <script src="https://www.google.com/recaptcha/api.js?render=6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph"></script>
 
 
 
