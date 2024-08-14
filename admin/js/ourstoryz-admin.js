@@ -154,17 +154,17 @@ jQuery(document).ready(function ($) {
 
     $('#google-maps-api-key-form').on('submit', function (e) {
         e.preventDefault(); // Prevent default form submission
-    
+
         var apiKey = $('#google_maps_api_key').val().trim(); // Get and trim the API key value
         $('#error-message').text('');  // Clear any previous error messages
         $('#success-message').hide();  // Hide the success message
-    
+
         // Check if the API key is empty
         if (!apiKey) {
             alert('API key cannot be empty.'); // Show alert for empty API key
             return; // Stop the form submission
         }
-    
+
         // Make AJAX request
         $.ajax({
             url: ajaxurl, // WordPress provides the 'ajaxurl' variable for AJAX calls
@@ -188,8 +188,8 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-    
-    
+
+
 
 });
 
@@ -198,3 +198,41 @@ jQuery(document).ready(function ($) {
 
 
 
+// Recaptcha
+
+
+function handleCaptchaVerification() {
+    grecaptcha.ready(function () {
+        grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
+            action: 'submit'
+        }).then(function (token) {
+            // Call the function to verify the token using jQuery AJAX
+            verifyCaptchaTokenWithjQuery(token);
+        });
+    });
+}
+
+function verifyCaptchaTokenWithjQuery(token) {
+    // Use jQuery AJAX to send the token to the server for verification
+    jQuery.ajax({
+        url:  ajaxurl,
+        type: 'POST',
+        data: {
+            action: 'verify_recaptcha',
+            recaptcha_token: token
+        },
+        success: function (response) {
+            var data = JSON.parse(response);
+            if (data.success && data.score >= 0.5) {
+                // User is human, proceed to the next section
+                handleSetModal('want-to-test-section');
+            } else {
+                // User is not human, display an error message
+                alert('reCAPTCHA verification failed. Please try again.');
+            }
+        },
+        error: function (error) {
+            console.error('Error:', error);
+        }
+    });
+}
