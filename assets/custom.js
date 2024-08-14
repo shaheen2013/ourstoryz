@@ -286,13 +286,12 @@ window.onload = initMap;
 
 // end map
 
-
 function handleCaptchaVerification() {
     grecaptcha.ready(function () {
         grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', { action: 'login' }).then(function (token) {
             document.getElementById('recaptcha_token').value = token;
 
-            // Make AJAX request to WordPress
+            // Make AJAX request to server
             jQuery.ajax({
                 url: ajax_object.ajaxurl, // WordPress AJAX URL
                 type: 'POST',
@@ -301,13 +300,7 @@ function handleCaptchaVerification() {
                     recaptcha_token: token
                 },
                 success: function (response) {
-                    if (response.success) {
-                        // Handle successful verification
-                        alert('Verification successful!');
-                    } else {
-                        // Handle verification failure
-                        alert('Verification failed. Please try again.');
-                    }
+                    // Handle response
                 }
             });
         });
