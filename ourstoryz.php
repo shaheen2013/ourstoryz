@@ -143,6 +143,10 @@ function enqueue_custom_script()
   );
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_script');
+
+
+// recaptcha
+
 function verify_recaptcha() {
   // Ensure the request is coming from an AJAX call
   if (!isset($_POST['recaptcha_token'])) {

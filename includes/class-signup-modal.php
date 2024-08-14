@@ -118,51 +118,16 @@ function ourstoryz_shortcode_function()
 
                         <!-- Google reCAPTCHA v3 Content -->
                         <div class="captcha-img">
-                            <!-- Hidden input to store the reCAPTCHA v3 token -->
-                            <input type="hidden" name="recaptcha_token" id="recaptcha_token">
+                            <form id="recaptchaForm" method="POST">
+                                <input type="hidden" name="recaptcha_token" id="recaptcha_token">
 
-                            <!-- Button to generate reCAPTCHA token and move to the next step -->
-                            <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                                <!-- Button to generate reCAPTCHA token and submit the form -->
+                                <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                            </form>
                         </div>
                     </div>
 
-                    <script>
-                        function handleCaptchaVerification() {
-                            grecaptcha.ready(function() {
-                                grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
-                                    action: 'submit'
-                                }).then(function(token) {
-                                    document.getElementById('recaptcha_token').value = token;
-
-                                    // Send the token to the server for verification
-                                    verifyCaptchaToken(token);
-                                });
-                            });
-                        }
-
-                        function verifyCaptchaToken(token) {
-                            fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/x-www-form-urlencoded'
-                                    },
-                                    body: `action=verify_recaptcha&recaptcha_token=${token}`
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success && data.score >= 0.5) {
-                                        // User is human, proceed to the next section
-                                        handleSetModal('want-to-test-section');
-                                    } else {
-                                        // User is not human, display an error message or take other action
-                                        alert('reCAPTCHA verification failed. Please try again.');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                });
-                        }
-                    </script>
+               
 
 
 

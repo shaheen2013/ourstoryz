@@ -285,3 +285,39 @@ window.onload = initMap;
 
 
 // end map
+
+
+// Goole recaptcha
+
+function handleCaptchaVerification() {
+    grecaptcha.ready(function () {
+        grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
+            action: 'submit'
+        }).then(function (token) {
+            document.getElementById('recaptcha_token').value = token;
+
+            // Submit the form using jQuery
+            jQuery.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: {
+                    action: 'verify_recaptcha',
+                    recaptcha_token: token,
+                },
+                success: function (response) {
+                    var data = JSON.parse(response);
+                    if (data.success && data.score >= 0.5) {
+                        // User is human, proceed to the next section
+                        handleSetModal('want-to-test-section');
+                    } else {
+                        // User is not human, display an error message
+                        alert('reCAPTCHA verification failed. Please try again.');
+                    }
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+}
