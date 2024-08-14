@@ -118,13 +118,10 @@ function ourstoryz_shortcode_function()
 
                         <!-- Google reCAPTCHA v3 Content -->
                         <div class="captcha-img">
-                            <!-- Dynamic reCAPTCHA Content -->
+                            <!-- reCAPTCHA Badge or Content -->
                             <div id="recaptcha-content" class="mb-3">
-                                <!-- This section can show any dynamic content or instructions -->
-                                <div id="recaptcha-message">
-                                    <!-- Initial message or content -->
-                                    <div>Verification in progress...</div>
-                                </div>
+                                <!-- Here you can show some static content or instructional text -->
+                                <div>Please complete the CAPTCHA below to proceed:</div>
                             </div>
 
                             <!-- Button to trigger the reCAPTCHA verification -->
@@ -132,7 +129,43 @@ function ourstoryz_shortcode_function()
                         </div>
                     </div>
 
+                    <script>
+                        function handleCaptchaVerification() {
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
+                                    action: 'submit'
+                                }).then(function(token) {
+                                    // Call the function to verify the token using jQuery AJAX
+                                    verifyCaptchaTokenWithjQuery(token);
+                                });
+                            });
+                        }
 
+                        function verifyCaptchaTokenWithjQuery(token) {
+                            // Use jQuery AJAX to send the token to the server for verification
+                            jQuery.ajax({
+                                url: '<?php echo admin_url("admin-ajax.php"); ?>',
+                                type: 'POST',
+                                data: {
+                                    action: 'verify_recaptcha',
+                                    recaptcha_token: token
+                                },
+                                success: function(response) {
+                                    var data = JSON.parse(response);
+                                    if (data.success && data.score >= 0.5) {
+                                        // User is human, proceed to the next section
+                                        handleSetModal('want-to-test-section');
+                                    } else {
+                                        // User is not human, display an error message
+                                        alert('reCAPTCHA verification failed. Please try again.');
+                                    }
+                                },
+                                error: function(error) {
+                                    console.error('Error:', error);
+                                }
+                            });
+                        }
+                    </script>
 
 
 
