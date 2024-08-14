@@ -120,12 +120,16 @@ function ourstoryz_shortcode_function()
                             </div>
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-                        <div class="captcha-container">
-                            <!-- Placeholder for reCAPTCHA -->
-                            <button id="verify-captcha" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+
+                        <!-- Google reCAPTCHA Content -->
+                        <div class="captcha-img">
+                            <!-- Replace static CAPTCHA image with reCAPTCHA token input -->
+                            <input type="hidden" name="recaptcha_token" id="recaptcha_token">
+
+                            <!-- Button to trigger reCAPTCHA verification -->
+                            <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
                     </div>
-
 
 
 
