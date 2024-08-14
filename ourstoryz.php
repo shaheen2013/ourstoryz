@@ -124,9 +124,9 @@ run_ourstoryz();
 function enqueue_custom_script()
 {
   wp_enqueue_script('recaptcha-v3', 'https://www.google.com/recaptcha/api.js?render=6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', [], null, true);
-  wp_enqueue_script('bootstrap-script','https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js','5.2.3',true);
+  wp_enqueue_script('bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', '5.2.3', true);
   wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/custom-script.js', array('jquery'), '1.0', true);
-  wp_enqueue_script('google-maps-api','https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YvMYjtoPcq3tP8ROejpgqd-RxenQOY&libraries=places',array(),null,true);
+  wp_enqueue_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YvMYjtoPcq3tP8ROejpgqd-RxenQOY&libraries=places', array(), null, true);
 
 
 
@@ -147,29 +147,28 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
 // recaptcha
 
-function verify_recaptcha() {
-  // Ensure the request is coming from an AJAX call
+function verify_recaptcha()
+{
   if (!isset($_POST['recaptcha_token'])) {
-      wp_send_json_error(['message' => 'No reCAPTCHA token provided']);
+    wp_send_json_error(['message' => 'No reCAPTCHA token provided']);
   }
 
   $recaptcha_token = sanitize_text_field($_POST['recaptcha_token']);
 
-  // Verify the reCAPTCHA token with Google
   $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
-      'body' => [
-          'secret' => '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7',
-          'response' => $recaptcha_token,
-      ],
+    'body' => [
+      'secret' => '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7',
+      'response' => $recaptcha_token,
+    ],
   ]);
 
   $response_body = wp_remote_retrieve_body($response);
   $result = json_decode($response_body, true);
 
   if (is_wp_error($response) || !$result['success'] || $result['score'] < 0.5) {
-      wp_send_json_error(['success' => false, 'score' => $result['score']]);
+    wp_send_json_error(['success' => false, 'score' => $result['score']]);
   } else {
-      wp_send_json_success(['success' => true, 'score' => $result['score']]);
+    wp_send_json_success(['success' => true, 'score' => $result['score']]);
   }
 }
 
