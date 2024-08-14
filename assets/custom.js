@@ -308,7 +308,7 @@ function verifyRecaptchaToken(token) {
 
     // Send the AJAX request using jQuery
     jQuery.ajax({
-        url: ajaxurl,
+        url: ajax_object.ajaxurl,
         type: 'POST',
         data: data,
         success: function (response) {
