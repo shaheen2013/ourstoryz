@@ -148,44 +148,44 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
 
 
-add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha_callback');
-add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha_callback');
+// add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha_callback');
+// add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha_callback');
 
-function verify_recaptcha_callback()
-{
+// function verify_recaptcha_callback()
+// {
 
-  wp_send_json("imran1202");
-  die();
-  // Check if the token is provided
-  if (!isset($_POST['recaptcha_token'])) {
-    wp_send_json_error('Token missing');
-    return;
-  }
+//   wp_send_json("imran1202");
+//   die();
+//   // Check if the token is provided
+//   if (!isset($_POST['recaptcha_token'])) {
+//     wp_send_json_error('Token missing');
+//     return;
+//   }
 
-  $token = sanitize_text_field($_POST['recaptcha_token']);
-  $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7'; // Your private key
+//   $token = sanitize_text_field($_POST['recaptcha_token']);
+//   $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7'; // Your private key
 
-  // Make request to reCAPTCHA server
-  $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
-    'method'    => 'POST',
-    'body'      => array(
-      'secret'    => $secret_key,
-      'response'  => $token,
-    ),
-  ));
+//   // Make request to reCAPTCHA server
+//   $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
+//     'method'    => 'POST',
+//     'body'      => array(
+//       'secret'    => $secret_key,
+//       'response'  => $token,
+//     ),
+//   ));
 
-  // Check response
-  if (is_wp_error($response)) {
-    wp_send_json_error('Failed to verify token');
-    return;
-  }
+//   // Check response
+//   if (is_wp_error($response)) {
+//     wp_send_json_error('Failed to verify token');
+//     return;
+//   }
 
-  $response_body = wp_remote_retrieve_body($response);
-  $result = json_decode($response_body);
+//   $response_body = wp_remote_retrieve_body($response);
+//   $result = json_decode($response_body);
 
-  if ($result->success && $result->score > 0.5) { // Adjust threshold as needed
-    wp_send_json_success();
-  } else {
-    wp_send_json_error('reCAPTCHA verification failed');
-  }
-}
+//   if ($result->success && $result->score > 0.5) { // Adjust threshold as needed
+//     wp_send_json_success();
+//   } else {
+//     wp_send_json_error('reCAPTCHA verification failed');
+//   }
+// }
