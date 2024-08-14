@@ -114,29 +114,18 @@ function ourstoryz_shortcode_function()
 
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png" alt="logo" width="w-100">
+                            <img src="./assets/images/logo.png" alt="logo" width="w-100">
                             <div>
                                 <div class="fs-24 fw-semibold">OurStoryz</div>
                                 <div class="fs-16 fw-500">Login</div>
                             </div>
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-
-                        <!-- Google reCAPTCHA v3 Content -->
-                        <div class="captcha-img">
-                            <!-- Dynamic reCAPTCHA Content -->
-                            <div id="recaptcha-content" class="mb-3">
-                                <!-- This section can show any dynamic content or instructions -->
-                                <div id="recaptcha-message">
-                                    <!-- Initial message or content -->
-                                    <div>Verification in progress...</div>
-                                </div>
-                            </div>
-
-                            <!-- Button to trigger the reCAPTCHA verification -->
-                            <button   onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                        <div id="captcha-btn-section">
+                            <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">I’m not a robot</button>
                         </div>
                     </div>
+
 
                     <!-- end working -->
 

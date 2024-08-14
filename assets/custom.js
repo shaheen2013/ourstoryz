@@ -287,52 +287,27 @@ window.onload = initMap;
 // end map
 
 jQuery(document).ready(function ($) {
-    function handleCaptchaVerification() {
+    $('#recaptcha-button').on('click', function () {
         grecaptcha.ready(function () {
-            grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
-                action: 'submit'
-            }).then(function (token) {
-                // Call the function to verify the token using jQuery AJAX
-                verifyCaptchaTokenWithjQuery(token);
+            grecaptcha.execute('your_site_key', { action: 'homepage' }).then(function (token) {
+                // Send the token to the server
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'post',
+                    data: {
+                        action: 'verify_recaptcha',
+                        token: token
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Human verified, move to the next section
+                            handleSetModal('want-to-test-section');
+                        } else {
+                            alert('reCAPTCHA verification failed. Please try again.');
+                        }
+                    }
+                });
             });
         });
-    }
-
-    function verifyCaptchaTokenWithjQuery(token) {
-        // Use jQuery AJAX to send the token to the server for verification
-        $.ajax({
-            url: ajaxurl, // 'ajaxurl' is automatically provided by WordPress in the admin area
-            type: 'POST',
-            data: {
-                action: 'verify_recaptcha',
-                recaptcha_token: token
-            },
-            success: function (response) {
-                var data = $.parseJSON(response); // Parse the JSON response
-
-                // Ensure the element exists before trying to modify it
-                var element = document.getElementById('recaptcha-message'); // Replace with your actual ID or use jQuery selector
-
-                if (element) {
-                    if (data.success && data.score >= 0.5) {
-                        // User is human, proceed to the next section
-                        handleSetModal('want-to-test-section');
-                    } else {
-                        // User is not human, display an error message
-                        alert('reCAPTCHA verification failed. Please try again.');
-                    }
-                } else {
-                    console.error('Element with ID "yourElementId" not found');
-                }
-            },
-            error: function (error) {
-                console.error('Error:', error);
-            }
-        });
-    }
-
-    // Example of triggering the captcha verification
-    $('#yourButtonId').on('click', function () {
-        handleCaptchaVerification(); 
     });
 });
