@@ -292,7 +292,7 @@ function handleCaptchaVerification() {
             .then(function (token) {
                 document.getElementById('recaptcha_token').value = token;
 
-                // Send token to the server via AJAX using XMLHttpRequest
+                // Send token to the server via AJAX using jQuery
                 verifyRecaptchaToken(token);
             });
     });
@@ -300,22 +300,17 @@ function handleCaptchaVerification() {
 
 function verifyRecaptchaToken(token) {
     // Construct the data to send
-    var data = new FormData();
-    data.append('action', 'verify_recaptcha');
-    data.append('token', token);
+    var data = {
+        action: 'verify_recaptcha',
+        token: token
+    };
 
-    // Create a new XMLHttpRequest object
-    var xhr = new XMLHttpRequest();
-
-    // Configure it: POST-request to the URL
-    xhr.open('POST', ajaxurl, true);
-
-    // Set up the callback for when the request completes
-    xhr.onload = function () {
-        if (xhr.status >= 200 && xhr.status < 400) {
-            // Parse the JSON response
-            var response = JSON.parse(xhr.responseText);
-
+    // Send the AJAX request using jQuery
+    jQuery.ajax({
+        url: ajaxurl,
+        type: 'POST',
+        data: data,
+        success: function (response) {
             if (response.success) {
                 // reCAPTCHA verified, proceed to the next step
                 handleSetModal('want-to-test-section');
@@ -323,17 +318,11 @@ function verifyRecaptchaToken(token) {
                 // reCAPTCHA failed, show an error message
                 alert('reCAPTCHA verification failed. Please try again.');
             }
-        } else {
+        },
+        error: function () {
             // Handle errors
             alert('An error occurred during verification. Please try again.');
         }
-    };
-
-    // Set up the callback for when there's an error with the request
-    xhr.onerror = function () {
-        alert('An error occurred during the request. Please try again.');
-    };
-
-    // Send the request with the data
-    xhr.send(data);
+    });
 }
+
