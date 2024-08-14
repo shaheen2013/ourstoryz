@@ -147,30 +147,59 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
 // recaptcha
 
+// function verify_recaptcha()
+// {
+//   if (!isset($_POST['recaptcha_token'])) {
+//     wp_send_json_error(['message' => 'No reCAPTCHA token provided']);
+//   }
+
+//   $recaptcha_token = sanitize_text_field($_POST['recaptcha_token']);
+
+//   $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
+//     'body' => [
+//       'secret' => '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7',
+//       'response' => $recaptcha_token,
+//     ],
+//   ]);
+
+//   $response_body = wp_remote_retrieve_body($response);
+//   $result = json_decode($response_body, true);
+
+//   if (is_wp_error($response) || !$result['success'] || $result['score'] < 0.5) {
+//     wp_send_json_error(['success' => false, 'score' => $result['score']]);
+//   } else {
+//     wp_send_json_success(['success' => true, 'score' => $result['score']]);
+//   }
+// }
+
+// add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
+// add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
+
+
 function verify_recaptcha()
 {
-  if (!isset($_POST['recaptcha_token'])) {
-    wp_send_json_error(['message' => 'No reCAPTCHA token provided']);
-  }
+  if (isset($_POST['recaptcha_token'])) {
+    $recaptcha_token = sanitize_text_field($_POST['recaptcha_token']);
 
-  $recaptcha_token = sanitize_text_field($_POST['recaptcha_token']);
+    $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
+      'body' => array(
+        'secret'   => 'YOUR_SECRET_KEY', // Replace with your secret key
+        'response' => $recaptcha_token,
+        // 'remoteip' => $_SERVER['REMOTE_ADDR']
+      )
+    ));
 
-  $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
-    'body' => [
-      'secret' => '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7',
-      'response' => $recaptcha_token,
-    ],
-  ]);
+    $body = wp_remote_retrieve_body($response);
+    $result = json_decode($body, true);
 
-  $response_body = wp_remote_retrieve_body($response);
-  $result = json_decode($response_body, true);
-
-  if (is_wp_error($response) || !$result['success'] || $result['score'] < 0.5) {
-    wp_send_json_error(['success' => false, 'score' => $result['score']]);
+    if ($result['success'] && $result['score'] >= 0.5) {
+      wp_send_json_success(array('score' => $result['score']));
+    } else {
+      wp_send_json_error(array('score' => $result['score']));
+    }
   } else {
-    wp_send_json_success(['success' => true, 'score' => $result['score']]);
+    wp_send_json_error(array('message' => 'No token provided'));
   }
 }
-
 add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');

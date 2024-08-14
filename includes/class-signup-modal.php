@@ -138,7 +138,7 @@ function ourstoryz_shortcode_function()
 
                     <!-- end done -->
 
-                    <!-- woeking -->
+
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png" alt="logo" width="w-100">
@@ -149,32 +149,20 @@ function ourstoryz_shortcode_function()
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
 
-                        <!-- Google reCAPTCHA v2 Content -->
                         <div class="captcha-img">
-                            <!-- Dynamic reCAPTCHA Content -->
                             <div id="recaptcha-content" class="mb-3">
-                                <!-- This section can show any dynamic content or instructions -->
                                 <div id="recaptcha-message">
-                                    <!-- Initial message or content -->
                                     <div>Verification in progress...</div>
                                 </div>
                             </div>
 
-                            <!-- reCAPTCHA Checkbox -->
-                            <div class="g-recaptcha" data-sitekey="6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph"></div>
+                            <input type="hidden" name="recaptcha_token" id="recaptcha_token">
+                            <input type="hidden" name="action" value="verify_recaptcha">
 
-                            <!-- Hidden input field to store the reCAPTCHA token -->
-                            <input type="hidden" id="recaptcha-token" name="recaptcha_token" />
-
-                            <!-- Button to trigger the form submission -->
                             <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
                     </div>
 
-                    <!-- Load reCAPTCHA API -->
-                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-                    <!-- end working -->
 
 
 
