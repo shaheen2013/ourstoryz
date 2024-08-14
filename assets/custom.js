@@ -301,6 +301,7 @@ function handleCaptchaVerification() {
 
 function verifyRecaptchaToken(token) {
     // Construct the data to send
+    console.log(token);
     var data = {
         action: 'verify_recaptcha',
         token: token
