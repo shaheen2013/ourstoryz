@@ -130,8 +130,6 @@ function ourstoryz_shortcode_function()
                             <!-- Button to trigger the reCAPTCHA verification -->
                             <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
-
-                        
                     </div>
 
 
