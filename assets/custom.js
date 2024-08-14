@@ -294,7 +294,7 @@ function handleCaptchaVerification() {
 
             // Make AJAX request to WordPress
             jQuery.ajax({
-                url: ajaxurl, // WordPress AJAX URL
+                url: ajax_object.ajaxurl, // WordPress AJAX URL
                 type: 'POST',
                 data: {
                     action: 'verify_recaptcha_token',
