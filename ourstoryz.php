@@ -145,35 +145,39 @@ function enqueue_custom_script()
 add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
 
-function verify_recaptcha()
-{
+function verify_recaptcha() {
+  // Sanitize the reCAPTCHA token received from the client side
   $token = sanitize_text_field($_POST['recaptcha_token']);
 
+  // Your secret key for reCAPTCHA v3
   $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7';
 
+  // Send a POST request to Google's reCAPTCHA API to verify the token
   $response = wp_remote_post("https://www.google.com/recaptcha/api/siteverify", [
-    'body' => [
-      'secret' => $secret_key,
-      'response' => $token
-    ]
+      'body' => [
+          'secret' => $secret_key,
+          'response' => $token
+      ]
   ]);
 
+  // Retrieve and decode the response body
   $response_body = wp_remote_retrieve_body($response);
   $result = json_decode($response_body, true);
 
-  var_dump($result);
-  die();
-
-
+  // Check if the verification was successful and the score meets your threshold
   if ($result['success'] && $result['score'] >= 0.5) {
-    // reCAPTCHA verified
-    wp_send_json_success();
+      // If verified, send a simple success response back to the client
+      wp_send_json_success();
   } else {
-    // reCAPTCHA failed
-    wp_send_json_error();
+      // If verification fails, send a simple error response back to the client
+      wp_send_json_error();
   }
 
+  // Terminate the script execution
   wp_die();
 }
+
+// Hook the function to WordPress AJAX actions
 add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
+

@@ -303,27 +303,28 @@ function verifyRecaptchaToken(token) {
     // Construct the data to send
     var data = {
         action: 'verify_recaptcha',
-        token: token
+        recaptcha_token: token
     };
 
     // Send the AJAX request using jQuery
     jQuery.ajax({
-        url: ajax_object.ajaxurl,
+        url: ajax_object.ajaxurl, // Assuming ajax_object is already defined with ajaxurl
         type: 'POST',
         data: data,
         success: function (response) {
-            
-            if (response) {
-                console.log(response)
+            if (response.success) {
                 // reCAPTCHA verified, proceed to the next step
+                console.log("reCAPTCHA verified successfully");
                 handleSetModal('want-to-test-section');
             } else {
                 // reCAPTCHA failed, show an error message
+                console.log("reCAPTCHA verification failed.");
                 alert('reCAPTCHA verification failed. Please try again.');
             }
         },
-        error: function () {
+        error: function (xhr, status, error) {
             // Handle errors
+            console.error("An error occurred: ", error);
             alert('An error occurred during verification. Please try again.');
         }
     });
