@@ -87,7 +87,7 @@ function ourstoryz_shortcode_function()
 
                     <!--GOOGLE-CAPTCHA-SECTION-->
                     <!-- old  -->
-                    <!-- <div id="google-captcha-section" class="google-captcha-section d-none">
+                    <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <img src="./assets/images/logo.png" alt="logo" width="w-100">
                             <div>
@@ -102,7 +102,7 @@ function ourstoryz_shortcode_function()
                                 class="btn btn-sm btn-primary mt-20">NEXT
                             </button>
                         </div>
-                    </div> -->
+                    </div>
 
                     <!-- end old -->
                     <!-- working  -->
