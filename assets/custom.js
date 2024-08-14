@@ -335,7 +335,7 @@ jQuery(document).ready(function ($) {
     }
 
     // Example of triggering the captcha verification
-    $('#nxtbtn').on('click', function () {
+    $('#yourButtonId').on('click', function () {
         handleCaptchaVerification();
     });
 });
