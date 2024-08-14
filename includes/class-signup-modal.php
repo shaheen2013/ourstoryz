@@ -87,7 +87,7 @@ function ourstoryz_shortcode_function()
 
                     <!--GOOGLE-CAPTCHA-SECTION-->
                     <!-- old  -->
-                    <!-- <div id="google-captcha-section" class="google-captcha-section d-none">
+                    <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <img src="./assets/images/logo.png" alt="logo" width="w-100">
                             <div>
@@ -102,48 +102,11 @@ function ourstoryz_shortcode_function()
                                 class="btn btn-sm btn-primary mt-20">NEXT
                             </button>
                         </div>
-                    </div> -->
-
-                    <!-- end old -->
-                    <!-- done  -->
-                    <div id="google-captcha-section" class="google-captcha-section d-none">
-                        <div class="divider pb-3 d-flex align-items-center gap-2">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png" alt="logo" width="w-100">
-                            <div>
-                                <div class="fs-24 fw-semibold">OurStoryz</div>
-                                <div class="fs-16 fw-500">Login</div>
-                            </div>
-                        </div>
-                        <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-
-                         
-                        <div class="captcha-img">
-                           
-                            <div id="recaptcha-content" class="mb-3">
-                                
-                                <div id="recaptcha-message">
-                                    
-                                    <div>Verification in progress...</div>
-                                </div>
-                            </div>
-
-                            
-                            <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
-                        </div>
                     </div>
 
+                  
 
-
-
-
-                    <!-- end done -->
-
-           
-             
-
-
-
-
+ 
 
                     <!--WANT-TO-TEXT-SECTION-->
                     <?php
