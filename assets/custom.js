@@ -332,43 +332,43 @@ window.onload = initMap;
 //     });
 // });
 
-function handleCaptchaVerification() {
-    // Update message to indicate that verification is starting
-    document.getElementById('recaptcha-message').innerHTML = 'Please wait, verifying your response...';
+// function handleCaptchaVerification() {
+//     // Update message to indicate that verification is starting
+//     document.getElementById('recaptcha-message').innerHTML = 'Please wait, verifying your response...';
 
-    grecaptcha.ready(function () {
-        grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', { action: 'submit' }).then(function (token) {
-            // Call the function to verify the token using jQuery AJAX
-            verifyCaptchaTokenWithjQuery(token);
-        });
-    });
-}
+//     grecaptcha.ready(function () {
+//         grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', { action: 'submit' }).then(function (token) {
+//             // Call the function to verify the token using jQuery AJAX
+//             verifyCaptchaTokenWithjQuery(token);
+//         });
+//     });
+// }
 
-function verifyCaptchaTokenWithjQuery(token) {
-    // Use jQuery AJAX to send the token to the server for verification
-    jQuery.ajax({
-        url: '<?php echo admin_url("admin-ajax.php"); ?>',
-        type: 'POST',
-        data: {
-            action: 'verify_recaptcha',
-            recaptcha_token: token
-        },
-        success: function (response) {
-            var data = JSON.parse(response);
-            if (data.success && data.score >= 0.5) {
-                // Update message to indicate successful verification
-                document.getElementById('recaptcha-message').innerHTML = 'Verification successful! Proceeding to the next step...';
-                // User is human, proceed to the next section
-                handleSetModal('want-to-test-section');
-            } else {
-                // Update message to indicate failed verification
-                document.getElementById('recaptcha-message').innerHTML = 'reCAPTCHA verification failed. Please try again.';
-            }
-        },
-        error: function (error) {
-            console.error('Error:', error);
-            // Update message to indicate an error
-            document.getElementById('recaptcha-message').innerHTML = 'An error occurred during verification. Please try again.';
-        }
-    });
-}
+// function verifyCaptchaTokenWithjQuery(token) {
+//     // Use jQuery AJAX to send the token to the server for verification
+//     jQuery.ajax({
+//         url: '<?php echo admin_url("admin-ajax.php"); ?>',
+//         type: 'POST',
+//         data: {
+//             action: 'verify_recaptcha',
+//             recaptcha_token: token
+//         },
+//         success: function (response) {
+//             var data = JSON.parse(response);
+//             if (data.success && data.score >= 0.5) {
+//                 // Update message to indicate successful verification
+//                 document.getElementById('recaptcha-message').innerHTML = 'Verification successful! Proceeding to the next step...';
+//                 // User is human, proceed to the next section
+//                 handleSetModal('want-to-test-section');
+//             } else {
+//                 // Update message to indicate failed verification
+//                 document.getElementById('recaptcha-message').innerHTML = 'reCAPTCHA verification failed. Please try again.';
+//             }
+//         },
+//         error: function (error) {
+//             console.error('Error:', error);
+//             // Update message to indicate an error
+//             document.getElementById('recaptcha-message').innerHTML = 'An error occurred during verification. Please try again.';
+//         }
+//     });
+// }
