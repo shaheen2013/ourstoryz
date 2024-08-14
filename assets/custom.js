@@ -216,71 +216,41 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // for map
-let locationError = document.getElementById('locationError');
-let locationInput = document.getElementById('locationInput');
-let locationInputSection = document.getElementById('locationInputSection');
-let locationDisplaySection = document.getElementById('locationDisplaySection');
-let locationDisplay = document.getElementById('locationDisplay');
-let lat = '';
-let lng = '';
+function initializeAutocomplete() {
+    var input = document.getElementById('locationInput');
+    var autocomplete = new google.maps.places.Autocomplete(input);
 
-// Initialize the map and Autocomplete
-function initMap() {
-    const g_location_options = {
-        componentRestrictions: { country: "bd" },
-        fields: ["address_components", "geometry", "name"],
-        types: ["establishment"]
-    };
-
-    const autoComplete = new google.maps.places.Autocomplete(locationInput, g_location_options);
-    autoComplete.addListener("place_changed", function () {
-        locationError.style.display = 'none';
-        const place = autoComplete.getPlace();
-        lat = place.geometry.location.lat();
-        lng = place.geometry.location.lng();
-        renderMap(place);
-    });
-}
-
-// Render the map with a marker
-function renderMap(place) {
-    const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: lat, lng: lng },
+    var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
-        mapTypeControl: false
+        mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    new google.maps.Marker({
-        map: map,
-        position: { lat: lat, lng: lng },
-        visible: true
+
+    var marker = new google.maps.Marker({
+        map: map
+    });
+
+    autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+
+        if (!place.geometry) {
+            console.log("Returned place contains no geometry");
+            return;
+        }
+
+        // If the place has a geometry, then present it on a map.
+        if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+        } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17); // Why 17? Because it looks good.
+        }
+
+        marker.setPosition(place.geometry.location);
+        marker.setVisible(true);
     });
 }
 
-// Set the location and update UI
-function setTheLocation() {
-    if (!locationInput.value) {
-        locationError.style.display = 'block';
-    } else {
-        locationDisplay.textContent = locationInput.value;
-        locationInputSection.style.display = 'none';
-        locationDisplaySection.style.display = 'block';
-    }
-}
-
-// Change the location and update UI
-function changeTheLocation() {
-    locationInput.value = '';
-    locationDisplay.textContent = '';
-    locationInputSection.style.display = 'block';
-    locationDisplaySection.style.display = 'none';
-}
-
-// Set up event listeners
-document.getElementById('setLocationButton').onclick = setTheLocation;
-document.getElementById('changeLocationButton').onclick = changeTheLocation;
-
-// Initialize map when the window loads
-window.onload = initMap;
+google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
 
 
 
