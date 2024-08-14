@@ -134,7 +134,7 @@ function ourstoryz_shortcode_function()
                             </div>
 
                             <!-- Button to trigger the reCAPTCHA verification -->
-                            <button id="nxtbtn" onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                            <button   onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
                     </div>
 
