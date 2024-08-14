@@ -121,32 +121,6 @@ function run_ourstoryz()
 run_ourstoryz();
 
 // Enqueue your script// Enqueue your script
-function enqueue_custom_script()
-{
-  wp_enqueue_script('recaptcha-v3', 'https://www.google.com/recaptcha/api.js?render=6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', [], null, true);
-  wp_enqueue_script('bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', '5.2.3', true);
-  wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/custom-script.js', array('jquery'), '1.0', true);
-  wp_enqueue_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YvMYjtoPcq3tP8ROejpgqd-RxenQOY&libraries=places', array(), null, true);
-
-
-
-  wp_enqueue_script('signup-script', plugin_dir_url(__FILE__) . 'assets/custom.js', array(), '1.0.0', true);
-
-  // Localize script with AJAX URL and nonce
-  wp_localize_script(
-    'custom-script',
-    'ajax_object',
-    array(
-      'ajax_url' => admin_url('admin-ajax.php'),
-      'ajax_nonce' => wp_create_nonce('fetch_mini_website_template_nonce')
-    )
-  );
-}
-add_action('wp_enqueue_scripts', 'enqueue_custom_script');
-
-
-// recaptcha
-
 function verify_recaptcha()
 {
   if (!isset($_POST['recaptcha_token'])) {
@@ -174,6 +148,3 @@ function verify_recaptcha()
 
 add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
 add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
-
-
- 

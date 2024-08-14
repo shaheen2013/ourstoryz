@@ -116,22 +116,21 @@ function ourstoryz_shortcode_function()
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
 
-
+                        <!-- Google reCAPTCHA v3 Content -->
                         <div class="captcha-img">
-
+                            <!-- Dynamic reCAPTCHA Content -->
                             <div id="recaptcha-content" class="mb-3">
-
+                                <!-- This section can show any dynamic content or instructions -->
                                 <div id="recaptcha-message">
-
+                                    <!-- Initial message or content -->
                                     <div>Verification in progress...</div>
                                 </div>
                             </div>
 
-
+                            <!-- Button to trigger the reCAPTCHA verification -->
                             <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
                     </div>
-
 
 
 
