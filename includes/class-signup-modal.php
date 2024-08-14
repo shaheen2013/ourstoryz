@@ -87,7 +87,7 @@ function ourstoryz_shortcode_function()
 
                     <!--GOOGLE-CAPTCHA-SECTION-->
                     <!-- old  -->
-                    <div id="google-captcha-section" class="google-captcha-section d-none">
+                    <!-- <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <img src="./assets/images/logo.png" alt="logo" width="w-100">
                             <div>
@@ -102,11 +102,55 @@ function ourstoryz_shortcode_function()
                                 class="btn btn-sm btn-primary mt-20">NEXT
                             </button>
                         </div>
+                    </div> -->
+
+                    <!-- end old -->
+                    <!-- working  -->
+                    <!-- Add this script in the <head> section of your HTML -->
+                    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+
+                    <!-- Your HTML structure -->
+                    <div id="google-captcha-section" class="google-captcha-section d-none">
+                        <div class="divider pb-3 d-flex align-items-center gap-2">
+                            <img src="./assets/images/logo.png" alt="logo" width="w-100">
+                            <div>
+                                <div class="fs-24 fw-semibold">OurStoryz</div>
+                                <div class="fs-16 fw-500">Login</div>
+                            </div>
+                        </div>
+                        <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
+                        <div class="captcha-img">
+                            <!-- Removed the static image and added a div for reCAPTCHA -->
+                            <div id="recaptcha-container"></div>
+                            <button onclick="handleSetModal('want-to-test-section')" type="button"
+                                class="btn btn-sm btn-primary mt-20">NEXT
+                            </button>
+                        </div>
                     </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
+                                    action: 'homepage'
+                                }).then(function(token) {
+                                    // Append the reCAPTCHA widget
+                                    document.getElementById('recaptcha-container').innerHTML = `
+                <input type="hidden" name="g-recaptcha-response" value="${token}">
+                <img src="https://www.google.com/recaptcha/api2/anchor?ar=1&k=6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph&co=aHR0cHM6Ly93d3cueW91cnNpdGUuY29tOjQ0Mw..&hl=en&v=7mDXayJIHwUkqYmEUtnF9WZ5&size=invisible&cb=2rgw59ndfg39">
+            `;
+                                });
+                            });
+                        });
+                    </script>
 
-                  
 
- 
+                    <!-- end working -->
+
+
+
+
+
+
 
                     <!--WANT-TO-TEXT-SECTION-->
                     <?php
