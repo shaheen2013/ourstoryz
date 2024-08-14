@@ -148,31 +148,41 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
 
 
-add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
-add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
+add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha_callback');
+add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha_callback');
 
-function verify_recaptcha() {
-    // Get the reCAPTCHA token from the AJAX request
-    $token = $_POST['token'];
+function verify_recaptcha_callback()
+{
+  // Check if the token is provided
+  if (!isset($_POST['recaptcha_token'])) {
+    wp_send_json_error('Token missing');
+    return;
+  }
 
-    // Your reCAPTCHA secret key
-    $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7';
+  $token = sanitize_text_field($_POST['recaptcha_token']);
+  $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7'; // Your private key
 
-    // Verify the token with Google's reCAPTCHA API
-    $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
-        'body' => array(
-            'secret' => $secret_key,
-            'response' => $token
-        )
-    ));
+  // Make request to reCAPTCHA server
+  $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
+    'method'    => 'POST',
+    'body'      => array(
+      'secret'    => $secret_key,
+      'response'  => $token,
+    ),
+  ));
 
-    $body = wp_remote_retrieve_body($response);
-    $result = json_decode($body, true);
+  // Check response
+  if (is_wp_error($response)) {
+    wp_send_json_error('Failed to verify token');
+    return;
+  }
 
-    if ($result['success']) {
-        wp_send_json_success();
-    } else {
-        wp_send_json_error();
-    }
+  $response_body = wp_remote_retrieve_body($response);
+  $result = json_decode($response_body);
+
+  if ($result->success && $result->score > 0.5) { // Adjust threshold as needed
+    wp_send_json_success();
+  } else {
+    wp_send_json_error('reCAPTCHA verification failed');
+  }
 }
-
