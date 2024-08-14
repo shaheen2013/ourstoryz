@@ -46,7 +46,7 @@ class Signup_Modal_Info
                     <input type="radio" name="eventOption" class="form-check-input" id="check<?php echo $count; ?>" onclick="checkCheckboxes()">
                     <label class="form-check-label" for="check<?php echo $count; ?>"><?php the_title(); ?></label>
                 </div>
-        <?php
+<?php
                 $count++; // Increment count after each post
             }
         } else {
@@ -157,9 +157,7 @@ class Signup_Modal_Info
 
     public function displayAddLocationSection()
     {
-        ob_start();
-        ?>
-        <div id="add-location-section" class="w-600">
+        echo `<div id="add-location-section" class="w-600">
             <div class="fs-20 divider pb-4">Add a location</div>
             <div class="fs-16 mt-20 divider mb-20 pb-20">Provide the location of your event (approximate is OK).
                 You’ll need it to test the OurStoryz Geospace features. You can always add this later
@@ -258,9 +256,7 @@ class Signup_Modal_Info
                     });
                 }
             });
-        </script>
-<?php
-        return ob_get_clean();
+        </script>`;
     }
 
     public function displayWhyListLocation()
