@@ -188,3 +188,8 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 //     wp_send_json_error('reCAPTCHA verification failed');
 //   }
 // }
+function google_maps_location_shortcode()
+{
+  echo 'hello';
+}
+add_shortcode('google_maps_location', 'google_maps_location_shortcode');
