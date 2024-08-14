@@ -75,7 +75,7 @@ class ourstoryz_Public
 		 * class.
 		 */
 
-		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ourstoryz-public.css', array(), $this->version, 'all');
+		// wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ourstoryz-public.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -104,7 +104,4 @@ class ourstoryz_Public
 			'ajax_url' => admin_url('admin-ajax.php')
 		));
 	}
-
-  
-  
 }
