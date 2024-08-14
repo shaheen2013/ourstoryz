@@ -312,8 +312,9 @@ function verifyRecaptchaToken(token) {
         type: 'POST',
         data: data,
         success: function (response) {
-            console.log(response)
-            if (response.success) {
+            
+            if (response) {
+                console.log(response)
                 // reCAPTCHA verified, proceed to the next step
                 handleSetModal('want-to-test-section');
             } else {
