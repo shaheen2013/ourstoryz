@@ -148,35 +148,37 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
 
 
-add_action('wp_ajax_verify_recaptcha_token', 'verify_recaptcha_token');
-add_action('wp_ajax_nopriv_verify_recaptcha_token', 'verify_recaptcha_token');
-
 function verify_recaptcha_token()
 {
-  // Check if token is set
-  if (!isset($_POST['recaptcha_token'])) {
-    wp_send_json_error(array('message' => 'No token provided.'));
+  // Get the token from the AJAX request
+  $token = isset($_POST['recaptcha_token']) ? sanitize_text_field($_POST['recaptcha_token']) : '';
+
+  if (empty($token)) {
+    wp_send_json_error(['message' => 'Token is missing']);
   }
 
-  $recaptcha_token = sanitize_text_field($_POST['recaptcha_token']);
-  $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7'; // Your private key
-
-  // Verify token with Google reCAPTCHA API
+  // Verify the token with Google reCAPTCHA
   $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
     'body' => array(
-      'secret' => $secret_key,
-      'response' => $recaptcha_token
+      'secret' => '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7', // Your private key
+      'response' => $token
     )
   ));
 
-  $response_body = wp_remote_retrieve_body($response);
-  $result = json_decode($response_body);
-
-  if ($result->success && $result->score >= 0.5) { // Adjust score threshold as needed
-    wp_send_json_success();
-  } else {
-    wp_send_json_error(array('message' => 'reCAPTCHA verification failed.'));
+  if (is_wp_error($response)) {
+    wp_send_json_error(['message' => 'Failed to connect to reCAPTCHA server']);
   }
 
-  wp_die();
+  $response_body = wp_remote_retrieve_body($response);
+  $result = json_decode($response_body, true);
+
+  if ($result['success']) {
+    wp_send_json_success(['message' => 'Verification successful']);
+  } else {
+    wp_send_json_error(['message' => 'Verification failed']);
+  }
 }
+
+// Hook the AJAX action
+add_action('wp_ajax_verify_recaptcha_token', 'verify_recaptcha_token');
+add_action('wp_ajax_nopriv_verify_recaptcha_token', 'verify_recaptcha_token');

@@ -285,47 +285,31 @@ window.onload = initMap;
 
 
 // end map
-
-
 function handleCaptchaVerification() {
-    grecaptcha.ready(function () {
-        grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', { action: 'submit' })
-            .then(function (token) {
-                document.getElementById('recaptcha_token').value = token;
-
-                // Send token to the server via AJAX using jQuery
-                verifyRecaptchaToken(token);
+    grecaptcha.ready(function() {
+        grecaptcha.execute().then(function(token) {
+            document.getElementById('recaptcha_token').value = token;
+            // Make AJAX request to validate token
+            jQuery.ajax({
+                url: ajax_object.ajaxurl, // WordPress AJAX URL
+                method: 'POST',
+                data: {
+                    action: 'verify_recaptcha_token',
+                    recaptcha_token: token
+                },
+                success: function(response) {
+                    if(response.success) {
+                        // Handle success (e.g., proceed to the next step)
+                        alert('Verification successful');
+                    } else {
+                        // Handle failure
+                        alert('Verification failed');
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while verifying the token');
+                }
             });
-    });
-}
-
-function verifyRecaptchaToken(token) {
-    // Construct the data to send
-    var data = {
-        action: 'verify_recaptcha',
-        recaptcha_token: token
-    };
-
-    // Send the AJAX request using jQuery
-    jQuery.ajax({
-        url: ajax_object.ajaxurl, // Assuming ajax_object is already defined with ajaxurl
-        type: 'POST',
-        data: data,
-        success: function (response) {
-            if (response.success) {
-                // reCAPTCHA verified, proceed to the next step
-                console.log("reCAPTCHA verified successfully");
-                handleSetModal('want-to-test-section');
-            } else {
-                // reCAPTCHA failed, show an error message
-                console.log("reCAPTCHA verification failed.");
-                alert('reCAPTCHA verification failed. Please try again.');
-            }
-        },
-        error: function (xhr, status, error) {
-            // Handle errors
-            console.error("An error occurred: ", error);
-            alert('An error occurred during verification. Please try again.');
-        }
+        });
     });
 }
