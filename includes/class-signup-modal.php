@@ -121,10 +121,30 @@ function ourstoryz_shortcode_function()
                             </div>
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-                        <div id="captcha-btn-section">
-                            <button id="recaptcha-button" type="button" class="btn btn-sm btn-primary mt-20">I’m not a robot</button>
+
+                        <!-- Google reCAPTCHA Content -->
+                        <div class="captcha-img">
+                            <!-- Replace static CAPTCHA image with reCAPTCHA token input -->
+                            <input type="hidden" name="recaptcha_token" id="recaptcha_token">
+
+                            <!-- Button to trigger reCAPTCHA verification -->
+                            <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
                     </div>
+                    <script>
+                        function handleCaptchaVerification() {
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
+                                    action: 'submit'
+                                }).then(function(token) {
+                                    document.getElementById('recaptcha_token').value = token;
+
+                                    // Submit the form or proceed to the next section after verifying the token
+                                    handleSetModal('want-to-test-section');
+                                });
+                            });
+                        }
+                    </script>
 
 
 

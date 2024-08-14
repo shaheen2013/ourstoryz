@@ -286,28 +286,4 @@ window.onload = initMap;
 
 // end map
 
-jQuery(document).ready(function($) {
-    $('#recaptcha-button').on('click', function() {
-        grecaptcha.ready(function() {
-            grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', { action: 'homepage' }).then(function(token) {
-                // Send the token to the server
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'post',
-                    data: {
-                        action: 'verify_recaptcha',
-                        token: token
-                    },
-                    success: function(response) {
-                        if(response.success) {
-                            // Human verified, move to the next section
-                            handleSetModal('want-to-test-section');
-                        } else {
-                            alert('reCAPTCHA verification failed. Please try again.');
-                        }
-                    }
-                });
-            });
-        });
-    });
-});
+ 
