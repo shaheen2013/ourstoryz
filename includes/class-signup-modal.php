@@ -120,15 +120,21 @@ function ourstoryz_shortcode_function()
                         <div class="captcha-img">
                             <!-- Dynamic reCAPTCHA Content -->
                             <div id="recaptcha-content" class="mb-3">
-                                <!-- This section can show any dynamic content or instructions -->
+                                <!-- Dynamic content or instructions -->
                                 <div id="recaptcha-message">
                                     <!-- Initial message or content -->
                                     <div>Verification in progress...</div>
                                 </div>
                             </div>
 
-                            <!-- Button to trigger the reCAPTCHA verification -->
-                            <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                            <!-- Form for reCAPTCHA and submission -->
+                            <form id="recaptchaForm" method="POST" action="<?php echo admin_url('admin-post.php'); ?>">
+                                <input type="hidden" name="recaptcha_token" id="recaptcha_token">
+                                <input type="hidden" name="action" value="verify_recaptcha">
+
+                                <!-- Button to generate reCAPTCHA token and submit the form -->
+                                <button onclick="handleCaptchaVerification(event)" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                            </form>
                         </div>
                     </div>
 
