@@ -106,42 +106,65 @@ function ourstoryz_shortcode_function()
 
                     <!-- end old -->
                     <!-- working  -->
-                    <!-- Add this script in the <head> section of your HTML -->
-                    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
-
-                    <!-- Your HTML structure -->
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
-                            <img src="./assets/images/logo.png" alt="logo" width="w-100">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png" alt="logo" width="w-100">
                             <div>
                                 <div class="fs-24 fw-semibold">OurStoryz</div>
                                 <div class="fs-16 fw-500">Login</div>
                             </div>
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
+
+                        <!-- Google reCAPTCHA v3 Content -->
                         <div class="captcha-img">
-                            <!-- Removed the static image and added a div for reCAPTCHA -->
-                            <div id="recaptcha-container"></div>
-                            <button onclick="handleSetModal('want-to-test-section')" type="button"
-                                class="btn btn-sm btn-primary mt-20">NEXT
-                            </button>
+                            <!-- Hidden input to store the reCAPTCHA v3 token -->
+                            <input type="hidden" name="recaptcha_token" id="recaptcha_token">
+
+                            <!-- Button to generate reCAPTCHA token and move to the next step -->
+                            <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
                     </div>
+
                     <script>
-                        document.addEventListener('DOMContentLoaded', function() {
+                        function handleCaptchaVerification() {
                             grecaptcha.ready(function() {
                                 grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
-                                    action: 'homepage'
+                                    action: 'submit'
                                 }).then(function(token) {
-                                    // Append the reCAPTCHA widget
-                                    document.getElementById('recaptcha-container').innerHTML = `
-                <input type="hidden" name="g-recaptcha-response" value="${token}">
-                <img src="https://www.google.com/recaptcha/api2/anchor?ar=1&k=6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph&co=aHR0cHM6Ly93d3cueW91cnNpdGUuY29tOjQ0Mw..&hl=en&v=7mDXayJIHwUkqYmEUtnF9WZ5&size=invisible&cb=2rgw59ndfg39">
-            `;
+                                    document.getElementById('recaptcha_token').value = token;
+
+                                    // Send the token to the server for verification
+                                    verifyCaptchaToken(token);
                                 });
                             });
-                        });
+                        }
+
+                        function verifyCaptchaToken(token) {
+                            fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/x-www-form-urlencoded'
+                                    },
+                                    body: `action=verify_recaptcha&recaptcha_token=${token}`
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success && data.score >= 0.5) {
+                                        // User is human, proceed to the next section
+                                        handleSetModal('want-to-test-section');
+                                    } else {
+                                        // User is not human, display an error message or take other action
+                                        alert('reCAPTCHA verification failed. Please try again.');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+                        }
                     </script>
+
+
 
 
                     <!-- end working -->
