@@ -148,8 +148,7 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 function verify_recaptcha()
 {
   $token = sanitize_text_field($_POST['recaptcha_token']);
-  var_dump($token);
-  die();
+  
   $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7';
 
   $response = wp_remote_post("https://www.google.com/recaptcha/api/siteverify", [
