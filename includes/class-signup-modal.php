@@ -132,38 +132,7 @@ function ourstoryz_shortcode_function()
                         </div>
                     </div>
 
-                    <script>
-                        function handleCaptchaVerification() {
-                            grecaptcha.ready(function() {
-                                grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
-                                        action: 'submit'
-                                    })
-                                    .then(function(token) {
-                                        document.getElementById('recaptcha_token').value = token;
-
-                                        // Send token to the server via AJAX
-                                        verifyRecaptchaToken(token);
-                                    });
-                            });
-                        }
-
-                        function verifyRecaptchaToken(token) {
-                            var data = {
-                                action: 'verify_recaptcha',
-                                token: token
-                            };
-
-                            jQuery.post(ajaxurl, data, function(response) {
-                                if (response.success) {
-                                    // reCAPTCHA verified, proceed to the next step
-                                    handleSetModal('want-to-test-section');
-                                } else {
-                                    // reCAPTCHA failed, show an error message
-                                    alert('reCAPTCHA verification failed. Please try again.');
-                                }
-                            });
-                        }
-                    </script>
+                  
 
 
 
