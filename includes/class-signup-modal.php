@@ -118,10 +118,13 @@ function ourstoryz_shortcode_function()
 
                         <!-- Google reCAPTCHA v3 Content -->
                         <div class="captcha-img">
-                            <!-- reCAPTCHA Badge or Content -->
+                            <!-- Dynamic reCAPTCHA Content -->
                             <div id="recaptcha-content" class="mb-3">
-                                <!-- Here you can show some static content or instructional text -->
-                                <div>Please complete the CAPTCHA below to proceed:</div>
+                                <!-- This section can show any dynamic content or instructions -->
+                                <div id="recaptcha-message">
+                                    <!-- Initial message or content -->
+                                    <div>Verification in progress...</div>
+                                </div>
                             </div>
 
                             <!-- Button to trigger the reCAPTCHA verification -->
@@ -129,7 +132,7 @@ function ourstoryz_shortcode_function()
                         </div>
                     </div>
 
-             
+
 
 
 
