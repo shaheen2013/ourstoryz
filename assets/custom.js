@@ -218,26 +218,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 jQuery(document).ready(function($) {
     function initializeAutocomplete() {
-        var input = document.getElementById('locationInput');
+        var input = document.getElementById('location-input');
         var autocomplete = new google.maps.places.Autocomplete(input);
-    
+
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
-    
+
         var marker = new google.maps.Marker({
             map: map
         });
-    
+
         autocomplete.addListener('place_changed', function() {
             var place = autocomplete.getPlace();
-    
+
             if (!place.geometry) {
                 console.log("Returned place contains no geometry");
                 return;
             }
-    
+
             // If the place has a geometry, then present it on a map.
             if (place.geometry.viewport) {
                 map.fitBounds(place.geometry.viewport);
@@ -245,12 +245,12 @@ jQuery(document).ready(function($) {
                 map.setCenter(place.geometry.location);
                 map.setZoom(17); // Why 17? Because it looks good.
             }
-    
+
             marker.setPosition(place.geometry.location);
             marker.setVisible(true);
         });
     }
-    
+
     google.maps.event.addDomListener(window, 'load', initializeAutocomplete);
 })
 // for map
