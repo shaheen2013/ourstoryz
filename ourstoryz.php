@@ -145,39 +145,38 @@ function enqueue_custom_script()
 add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
 
-function verify_recaptcha() {
-  // Sanitize the reCAPTCHA token received from the client side
-  $token = sanitize_text_field($_POST['recaptcha_token']);
 
-  // Your secret key for reCAPTCHA v3
-  $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7';
 
-  // Send a POST request to Google's reCAPTCHA API to verify the token
-  $response = wp_remote_post("https://www.google.com/recaptcha/api/siteverify", [
-      'body' => [
-          'secret' => $secret_key,
-          'response' => $token
-      ]
-  ]);
 
-  // Retrieve and decode the response body
-  $response_body = wp_remote_retrieve_body($response);
-  $result = json_decode($response_body, true);
+add_action('wp_ajax_verify_recaptcha_token', 'verify_recaptcha_token');
+add_action('wp_ajax_nopriv_verify_recaptcha_token', 'verify_recaptcha_token');
 
-  // Check if the verification was successful and the score meets your threshold
-  if ($result['success'] && $result['score'] >= 0.5) {
-      // If verified, send a simple success response back to the client
-      wp_send_json_success();
-  } else {
-      // If verification fails, send a simple error response back to the client
-      wp_send_json_error();
+function verify_recaptcha_token()
+{
+  // Check if token is set
+  if (!isset($_POST['recaptcha_token'])) {
+    wp_send_json_error(array('message' => 'No token provided.'));
   }
 
-  // Terminate the script execution
+  $recaptcha_token = sanitize_text_field($_POST['recaptcha_token']);
+  $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7'; // Replace with your secret key
+
+  // Verify token with Google reCAPTCHA API
+  $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
+    'body' => array(
+      'secret' => $secret_key,
+      'response' => $recaptcha_token
+    )
+  ));
+
+  $response_body = wp_remote_retrieve_body($response);
+  $result = json_decode($response_body);
+
+  if ($result->success) {
+    wp_send_json_success();
+  } else {
+    wp_send_json_error(array('message' => 'reCAPTCHA verification failed.'));
+  }
+
   wp_die();
 }
-
-// Hook the function to WordPress AJAX actions
-add_action('wp_ajax_verify_recaptcha', 'verify_recaptcha');
-add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha');
-
