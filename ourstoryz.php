@@ -161,7 +161,8 @@ function verify_recaptcha()
   $response_body = wp_remote_retrieve_body($response);
   $result = json_decode($response_body, true);
 
-  wp_send_json_success($result);
+  var_dump($result);
+  die();
 
 
   if ($result['success'] && $result['score'] >= 0.5) {
