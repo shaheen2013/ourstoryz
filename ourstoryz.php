@@ -159,7 +159,7 @@ function verify_recaptcha_token()
   }
 
   $recaptcha_token = sanitize_text_field($_POST['recaptcha_token']);
-  $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7'; // Replace with your secret key
+  $secret_key = '6LdoHyMqAAAAAHrYn2G2f0qExZP0UaFSuID-iH_7'; // Your private key
 
   // Verify token with Google reCAPTCHA API
   $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', array(
@@ -172,7 +172,7 @@ function verify_recaptcha_token()
   $response_body = wp_remote_retrieve_body($response);
   $result = json_decode($response_body);
 
-  if ($result->success) {
+  if ($result->success && $result->score >= 0.5) { // Adjust score threshold as needed
     wp_send_json_success();
   } else {
     wp_send_json_error(array('message' => 'reCAPTCHA verification failed.'));

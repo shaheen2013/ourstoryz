@@ -289,7 +289,7 @@ window.onload = initMap;
 
 function handleCaptchaVerification() {
     grecaptcha.ready(function () {
-        grecaptcha.execute().then(function (token) {
+        grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', { action: 'login' }).then(function (token) {
             document.getElementById('recaptcha_token').value = token;
 
             // Make AJAX request to WordPress
