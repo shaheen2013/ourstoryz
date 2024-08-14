@@ -285,31 +285,34 @@ window.onload = initMap;
 
 
 // end map
-function handleCaptchaVerification() {
-    grecaptcha.ready(function() {
-        grecaptcha.execute().then(function(token) {
-            document.getElementById('recaptcha_token').value = token;
-            // Make AJAX request to validate token
-            jQuery.ajax({
-                url: ajax_object.ajaxurl, // WordPress AJAX URL
-                method: 'POST',
-                data: {
-                    action: 'verify_recaptcha_token',
-                    recaptcha_token: token
-                },
-                success: function(response) {
-                    if(response.success) {
-                        // Handle success (e.g., proceed to the next step)
-                        alert('Verification successful');
-                    } else {
-                        // Handle failure
-                        alert('Verification failed');
+document.addEventListener('DOMContentLoaded', function () {
+    const verifyButton = document.getElementById('verify-captcha');
+
+    verifyButton.addEventListener('click', function () {
+        grecaptcha.ready(function () {
+            grecaptcha.execute().then(function (token) {
+                // Send token to server for verification
+                jQuery.ajax({
+                    url: ajaxurl, // WordPress AJAX URL
+                    method: 'POST',
+                    data: {
+                        action: 'verify_recaptcha',
+                        token: token
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Proceed to the next step
+                            handleSetModal('want-to-test-section');
+                        } else {
+                            // Handle verification failure
+                            alert('Verification failed, please try again.');
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred, please try again.');
                     }
-                },
-                error: function() {
-                    alert('An error occurred while verifying the token');
-                }
+                });
             });
         });
     });
-}
+});

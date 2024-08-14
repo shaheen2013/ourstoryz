@@ -111,7 +111,6 @@ function ourstoryz_shortcode_function()
 
                     <!-- Your HTML structure -->
 
-
                     <div id="google-captcha-section" class="google-captcha-section d-none">
                         <div class="divider pb-3 d-flex align-items-center gap-2">
                             <img src="./assets/images/logo.png" alt="logo" width="w-100">
@@ -121,20 +120,16 @@ function ourstoryz_shortcode_function()
                             </div>
                         </div>
                         <div class="fs-24 my-20">Let’s get started! (confirm you’re human)</div>
-
-                        <!-- Google reCAPTCHA Content -->
-                        <div class="captcha-img">
-                            <!-- Replace static CAPTCHA image with reCAPTCHA token input -->
-                            <input type="hidden" name="recaptcha_token" id="recaptcha_token">
-
-                            <!-- Button to trigger reCAPTCHA verification -->
-                            <button onclick="handleCaptchaVerification()" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
+                        <div class="captcha-container">
+                            <!-- Placeholder for reCAPTCHA -->
+                            <button id="verify-captcha" type="button" class="btn btn-sm btn-primary mt-20">NEXT</button>
                         </div>
                     </div>
 
 
 
-                    <script src="https://www.google.com/recaptcha/api.js?render=6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph"></script>
+
+
 
 
 
