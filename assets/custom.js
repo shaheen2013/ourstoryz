@@ -333,6 +333,6 @@ jQuery(document).ready(function ($) {
 
     // Example of triggering the captcha verification
     $('#yourButtonId').on('click', function () {
-        handleCaptchaVerification();
+        handleCaptchaVerification(); 
     });
 });
