@@ -289,52 +289,52 @@ window.onload = initMap;
 
 // recaptcha
 
-jQuery(document).ready(function ($) {
-    function handleCaptchaVerification() {
-        grecaptcha.ready(function () {
-            grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
-                action: 'submit'
-            }).then(function (token) {
-                // Call the function to verify the token using jQuery AJAX
-                verifyCaptchaTokenWithjQuery(token);
-            });
+function handleCaptchaVerification() {
+    grecaptcha.ready(function () {
+        grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', {
+            action: 'submit'
+        }).then(function (token) {
+            // Set the token value to the hidden input field
+            $('#recaptcha_token').val(token);
+
+            // Call the function to verify the token using jQuery AJAX
+            verifyCaptchaTokenWithjQuery();
         });
-    }
+    });
+}
 
-    function verifyCaptchaTokenWithjQuery(token) {
-        // Use jQuery AJAX to send the token to the server for verification
-        $.ajax({
-            url: ajaxurl, // 'ajaxurl' is automatically provided by WordPress in the admin area
-            type: 'POST',
-            data: {
-                action: 'verify_recaptcha',
-                recaptcha_token: token
-            },
-            success: function (response) {
-                var data = $.parseJSON(response); // Parse the JSON response
+function verifyCaptchaTokenWithjQuery() {
+    $.ajax({
+        url: myAjax.ajaxurl, // Use the localized AJAX URL
+        type: 'POST',
+        data: {
+            action: 'verify_recaptcha',
+            recaptcha_token: $('#recaptcha_token').val()
+        },
+        success: function (response) {
+            var data = $.parseJSON(response);
 
-                // Ensure the element exists before trying to modify it
-                var element = document.getElementById('recaptcha-message'); // Replace with your actual ID or use jQuery selector
-
-                if (element) {
-                    if (data.success && data.score >= 0.5) {
-                        // User is human, proceed to the next section
-                        handleSetModal('want-to-test-section');
-                    } else {
-                        // User is not human, display an error message
-                        alert('reCAPTCHA verification failed. Please try again.');
-                    }
+            // Ensure the element exists before trying to modify it
+            var element = document.getElementById('recaptcha-message');
+            if (element) {
+                if (data.success && data.score >= 0.5) {
+                    // Proceed to the next section
+                    handleSetModal('want-to-test-section');
                 } else {
-                    console.error('Element with ID "yourElementId" not found');
+                    alert('reCAPTCHA verification failed. Please try again.');
                 }
-            },
-            error: function (error) {
-                console.error('Error:', error);
+            } else {
+                console.error('Element with ID "recaptcha-message" not found');
             }
-        });
-    }
+        },
+        error: function (error) {
+            console.error('Error:', error);
+        }
+    });
+}
 
-    // Example of triggering the captcha verification
+jQuery(document).ready(function ($) {
+    // Optional: You can bind the function to a different button or event within this block
     $('#yourButtonId').on('click', function () {
         handleCaptchaVerification();
     });
