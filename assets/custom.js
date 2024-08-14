@@ -311,7 +311,9 @@ function verifyRecaptchaToken(token) {
         url: ajax_object.ajaxurl, // Assuming ajax_object is already defined with ajaxurl
         type: 'POST',
         data: data,
+        
         success: function (response) {
+            
             if (response.success) {
                 // reCAPTCHA verified, proceed to the next step
                 console.log("reCAPTCHA verified successfully");

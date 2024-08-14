@@ -153,6 +153,9 @@ add_action('wp_ajax_nopriv_verify_recaptcha', 'verify_recaptcha_callback');
 
 function verify_recaptcha_callback()
 {
+
+  wp_send_json("imran1202");
+  die();
   // Check if the token is provided
   if (!isset($_POST['recaptcha_token'])) {
     wp_send_json_error('Token missing');
