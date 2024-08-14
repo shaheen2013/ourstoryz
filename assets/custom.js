@@ -287,12 +287,12 @@ window.onload = initMap;
 // end map
 
 function handleCaptchaVerification() {
-    grecaptcha.ready(function() {
+    grecaptcha.ready(function () {
         grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', { action: 'submit' })
-            .then(function(token) {
+            .then(function (token) {
                 document.getElementById('recaptcha_token').value = token;
 
-                // Send token to the server via AJAX using Fetch
+                // Send token to the server via AJAX using XMLHttpRequest
                 verifyRecaptchaToken(token);
             });
     });
@@ -300,27 +300,40 @@ function handleCaptchaVerification() {
 
 function verifyRecaptchaToken(token) {
     // Construct the data to send
-    const data = new FormData();
+    var data = new FormData();
     data.append('action', 'verify_recaptcha');
     data.append('token', token);
 
-    // Send the AJAX request using fetch
-    fetch(ajaxurl, {
-        method: 'POST',
-        body: data,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // reCAPTCHA verified, proceed to the next step
-            handleSetModal('want-to-test-section');
+    // Create a new XMLHttpRequest object
+    var xhr = new XMLHttpRequest();
+
+    // Configure it: POST-request to the URL
+    xhr.open('POST', ajaxurl, true);
+
+    // Set up the callback for when the request completes
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 400) {
+            // Parse the JSON response
+            var response = JSON.parse(xhr.responseText);
+
+            if (response.success) {
+                // reCAPTCHA verified, proceed to the next step
+                handleSetModal('want-to-test-section');
+            } else {
+                // reCAPTCHA failed, show an error message
+                alert('reCAPTCHA verification failed. Please try again.');
+            }
         } else {
-            // reCAPTCHA failed, show an error message
-            alert('reCAPTCHA verification failed. Please try again.');
+            // Handle errors
+            alert('An error occurred during verification. Please try again.');
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred during verification. Please try again.');
-    });
+    };
+
+    // Set up the callback for when there's an error with the request
+    xhr.onerror = function () {
+        alert('An error occurred during the request. Please try again.');
+    };
+
+    // Send the request with the data
+    xhr.send(data);
 }
