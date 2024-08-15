@@ -199,7 +199,7 @@ function hello_shortcode()
       <!-- Button to Open the Modal -->
       <button id="open-map-modal" style="padding: 10px 20px;">Show Map</button>
   
-      <!-- The Modal -->
+    
       <div id="map-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
           <div style="background-color: #fff; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%;">
               <span id="close-map-modal" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
