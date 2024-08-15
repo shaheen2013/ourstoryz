@@ -171,7 +171,7 @@ class Signup_Modal_Info
                 <div class="col-6">
                     <div id="add-location-change-section" class="h-100 d-flex flex-column justify-content-center">
                         <div class="fs-18 text-end mb-2">Your event location</div>
-                        <div onclick="handleChangeLocation()" id="add-location-change-btn" class="btn-location-change">
+                        <div id="map-modal"  class="btn-location-change">
                             Change
                         </div>
                     </div>
