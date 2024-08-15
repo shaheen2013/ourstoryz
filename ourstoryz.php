@@ -130,7 +130,8 @@ function enqueue_custom_script()
 
 
   wp_enqueue_script('signup-script', plugin_dir_url(__FILE__) . 'assets/custom.js', array(), '1.0.0', true);
-
+  wp_enqueue_script('map-script',plugin_dir_url(__FILE__).'assets/map.js',array(), '1.0.0', true);
+  wp_enqueue_script('jquery');
   // Localize script with AJAX URL and nonce
   wp_localize_script(
     'custom-script',
