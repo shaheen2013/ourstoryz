@@ -121,87 +121,28 @@ function run_ourstoryz()
 run_ourstoryz();
 
 // Enqueue your script// Enqueue your script
- 
-
-
-
 function enqueue_custom_script()
 {
-    // Enqueue required scripts
-    wp_enqueue_script('recaptcha', 'https://www.google.com/recaptcha/api.js?render=6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', array(), null, true);
-    wp_enqueue_script('bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', array(), '5.2.3', true);
-    wp_enqueue_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YvMYjtoPcq3tP8ROejpgqd-RxenQOY&libraries=places', null, null, true);
-    wp_enqueue_script('jquery'); // Ensure jQuery is loaded
-    wp_localize_script(
-      'custom-script',
-      'ajax_object',
-      array(
-        'ajax_url' => admin_url('admin-ajax.php'),
-        'ajax_nonce' => wp_create_nonce('fetch_mini_website_template_nonce')
-      )
-    );
-    // Inline custom jQuery script
-    $custom_js = "
-    jQuery(document).ready(function($) {
-        // Open the Modal
-        $('#open-map-modal').click(function() {
-            $('#map-modal').show();
-            // Initialize map when the modal is shown
-            initializeAutocomplete();
-        });
+  // wp_enqueue_script('recaptcha', 'https://www.google.com/recaptcha/api.js?render=6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', array(), null, true);
+  wp_enqueue_script('bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', '5.2.3', true);
+  // wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/custom-script.js', array('jquery'), '1.0', true);
+  wp_enqueue_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YvMYjtoPcq3tP8ROejpgqd-RxenQOY&libraries=places', null, null, true);
 
-        // Close the Modal
-        $('#close-map-modal').click(function() {
-            $('#map-modal').hide();
-        });
 
-        // Close the Modal when clicking outside of the modal content
-        $(window).click(function(event) {
-            if (event.target.id == 'map-modal') {
-                $('#map-modal').hide();
-            }
-        });
+  wp_enqueue_script('signup-script', plugin_dir_url(__FILE__) . 'assets/custom.js', array(), '1.0.0', true);
 
-        function initializeAutocomplete() {
-            var input = document.getElementById('location-input');
-            var autocomplete = new google.maps.places.Autocomplete(input);
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            });
-
-            var marker = new google.maps.Marker({
-                map: map
-            });
-
-            autocomplete.addListener('place_changed', function() {
-                var place = autocomplete.getPlace();
-
-                if (!place.geometry) {
-                    console.log('Returned place contains no geometry');
-                    return;
-                }
-
-                // If the place has a geometry, then present it on a map.
-                if (place.geometry.viewport) {
-                    map.fitBounds(place.geometry.viewport);
-                } else {
-                    map.setCenter(place.geometry.location);
-                    map.setZoom(17); // Why 17? Because it looks good.
-                }
-
-                marker.setPosition(place.geometry.location);
-                marker.setVisible(true);
-            });
-        }
-    });
-    ";
-
-    // Add inline script
-    wp_add_inline_script('jquery', $custom_js);
+  // Localize script with AJAX URL and nonce
+  wp_localize_script(
+    'custom-script',
+    'ajax_object',
+    array(
+      'ajax_url' => admin_url('admin-ajax.php'),
+      'ajax_nonce' => wp_create_nonce('fetch_mini_website_template_nonce')
+    )
+  );
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_script');
+
 
 
 
