@@ -156,8 +156,8 @@ class Signup_Modal_Info
     }
 
     public function displayAddLocationSection()
-    {
-        echo '
+{
+    echo '
     <div id="add-location-section" class="w-600 d-none">
         <div class="fs-20 divider pb-4">Add a location</div>
         <div class="fs-16 mt-20 divider mb-20 pb-20">
@@ -175,13 +175,13 @@ class Signup_Modal_Info
                             Change
                         </div>
                     </div>
-                    <div id="map-modal" class="h-100 flex-column justify-content-center d-none">
+                    <div id="add-location-change-input" class="h-100 flex-column justify-content-center d-none">
                         <div class="fs-18 mb-2">Your event location</div>
                         <textarea name="location" class="form-control flex-grow-1"></textarea>
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="map-area"></div> 
+                    <div class="map-area"></div>
                 </div>
             </div>
         </div>
@@ -213,7 +213,7 @@ class Signup_Modal_Info
             </div>
         </div>
     </div>';
-    }
+}
 
 
     public function displayWhyListLocation()
