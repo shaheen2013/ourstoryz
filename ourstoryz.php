@@ -130,7 +130,7 @@ function enqueue_custom_script()
 
 
   wp_enqueue_script('signup-script', plugin_dir_url(__FILE__) . 'assets/custom.js', array(), '1.0.0', true);
-  wp_enqueue_script('jquery');
+
   // Localize script with AJAX URL and nonce
   wp_localize_script(
     'custom-script',
@@ -191,5 +191,85 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_script');
 
 
 // Function to handle the shortcode
- 
+function hello_shortcode()
+{
+      // Return the HTML output for the button and modal
+      ob_start();
+      ?>
+      <!-- Button to Open the Modal -->
+      <button id="open-map-modal" style="padding: 10px 20px;">Show Map</button>
+  
+      <!-- The Modal -->
+      <div id="map-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+          <div style="background-color: #fff; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+              <span id="close-map-modal" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+              <input id="location-input" type="text" placeholder="Enter a location" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+              <div id="map" style="height: 400px; width: 100%;"></div>
+          </div>
+      </div>
+  
+      <script>
+      jQuery(document).ready(function($)
+      {
+          // Open the Modal
+          $('#open-map-modal').click(function() {
+              $('#map-modal').show();
+              // Initialize map when the modal is shown
+              initializeAutocomplete();
+          });
+
+          // Close the Modal
+          $('#close-map-modal').click(function() {
+              $('#map-modal').hide();
+          });
+
+          // Close the Modal when clicking outside of the modal content
+          $(window).click(function(event) {
+              if (event.target.id == 'map-modal') {
+                  $('#map-modal').hide();
+              }
+          });
+
+          function initializeAutocomplete() {
+              var input = document.getElementById('location-input');
+              var autocomplete = new google.maps.places.Autocomplete(input);
+
+              var map = new google.maps.Map(document.getElementById('map'), {
+                  zoom: 15,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+              });
+
+              var marker = new google.maps.Marker({
+                  map: map
+              });
+
+              autocomplete.addListener('place_changed', function() {
+                  var place = autocomplete.getPlace();
+
+                  if (!place.geometry) {
+                      console.log("Returned place contains no geometry");
+                      return;
+                  }
+
+                  // If the place has a geometry, then present it on a map.
+                  if (place.geometry.viewport) {
+                      map.fitBounds(place.geometry.viewport);
+                  } else {
+                      map.setCenter(place.geometry.location);
+                      map.setZoom(17); // Why 17? Because it looks good.
+                  }
+
+                  marker.setPosition(place.geometry.location);
+                  marker.setVisible(true);
+              });
+          }
+      });
+      </script>
+      <?php
+      return ob_get_clean();
+}
+
+// Register the shortcode with WordPress
+add_shortcode('hello', 'hello_shortcode');
+
 
