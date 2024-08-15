@@ -225,25 +225,16 @@ public function displayAddLocationSection(){
         </div>
         <img src="./assets/images/add-location.png" alt="event" class="w-100 rounded-4 mb-20">
 
-        <div class="my-20">
-            <div class="row">
-                <div class="col-6">
-                    <div id="add-location-change-section" class="h-100 d-flex flex-column justify-content-center">
-                        <div class="fs-18 text-end mb-2">Your event location</div>
-                        <div onclick="handleChangeLocation()" id="add-location-change-btn" class="btn-location-change">
-                            Change
-                        </div>
-                    </div>
-                    <div id="add-location-change-input" class="h-100 flex-column justify-content-center d-none">
-                        <div class="fs-18 mb-2">Your event location</div>
-                        <textarea name="location" class="form-control flex-grow-1"></textarea>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="map-area"></div>
-                </div>
-            </div>
-        </div>
+         <button id="open-map-modal" style="padding: 10px 20px;">Show Map</button>
+  
+    
+      <div id="map-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+          <div style="background-color: #fff; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+              <span id="close-map-modal" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+              <input id="location-input" type="text" placeholder="Enter a location" style="width: 100%; padding: 10px; margin-bottom: 10px;">
+              <div id="map" style="height: 400px; width: 100%;"></div>
+          </div>
+      </div>
 
         <div class="divider mb-20 pb-20"></div>
 
