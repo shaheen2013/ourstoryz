@@ -181,7 +181,7 @@ class Signup_Modal_Info
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="map-area"></div>
+                    <div class="map-area"></div> 
                 </div>
             </div>
         </div>
