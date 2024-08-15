@@ -23,53 +23,7 @@ function ourstoryz_shortcode_function()
     ob_start(); // Start output buffering
 ?>
 
-    <div id="add-location-section" class="w-600">
-        <div class="fs-20 divider pb-4">Add a location</div>
-        <div class="fs-16 mt-20 divider mb-20 pb-20">Provide the location of your event (approximate is OK).
-            You’ll need it to test the OurStoryz Geospace features. You can always add this later
-        </div>
-        <input id="location-input" type="text" placeholder="Enter a location" style="width: 100%; padding: 10px; margin-bottom: 10px;">
-        <div id="map" style="height: 400px; width: 100%;"></div>
-    </div>
 
-    <script>
-        jQuery(document).ready(function($) {
-
-            function initializeAutocomplete() {
-                var input = document.getElementById("location-input");
-                var autocomplete = new google.maps.places.Autocomplete(input);
-
-                var map = new google.maps.Map(document.getElementById("map"), {
-                    zoom: 15,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-
-                var marker = new google.maps.Marker({
-                    map: map
-                });
-
-                autocomplete.addListener("place_changed", function() {
-                    var place = autocomplete.getPlace();
-
-                    if (!place.geometry) {
-                        console.log("Returned place contains no geometry");
-                        return;
-                    }
-
-                    // If the place has a geometry, then present it on a map.
-                    if (place.geometry.viewport) {
-                        map.fitBounds(place.geometry.viewport);
-                    } else {
-                        map.setCenter(place.geometry.location);
-                        map.setZoom(17); // Why 17? Because it looks good.
-                    }
-
-                    marker.setPosition(place.geometry.location);
-                    marker.setVisible(true);
-                });
-            }
-        });
-    </script>
 
     <div class="ar-main-wrapper py-4 py-md-5">
         <div class="container">
@@ -208,7 +162,9 @@ function ourstoryz_shortcode_function()
                     ?>
 
                     <!--ADD-LOCATION-SECTION-->
-
+                    <?php
+                    $signup_info->displayAddLocationSection();
+                    ?>
                     <!--WHY-LIST-LOCATION-ALERT-->
                     <?php $signup_info->displayWhyListLocation(); ?>
 
