@@ -24,17 +24,7 @@
 
 class Signup_Modal_Info
 {
-    public function __construct()
-    {
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
-    }
-
-    // Enqueue necessary scripts
-    public function enqueue_scripts()
-    {
-        wp_enqueue_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCG2YvMYjtoPcq3tP8ROejpgqd-RxenQOY&libraries=places', null, null, true);
-        wp_enqueue_script('custom-map-script', get_template_directory_uri() . '/assets/custom-map.js', array('jquery', 'google-maps-api'), null, true);
-    }
+    
     public function signup_post()
     {
         $args = array(
