@@ -264,7 +264,7 @@ jQuery(document).ready(function($) {
             }
 
             marker.setPosition(place.geometry.location);
-            marker.setVisible(true);
+            marker.setVisible(true); 
         });
     }
 });
