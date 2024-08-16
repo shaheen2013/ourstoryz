@@ -155,7 +155,7 @@ class Signup_Modal_Info
         </div>';
     }
 
-        public function displayAddLocationSection()
+    public function displayAddLocationSection()
     {
         echo '
         <div id="add-location-section" class="w-600 d-none">
@@ -214,10 +214,6 @@ class Signup_Modal_Info
             </div>
         </div>';
     }
-
-  
-
-
 
 
     public function displayWhyListLocation()
