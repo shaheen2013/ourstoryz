@@ -1,8 +1,8 @@
 /*ACTIVE CONTINUE BUTTON*/
 function checkCheckboxes() {
-    const checkboxes = document.querySelectorAll('.form-check-input');
+    const checkboxes  = document.querySelectorAll('.form-check-input');
     const continueBtn = document.getElementById('continue-btn');
-    let checked = false;
+    let checked       = false;
 
     checkboxes.forEach((checkbox) => {
         if (checkbox.checked) {
@@ -21,7 +21,7 @@ function checkCheckboxes() {
 
 /*MODAL SHOW HIDE CONTENT */
 function handleSetModal(id) {
-    const show = document.getElementById(id);
+    const show       = document.getElementById(id);
     const allSection = document.querySelectorAll('#signin-modal>div');
     allSection.forEach((item) => {
         item.classList.add('d-none');
@@ -33,7 +33,7 @@ function handleSetModal(id) {
 // ADD-LOCATION-CONTINUE-BUTTON
 function handleChangeLocation() {
     const changeSection = document.getElementById('add-location-change-section');
-    const changeInput = document.getElementById('add-location-change-input');
+    const changeInput   = document.getElementById('add-location-change-input');
 
     changeSection.classList.add('d-none');
     changeInput.classList.remove('d-none');
@@ -216,57 +216,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// for map
-
  
-
-// end map
-
-
-// function handleCaptchaVerification() {
-//     grecaptcha.ready(function () {
-//         grecaptcha.execute('6LdoHyMqAAAAADoxXp6VJMHKXQCHlg5x90f0W5Ph', { action: 'submit' })
-//             .then(function (token) {
-//                 document.getElementById('recaptcha_token').value = token;
-
-//                 // Send token to the server via AJAX using jQuery
-//                 verifyRecaptchaToken(token);
-//             });
-//     });
-// }
-
-// function verifyRecaptchaToken(token) {
-//     // Construct the data to send
-//     var data = {
-//         action: 'verify_recaptcha',
-//         recaptcha_token: token
-//     };
-
-//     // Send the AJAX request using jQuery
-//     jQuery.ajax({
-//         url: ajax_object.ajaxurl, // Assuming ajax_object is already defined with ajaxurl
-//         type: 'POST',
-//         data: data,
-        
-//         success: function (response) {
-
-//             if (response.success) {
-//                 // reCAPTCHA verified, proceed to the next step
-//                 console.log("reCAPTCHA verified successfully");
-//                 handleSetModal('want-to-test-section');
-//             } else {
-//                 // reCAPTCHA failed, show an error message
-//                 console.log("reCAPTCHA verification failed.");
-//                 alert('reCAPTCHA verification failed. Please try again.');
-//             }
-//         },
-//         error: function (xhr, status, error) {
-//             // Handle errors
-//             console.error("An error occurred: ", error);
-//             alert('An error occurred during verification. Please try again.');
-//         }
-//     });
-// }
-
-
-
