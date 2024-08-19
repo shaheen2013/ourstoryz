@@ -211,6 +211,8 @@ class Signup_Modal_Info
 
     public function displayAddLocationSection()
     {
+
+ 
         echo '
         <div id="add-location-section" class="w-600 d-none">
             <div class="fs-20 divider pb-4">Add a location</div>
@@ -225,18 +227,19 @@ class Signup_Modal_Info
                                 <div id="add-location-change-section"
                                      class="h-100 d-flex flex-column justify-content-center">
                                     <div class="fs-18 text-end mb-2">Your event location</div>
-                                    <div onclick="handleChangeLocation()" id="add-location-change-btn"
+                                    <div   id="open-map-modal"
                                          class="btn-location-change">Change
                                     </div>
                                 </div>
-                                <div id="add-location-change-input"
+                                <div id="map-modal"
                                      class="h-100 flex-column justify-content-center d-none">
                                     <div class="fs-18 mb-2">Your event location</div>
-                                    <textarea name="location" class="form-control flex-grow-1"></textarea>
+                                  <span id="close-map-modal" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                                 <input id="location-input" type="text" placeholder="Enter a location"  >
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="map-area"></div>
+                                <div class="map"></div>
                             </div>
                         </div>
                     </div>

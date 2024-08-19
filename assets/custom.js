@@ -32,7 +32,7 @@ function handleSetModal(id) {
 
 // ADD-LOCATION-CONTINUE-BUTTON
 function handleChangeLocation() {
-    console.log('test2025');
+
     const changeSection = document.getElementById('add-location-change-section');
     const changeInput   = document.getElementById('add-location-change-input');
 
