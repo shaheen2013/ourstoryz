@@ -180,7 +180,38 @@ class ourstoryz_Admin
     // }
 
 
-   
+    function create_signup_post_type()
+    {
+        $labels = array(
+            'name'                  => 'Signups',
+            'singular_name'         => 'Signup',
+            'menu_name'             => 'Signups',
+            'add_new'               => 'Add New',
+            'add_new_item'          => 'Add New Signup',
+            'edit_item'             => 'Edit Signup',
+            'new_item'              => 'New Signup',
+            'view_item'             => 'View Signup',
+            'search_items'          => 'Search Signups',
+            'not_found'             => 'No Signups found',
+            'not_found_in_trash'    => 'No Signups found in Trash',
+        );
+    
+        $args = array(
+            'labels'                => $labels,
+            'public'                => true,
+            'show_in_menu'          => true,
+            'menu_position'         => 5,
+            'menu_icon'             => 'dashicons-admin-post', // Customize the menu icon
+            'supports'              => array('title', 'editor'), // Basic support: title and editor
+            'rewrite'               => array('slug' => 'signup'), // Customize the permalink slug
+            'has_archive'           => true,
+            'publicly_queryable'    => true,
+            'capability_type'       => 'post',
+        );
+    
+        register_post_type('signup', $args);
+    }
+    
   
 
 
