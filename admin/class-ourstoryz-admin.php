@@ -180,38 +180,7 @@ class ourstoryz_Admin
     }
 
 
-    function custom_register_post_type() {
-        $labels = array(
-            'name'               => _x( 'Registers', 'post type general name', 'textdomain' ),
-            'singular_name'      => _x( 'Register', 'post type singular name', 'textdomain' ),
-            'menu_name'          => _x( 'Registers', 'admin menu', 'textdomain' ),
-            'name_admin_bar'     => _x( 'Register', 'add new on admin bar', 'textdomain' ),
-            'add_new'            => _x( 'Add New', 'register', 'textdomain' ),
-            'add_new_item'       => __( 'Add New Register', 'textdomain' ),
-            'new_item'           => __( 'New Register', 'textdomain' ),
-            'edit_item'          => __( 'Edit Register', 'textdomain' ),
-            'view_item'          => __( 'View Register', 'textdomain' ),
-            'all_items'          => __( 'All Registers', 'textdomain' ),
-            'search_items'       => __( 'Search Registers', 'textdomain' ),
-            'parent_item_colon'  => __( 'Parent Registers:', 'textdomain' ),
-            'not_found'          => __( 'No registers found.', 'textdomain' ),
-            'not_found_in_trash' => __( 'No registers found in Trash.', 'textdomain' ),
-        );
-    
-        $args = array(
-            'labels'             => $labels,
-            'public'             => true,
-            'show_in_menu'       => true,
-            'menu_position'         => 5,
-            'rewrite'            => array( 'slug' => 'register' ),
-            'capability_type'    => 'post',
-            'has_archive'        => true,
-            'publicly_queryable'    => true,
-            'supports'           => array('title', 'editor'), // Only include the features you want
-        );
-    
-        register_post_type( 'register', $args );
-    }
+   
   
 
 
