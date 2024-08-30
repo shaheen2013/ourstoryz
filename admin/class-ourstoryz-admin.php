@@ -204,7 +204,7 @@ function create_signup_post_type()
         'supports'              => array('title', 'editor'), // Only include the title and editor
         'publicly_queryable'    => true,
         'has_archive'           => false, // Disable the archive
-        'rewrite'               => array('slug' => 'signup'),
+        'rewrite'               => array('slug' => 'signuppost'),
         'capability_type'       => 'post',
     );
 
