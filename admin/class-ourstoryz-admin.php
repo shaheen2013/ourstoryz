@@ -139,7 +139,7 @@ class ourstoryz_Admin
             'menu_position'         => 5,
             'menu_icon'             => 'dashicons-admin-post', // Customize the menu icon
             'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'),
-            'taxonomies'            => array('signup_category', 'signup_tag'), // Add custom taxonomies
+            // 'taxonomies'            => array('signup_category', 'signup_tag'), // Add custom taxonomies
             'rewrite'               => array('slug' => 'signup'), // Customize the permalink slug
             'has_archive'           => true,
             'publicly_queryable'    => true,
@@ -150,34 +150,34 @@ class ourstoryz_Admin
         register_post_type('signup', $args);
     }
 
-    function custom_signup_taxonomies()
-    {
-        // Custom category taxonomy
-        register_taxonomy(
-            'signup_category',
-            'signup',
-            array(
-                'label' => 'Signup Categories',
-                'hierarchical' => true,
-                'show_admin_column' => true,
-                'sortable' => true, // Enable sorting
-                'rewrite' => array('slug' => 'signup-category'),
-            )
-        );
+    // function custom_signup_taxonomies()
+    // {
+    //     // Custom category taxonomy
+    //     register_taxonomy(
+    //         'signup_category',
+    //         'signup',
+    //         array(
+    //             'label' => 'Signup Categories',
+    //             'hierarchical' => true,
+    //             'show_admin_column' => true,
+    //             'sortable' => true, // Enable sorting
+    //             'rewrite' => array('slug' => 'signup-category'),
+    //         )
+    //     );
 
-        // Custom tag taxonomy
-        register_taxonomy(
-            'signup_tag',
-            'signup',
-            array(
-                'label' => 'Signup Tags',
-                'hierarchical' => false,
-                'show_admin_column' => true,
-                'sortable' => true, // Enable sorting
-                'rewrite' => array('slug' => 'signup-tag'),
-            )
-        );
-    }
+    //     // Custom tag taxonomy
+    //     register_taxonomy(
+    //         'signup_tag',
+    //         'signup',
+    //         array(
+    //             'label' => 'Signup Tags',
+    //             'hierarchical' => false,
+    //             'show_admin_column' => true,
+    //             'sortable' => true, // Enable sorting
+    //             'rewrite' => array('slug' => 'signup-tag'),
+    //         )
+    //     );
+    // }
 
 
    
