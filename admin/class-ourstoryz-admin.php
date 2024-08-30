@@ -114,72 +114,106 @@ class ourstoryz_Admin
 
     // Rsgister custom post type 'Signup'
 
+    // function create_signup_post_type()
+    // {
+    //     $labels = array(
+    //         'name'                  => 'Signups',
+    //         'singular_name'         => 'Signup',
+    //         'menu_name'             => 'Signups',
+    //         'add_new' => 'Add New',
+    //         'add_new_item' => 'Add New Signup',
+    //         'edit_item' => 'Edit Our Signup',
+    //         'new_item' => 'New Signup',
+    //         'view_item' => 'View Signup',
+    //         'search_items' => 'Search Signup',
+    //         'not_found' => 'No Signup found',
+    //         'not_found_in_trash' => 'No Signup found in Trash',
+
+    //     );
+
+
+    //     $args = array(
+    //         'labels'                => $labels,
+    //         'public'                => true,
+    //         'show_in_menu'          => true,
+    //         'menu_position'         => 5,
+    //         'menu_icon'             => 'dashicons-admin-post', // Customize the menu icon
+    //         'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'),
+    //         'taxonomies'            => array('signup_category', 'signup_tag'), // Add custom taxonomies
+    //         'rewrite'               => array('slug' => 'signup'), // Customize the permalink slug
+    //         'has_archive'           => true,
+    //         'publicly_queryable'    => true,
+    //         'capability_type'       => 'post',
+
+    //     );
+
+    //     register_post_type('signup', $args);
+    // }
+
+    // function custom_signup_taxonomies()
+    // {
+    //     // Custom category taxonomy
+    //     register_taxonomy(
+    //         'signup_category',
+    //         'signup',
+    //         array(
+    //             'label' => 'Signup Categories',
+    //             'hierarchical' => true,
+    //             'show_admin_column' => true,
+    //             'sortable' => true, // Enable sorting
+    //             'rewrite' => array('slug' => 'signup-category'),
+    //         )
+    //     );
+
+    //     // Custom tag taxonomy
+    //     register_taxonomy(
+    //         'signup_tag',
+    //         'signup',
+    //         array(
+    //             'label' => 'Signup Tags',
+    //             'hierarchical' => false,
+    //             'show_admin_column' => true,
+    //             'sortable' => true, // Enable sorting
+    //             'rewrite' => array('slug' => 'signup-tag'),
+    //         )
+    //     );
+    // }
+
     function create_signup_post_type()
     {
         $labels = array(
-            'name'                  => 'Signups',
-            'singular_name'         => 'Signup',
-            'menu_name'             => 'Signups',
-            'add_new' => 'Add New',
-            'add_new_item' => 'Add New Signup',
-            'edit_item' => 'Edit Our Signup',
-            'new_item' => 'New Signup',
-            'view_item' => 'View Signup',
-            'search_items' => 'Search Signup',
-            'not_found' => 'No Signup found',
-            'not_found_in_trash' => 'No Signup found in Trash',
-
+            'name'                  => __('Signups', 'ourstoryz'),
+            'singular_name'         => __('Signup', 'ourstoryz'),
+            'menu_name'             => __('Signups', 'ourstoryz'),
+            'add_new'               => __('Add New', 'ourstoryz'),
+            'add_new_item'          => __('Add New Signup', 'ourstoryz'),
+            'edit_item'             => __('Edit Signup', 'ourstoryz'),
+            'new_item'              => __('New Signup', 'ourstoryz'),
+            'view_item'             => __('View Signup', 'ourstoryz'),
+            'search_items'          => __('Search Signup', 'ourstoryz'),
+            'not_found'             => __('No Signups found', 'ourstoryz'),
+            'not_found_in_trash'    => __('No Signups found in Trash', 'ourstoryz'),
         );
-
-
+    
         $args = array(
             'labels'                => $labels,
             'public'                => true,
             'show_in_menu'          => true,
             'menu_position'         => 5,
-            'menu_icon'             => 'dashicons-admin-post', // Customize the menu icon
-            'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'),
-            'taxonomies'            => array('signup_category', 'signup_tag'), // Add custom taxonomies
-            'rewrite'               => array('slug' => 'signup'), // Customize the permalink slug
-            'has_archive'           => true,
+            'menu_icon'             => 'dashicons-admin-post',
+            'supports'              => array('title', 'editor'), // Only include the title and editor
             'publicly_queryable'    => true,
+            'has_archive'           => false, // Disable the archive
+            'rewrite'               => array('slug' => 'signup'),
             'capability_type'       => 'post',
-
         );
-
+    
         register_post_type('signup', $args);
     }
-
-    function custom_signup_taxonomies()
-    {
-        // Custom category taxonomy
-        register_taxonomy(
-            'signup_category',
-            'signup',
-            array(
-                'label' => 'Signup Categories',
-                'hierarchical' => true,
-                'show_admin_column' => true,
-                'sortable' => true, // Enable sorting
-                'rewrite' => array('slug' => 'signup-category'),
-            )
-        );
-
-        // Custom tag taxonomy
-        register_taxonomy(
-            'signup_tag',
-            'signup',
-            array(
-                'label' => 'Signup Tags',
-                'hierarchical' => false,
-                'show_admin_column' => true,
-                'sortable' => true, // Enable sorting
-                'rewrite' => array('slug' => 'signup-tag'),
-            )
-        );
-    }
-
-
+    
+    // Hook into the 'init' action to register the custom post type
+ 
+    
 
     // End Register custom post type 'Signup'
 
