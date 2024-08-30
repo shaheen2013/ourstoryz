@@ -201,17 +201,13 @@ class ourstoryz_Admin
         $args = array(
             'labels'             => $labels,
             'public'             => true,
-            'publicly_queryable' => true,
-            'show_ui'            => true,
             'show_in_menu'       => true,
-            'query_var'          => true,
+            'menu_position'         => 5,
             'rewrite'            => array( 'slug' => 'register' ),
             'capability_type'    => 'post',
             'has_archive'        => true,
-            'hierarchical'       => false,
-            'menu_position'      => null,
-            'supports'           => array( 'title', 'editor' ), // Only include the features you want
-            'show_in_rest'       => true, // For Gutenberg support
+            'publicly_queryable'    => true,
+            'supports'           => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'), // Only include the features you want
         );
     
         register_post_type( 'register', $args );
