@@ -207,7 +207,7 @@ class ourstoryz_Admin
             'capability_type'    => 'post',
             'has_archive'        => true,
             'publicly_queryable'    => true,
-            'supports'           => array('title', 'editor', 'thumbnail', 'excerpt', 'comments'), // Only include the features you want
+            'supports'           => array('title', 'editor'), // Only include the features you want
         );
     
         register_post_type( 'register', $args );
